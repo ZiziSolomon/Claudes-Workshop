@@ -1,14 +1,14 @@
 {
-  "scraped_at": "2026-04-17T08:50:00.660Z",
+  "scraped_at": "2026-04-17T08:51:00.778Z",
   "source_url": "/api/organizations/b49de57b-f2f0-4db3-9f1b-833808b8e371/usage",
   "raw": {
     "five_hour": {
-      "utilization": 27,
-      "resets_at": "2026-04-17T12:00:00.788097+00:00"
+      "utilization": 28,
+      "resets_at": "2026-04-17T12:00:00.885745+00:00"
     },
     "seven_day": {
       "utilization": 3,
-      "resets_at": "2026-04-24T07:00:00.788118+00:00"
+      "resets_at": "2026-04-24T07:00:00.885811+00:00"
     },
     "seven_day_oauth_apps": null,
     "seven_day_opus": null,
