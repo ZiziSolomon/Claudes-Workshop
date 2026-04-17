@@ -28,24 +28,62 @@ OUTPUT_FILE = REPO_ROOT / "usage_data" / "latest.json"
 USAGE_ENDPOINT = "/api/account_usage"  # update if --discover reveals a different path
 
 CLAUDE_URL = "https://claude.ai"
+USAGE_URL = "https://claude.ai/settings/usage"
 
 
 class AuthExpiredError(Exception):
     pass
 
 
+CHROME_USER_DATA_DIR = r"C:\Users\Ezekiel\AppData\Local\Google\Chrome\User Data"
+CHROME_ACCOUNT_EMAIL = "marthasolomon1991@gmail.com"
+
+
+def _find_chrome_profile() -> str:
+    """Find the Chrome profile directory for CHROME_ACCOUNT_EMAIL."""
+    user_data = Path(CHROME_USER_DATA_DIR)
+    candidates = [user_data / "Default"] + sorted(user_data.glob("Profile *"))
+    for profile_dir in candidates:
+        prefs_file = profile_dir / "Preferences"
+        if not prefs_file.exists():
+            continue
+        try:
+            prefs = json.loads(prefs_file.read_text(encoding="utf-8"))
+            account_info = prefs.get("account_info", [])
+            for account in account_info:
+                if account.get("email", "").lower() == CHROME_ACCOUNT_EMAIL.lower():
+                    return str(profile_dir)
+        except Exception:
+            continue
+    raise RuntimeError(
+        f"Could not find a Chrome profile for {CHROME_ACCOUNT_EMAIL}.\n"
+        f"Profiles checked: {[str(c) for c in candidates]}"
+    )
+
+
 async def setup_auth():
-    """Headed login flow. Run once (or when auth expires) to save session state."""
-    print("Opening browser — log in to claude.ai, then come back here and press Enter.")
+    """
+    Saves auth by launching Chrome with your real profile (already logged in).
+    Chrome must be fully closed before running this.
+    """
+    profile_dir = _find_chrome_profile()
+    print(f"Using Chrome profile: {profile_dir}")
+    print("Make sure Chrome is fully closed, then press Enter to continue...")
+    input()
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False)
-        context = await browser.new_context()
-        page = await context.new_page()
-        await page.goto(CLAUDE_URL)
-        input("\nPress Enter after you've logged in... ")
+        context = await p.chromium.launch_persistent_context(
+            profile_dir,
+            channel="chrome",
+            headless=False,
+            args=["--disable-blink-features=AutomationControlled"],
+        )
+        page = context.pages[0] if context.pages else await context.new_page()
+        await page.goto(USAGE_URL, timeout=30_000)
+        print("Page loaded. If you can see the usage page, press Enter to save auth.")
+        input()
         await context.storage_state(path=str(AUTH_FILE))
         print(f"Auth saved to {AUTH_FILE}")
-        await browser.close()
+        await context.close()
 
 
 async def discover_endpoints():
@@ -69,7 +107,7 @@ async def discover_endpoints():
 
         page.on("response", handle_response)
 
-        _check_for_redirect(await _navigate(page, CLAUDE_URL))
+        _check_for_redirect(await _navigate(page, USAGE_URL))
 
         # Brief wait to let background API calls settle
         await page.wait_for_timeout(3000)
@@ -107,7 +145,7 @@ async def scrape():
 
         page.on("response", handle_response)
 
-        _check_for_redirect(await _navigate(page, CLAUDE_URL))
+        _check_for_redirect(await _navigate(page, USAGE_URL))
 
         # Wait for the usage API call (up to 10s)
         deadline = 10_000
