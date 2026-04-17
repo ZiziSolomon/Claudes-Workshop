@@ -1,0 +1,31 @@
+{
+  "scraped_at": "2026-04-17T08:40:44.973Z",
+  "source_url": "/api/organizations/b49de57b-f2f0-4db3-9f1b-833808b8e371/usage",
+  "raw": {
+    "five_hour": {
+      "utilization": 24,
+      "resets_at": "2026-04-17T12:00:01.027793+00:00"
+    },
+    "seven_day": {
+      "utilization": 3,
+      "resets_at": "2026-04-24T07:00:01.027814+00:00"
+    },
+    "seven_day_oauth_apps": null,
+    "seven_day_opus": null,
+    "seven_day_sonnet": null,
+    "seven_day_cowork": null,
+    "seven_day_omelette": {
+      "utilization": 0,
+      "resets_at": null
+    },
+    "iguana_necktie": null,
+    "omelette_promotional": null,
+    "extra_usage": {
+      "is_enabled": true,
+      "monthly_limit": 0,
+      "used_credits": 1527,
+      "utilization": null,
+      "currency": "GBP"
+    }
+  }
+}
