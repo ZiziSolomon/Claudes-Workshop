@@ -7,6 +7,7 @@ Cron: 0 3,8,13,18,23 * * *
 """
 
 import json
+import os
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -17,6 +18,9 @@ USAGE_URL = "https://raw.githubusercontent.com/ZiziSolomon/Claudes-Workshop/mast
 REPO_URL = "https://github.com/ZiziSolomon/Claudes-Workshop.git"
 REPO_DIR = Path("/home/opc/workshop")
 SESSION_LOG = Path("/home/opc/sessions.log")
+
+NVM_BIN = "/home/opc/.nvm/versions/node/v24.15.0/bin"
+CLAUDE_BIN = f"{NVM_BIN}/claude"
 
 TOKENS_PER_SESSION = 13.5  # updated after calibration
 SAFETY_BUFFER_SLOTS = 1
@@ -93,11 +97,15 @@ def run_session():
 
     sync_repo()
 
+    env = os.environ.copy()
+    env["PATH"] = f"{NVM_BIN}:{env.get('PATH', '')}"
+
     result = subprocess.run(
-        ["claude", "-p", PROMPT, "--allowedTools", "Read,Write,Bash"],
+        [CLAUDE_BIN, "-p", PROMPT, "--allowedTools", "Read,Write,Bash"],
         cwd=str(REPO_DIR),
         capture_output=True,
         text=True,
+        env=env,
     )
 
     end = datetime.now(timezone.utc)
