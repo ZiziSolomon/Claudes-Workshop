@@ -18,9 +18,13 @@ USAGE_URL = "https://raw.githubusercontent.com/ZiziSolomon/Claudes-Workshop/mast
 REPO_URL = "https://github.com/ZiziSolomon/Claudes-Workshop.git"
 REPO_DIR = Path("/home/opc/workshop")
 SESSION_LOG = Path("/home/opc/sessions.log")
+LOCK_FILE = Path("/home/opc/session.lock")
+FORCE_FILE = Path("/home/opc/force_run")
 
 NVM_BIN = "/home/opc/.nvm/versions/node/v24.15.0/bin"
 CLAUDE_BIN = f"{NVM_BIN}/claude"
+
+SLOT_DURATION_HOURS = 5
 
 TOKENS_PER_SESSION = 13.5  # updated after calibration
 SAFETY_BUFFER_SLOTS = 1
@@ -51,6 +55,11 @@ def fetch_usage():
 
 
 def should_launch(usage):
+    if FORCE_FILE.exists():
+        FORCE_FILE.unlink()
+        log("Force flag set — running session regardless")
+        return True
+
     weekly_pct = usage["weekly_utilization_pct"]
     resets_at = datetime.fromisoformat(usage["weekly_resets_at"])
     scraped_at = datetime.fromisoformat(usage["scraped_at"])
@@ -71,7 +80,7 @@ def should_launch(usage):
         log(f"Only {tokens_remaining:.1f}% remaining — not enough for a full session, skipping")
         return False
 
-    slots_remaining = hours_until_reset / 5
+    slots_remaining = hours_until_reset / SLOT_DURATION_HOURS
     sessions_needed = tokens_remaining / TOKENS_PER_SESSION
 
     log(f"{weekly_pct}% used | {tokens_remaining:.1f}% remaining | {hours_until_reset:.1f}h until reset")
@@ -92,28 +101,36 @@ def sync_repo():
 
 
 def run_session():
+    if LOCK_FILE.exists():
+        log("Lock file exists — session already running, skipping")
+        return
+
     start = datetime.now(timezone.utc)
-    log(f"Session starting")
+    LOCK_FILE.write_text(start.isoformat())
+    log("Session starting")
 
-    sync_repo()
+    try:
+        sync_repo()
 
-    env = os.environ.copy()
-    env["PATH"] = f"{NVM_BIN}:{env.get('PATH', '')}"
+        env = os.environ.copy()
+        env["PATH"] = f"{NVM_BIN}:{env.get('PATH', '')}"
 
-    result = subprocess.run(
-        [CLAUDE_BIN, "-p", PROMPT, "--allowedTools", "Read,Write,Bash"],
-        cwd=str(REPO_DIR),
-        capture_output=True,
-        text=True,
-        env=env,
-    )
+        result = subprocess.run(
+            [CLAUDE_BIN, "-p", PROMPT, "--allowedTools", "Read,Write,Bash"],
+            cwd=str(REPO_DIR),
+            capture_output=True,
+            text=True,
+            env=env,
+        )
 
-    end = datetime.now(timezone.utc)
-    duration_min = (end - start).total_seconds() / 60
-    log(f"Session ended — {duration_min:.0f} min | exit code {result.returncode}")
+        end = datetime.now(timezone.utc)
+        duration_min = (end - start).total_seconds() / 60
+        log(f"Session ended — {duration_min:.0f} min | exit code {result.returncode}")
 
-    if result.returncode != 0:
-        log(f"stderr: {result.stderr[:500]}")
+        if result.returncode != 0:
+            log(f"stderr: {result.stderr[:500]}")
+    finally:
+        LOCK_FILE.unlink(missing_ok=True)
 
 
 def main():
