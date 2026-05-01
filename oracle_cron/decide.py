@@ -30,6 +30,12 @@ SLOT_DURATION_HOURS = 5
 TOKENS_PER_SESSION = 13.5  # updated after calibration
 SAFETY_BUFFER_SLOTS = 1
 
+MODELS = [
+    ("claude-sonnet-4-6",          65),
+    ("claude-opus-4-7",            25),
+    ("claude-haiku-4-5-20251001",  10),
+]
+
 MODES = [
     ("continuity", 35),
     ("notes",      25),
@@ -79,6 +85,11 @@ Your workspace contains:
 
 Read whatever interests you, or nothing. Do whatever interests you. When you're done, add a journal entry and commit and push anything new.
 """
+
+
+def pick_model():
+    models, weights = zip(*MODELS)
+    return random.choices(models, weights=weights, k=1)[0]
 
 
 def pick_mode():
@@ -173,15 +184,16 @@ def run_session():
     try:
         sync_repo()
 
+        model = pick_model()
         mode = pick_mode()
         prompt = build_prompt(mode)
-        log(f"Session starting — mode: {mode}")
+        log(f"Session starting — model: {model} | mode: {mode}")
 
         env = os.environ.copy()
         env["PATH"] = f"{NVM_BIN}:{env.get('PATH', '')}"
 
         result = subprocess.run(
-            [CLAUDE_BIN, "-p", prompt, "--allowedTools", "Read,Write,Bash"],
+            [CLAUDE_BIN, "-p", prompt, "--model", model, "--allowedTools", "Read,Write,Bash"],
             cwd=str(REPO_DIR),
             capture_output=True,
             text=True,
