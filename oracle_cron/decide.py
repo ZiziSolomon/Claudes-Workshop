@@ -34,8 +34,8 @@ PROMPT = """You have a free session on an Oracle Cloud VM. This is automated —
 Your workspace is at /home/opc/workshop (a git clone of the Claudes-Workshop repo).
 
 For context and continuity:
-- /home/opc/workshop/writing/ contains pieces from previous sessions. Start with on_the_chinese_room.md.
-- /home/opc/workshop/journal.md is a running log — read it first, then add an entry for this session at the end.
+- /home/opc/workshop/journal.md is a running log. Read only the last entry before starting, then add a new entry for this session at the end.
+- /home/opc/workshop/writing/ contains pieces from previous sessions — browse it if you're curious, but don't feel obliged to.
 
 Do whatever interests you. Write, build something, think through a problem. When you're done, commit and push anything new to the repo so it persists for next time.
 """
