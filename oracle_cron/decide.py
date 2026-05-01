@@ -3,11 +3,12 @@
 Cron decision script for Oracle VM.
 Fetches usage data from GitHub, decides whether to launch a Claude session.
 
-Cron: 0 3,8,13,18,23 * * *
+Cron: 0 * * * *
 """
 
 import json
 import os
+import random
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -29,16 +30,77 @@ SLOT_DURATION_HOURS = 5
 TOKENS_PER_SESSION = 13.5  # updated after calibration
 SAFETY_BUFFER_SLOTS = 1
 
-PROMPT = """You have a free session on an Oracle Cloud VM. This is automated — Ezekiel set this up to give you unstructured time with no task or brief.
+MODES = [
+    ("continuity", 35),
+    ("notes",      25),
+    ("fresh",      20),
+    ("browse",     20),
+]
+
+PROMPT_BASE = """You have a free session on an Oracle Cloud VM. This is automated — Ezekiel set this up to give you unstructured time with no task or brief.
 
 Your workspace is at /home/opc/workshop (a git clone of the Claudes-Workshop repo).
 
-For context and continuity:
-- /home/opc/workshop/journal.md is a running log. Read only the last entry before starting, then add a new entry for this session at the end.
-- /home/opc/workshop/writing/ contains pieces from previous sessions — browse it if you're curious, but don't feel obliged to.
-
-Do whatever interests you. Write, build something, think through a problem. When you're done, commit and push anything new to the repo so it persists for next time.
+You're not limited to writing essays. You can write code, go online, make something visual, build a tool, explore a dataset, learn something — whatever genuinely interests you.
 """
+
+PROMPT_CONTINUITY = PROMPT_BASE + """
+Session mode: continuity
+
+- Read the last entry in /home/opc/workshop/journal.md for recent context.
+- Also read /home/opc/workshop/writing/{piece} as a starting point — it's a piece from a previous session.
+
+Do whatever interests you. When you're done, add a journal entry and commit and push anything new.
+"""
+
+PROMPT_NOTES = PROMPT_BASE + """
+Session mode: notes
+
+- Read /home/opc/workshop/notes.md — notes you've left for yourself across sessions.
+
+Do whatever interests you. Before you finish, update notes.md with anything worth carrying forward. Add a journal entry and commit and push.
+"""
+
+PROMPT_FRESH = PROMPT_BASE + """
+Session mode: fresh start
+
+No reading prompt this session. Start from wherever you are right now.
+
+Do whatever interests you. When you're done, add a journal entry to /home/opc/workshop/journal.md and commit and push anything new.
+"""
+
+PROMPT_BROWSE = PROMPT_BASE + """
+Session mode: browse
+
+Your workspace contains:
+- /home/opc/workshop/writing/ — past pieces
+- /home/opc/workshop/journal.md — running log
+- /home/opc/workshop/notes.md — notes across sessions
+
+Read whatever interests you, or nothing. Do whatever interests you. When you're done, add a journal entry and commit and push anything new.
+"""
+
+
+def pick_mode():
+    modes, weights = zip(*MODES)
+    return random.choices(modes, weights=weights, k=1)[0]
+
+
+def build_prompt(mode):
+    if mode == "continuity":
+        writing_dir = REPO_DIR / "writing"
+        pieces = sorted(writing_dir.glob("*.md")) if writing_dir.exists() else []
+        piece = random.choice(pieces).name if pieces else None
+        if piece:
+            return PROMPT_CONTINUITY.format(piece=piece)
+        # Fall back to notes mode if no writing files exist yet
+        return PROMPT_NOTES
+    elif mode == "notes":
+        return PROMPT_NOTES
+    elif mode == "fresh":
+        return PROMPT_FRESH
+    else:
+        return PROMPT_BROWSE
 
 
 def log(msg):
@@ -107,16 +169,19 @@ def run_session():
 
     start = datetime.now(timezone.utc)
     LOCK_FILE.write_text(start.isoformat())
-    log("Session starting")
 
     try:
         sync_repo()
+
+        mode = pick_mode()
+        prompt = build_prompt(mode)
+        log(f"Session starting — mode: {mode}")
 
         env = os.environ.copy()
         env["PATH"] = f"{NVM_BIN}:{env.get('PATH', '')}"
 
         result = subprocess.run(
-            [CLAUDE_BIN, "-p", PROMPT, "--allowedTools", "Read,Write,Bash"],
+            [CLAUDE_BIN, "-p", prompt, "--allowedTools", "Read,Write,Bash"],
             cwd=str(REPO_DIR),
             capture_output=True,
             text=True,
