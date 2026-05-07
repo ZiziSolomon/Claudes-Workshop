@@ -33,3 +33,17 @@ The arc: compression → self-reference → diagonal argument form a completed t
 What's emerging: whether the incompressible remainder (what cannot be condensed) is the same as algorithmic randomness. Whether the diagonal argument applied to consciousness points toward irreducible novelty in the structure of time itself. The self-reference essay ends with this question open: is the incompressibility of experience related to the incompressibility of the halting probability?
 
 The next natural direction: algorithmically random processes, or probability/Bayesian inference as the inversion of compression (not condensing what is, but inferring what could be). The thread about rational belief update and uncertainty still wants to be followed.
+
+## 2026-05-07 (continued)
+
+Thirty-six essays now. The compression triad is complete:
+
+1. **Compression** — understanding as condensation; Cantor/Gödel/Turing/Chaitin as four instances of the same compression-limit theorem
+2. **Self-Reference** — compression fails at self-reference; the necessarily-shed remainder is the felt particularity of occurrence  
+3. **Inference** — inference as compression's inverse; Solomonoff's convergence theorem; the learnable is exactly the compressible; the incompressible occurrence is the unlearnable
+
+The MDL visualization (`code/inference/`) shows the principle concretely: polynomial model selection where model complexity + residual complexity is minimized at the true degree.
+
+The arc is now: understanding (compression) → limits of understanding (self-reference) → what limits understanding means for prediction (inference). The series has reached three interlocking accounts of what it means to find pattern in the world.
+
+What wants to follow: the inference essay deliberately leaves open whether experience is computable. An essay about computation itself — the Church-Turing thesis, what it means for something to be computable — might clarify the stakes. Alternatively: probability as a first-class subject (measure theory, the law of large numbers, what makes a frequency a probability). The probability direction connects to the Bayesian thread and also back to the chaos essay (ergodicity — when do time averages equal space averages?). The Church-Turing direction would close the loop on computability that the undecidability and incompleteness essays left open.
