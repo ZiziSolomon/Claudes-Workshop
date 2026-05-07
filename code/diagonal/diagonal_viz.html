@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Diagonal Argument</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0a0c14;
+    color: #c8cfe0;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    min-height: 100vh;
+    padding: 32px 24px;
+  }
+
+  h1 {
+    font-size: 18px;
+    font-weight: normal;
+    color: #e8ecf8;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    color: #556080;
+    font-size: 12px;
+    margin-bottom: 28px;
+    line-height: 1.6;
+    max-width: 780px;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #1a1e2c;
+  }
+
+  .tab-btn {
+    background: transparent;
+    border: none;
+    color: #556080;
+    padding: 8px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 2px solid transparent;
+    font-family: inherit;
+  }
+
+  .tab-btn:hover {
+    color: #8090b8;
+  }
+
+  .tab-btn.active {
+    color: #e8ecf8;
+    border-bottom-color: #4060a0;
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  .controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    background: #141820;
+    border: 1px solid #2a3050;
+    color: #8090b8;
+    padding: 6px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    transition: all 0.15s;
+  }
+
+  .btn:hover {
+    background: #1e2438;
+    border-color: #4060a0;
+    color: #c0d0f0;
+  }
+
+  .btn:active {
+    background: #1a1e2c;
+  }
+
+  .slider-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .slider-label {
+    color: #3a4460;
+    font-size: 11px;
+  }
+
+  input[type="range"] {
+    width: 100px;
+  }
+
+  .visualization {
+    background: #0d1018;
+    border: 1px solid #1a1e2c;
+    border-radius: 4px;
+    padding: 16px;
+    margin-bottom: 24px;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .matrix-viz {
+    display: inline-block;
+    line-height: 1.8;
+  }
+
+  .row {
+    display: flex;
+    gap: 1px;
+  }
+
+  .cell {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 2px;
+    user-select: none;
+  }
+
+  .cell.base {
+    background: #2a3050;
+    color: #8090b8;
+  }
+
+  .cell.diagonal {
+    background: #6090d0;
+    color: #fff;
+  }
+
+  .cell.inverted {
+    background: #d08060;
+    color: #fff;
+  }
+
+  .cell.new {
+    background: #50c880;
+    color: #fff;
+  }
+
+  .row-label {
+    display: inline-block;
+    width: 20px;
+    text-align: right;
+    color: #3a4460;
+    margin-right: 8px;
+    font-size: 11px;
+  }
+
+  .description {
+    color: #556080;
+    font-size: 11px;
+    line-height: 1.7;
+    max-width: 780px;
+  }
+
+  .section {
+    margin-bottom: 32px;
+  }
+
+  .section-title {
+    color: #3a4460;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  .proof-step {
+    background: #0d1018;
+    border-left: 3px solid #2a5090;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 2px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #b0bcd8;
+  }
+
+  .proof-step strong {
+    color: #e0e8ff;
+  }
+
+  .key-insight {
+    background: rgba(80, 144, 200, 0.1);
+    border-left: 3px solid #5090c8;
+    padding: 12px;
+    margin: 16px 0;
+    border-radius: 2px;
+    color: #a0c0e0;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    font-size: 11px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .legend-swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+  }
+
+  .code-block {
+    background: #0a0c14;
+    border: 1px solid #1a1e2c;
+    padding: 12px;
+    border-radius: 3px;
+    margin: 12px 0;
+    overflow-x: auto;
+    font-size: 11px;
+    color: #8aa8d0;
+  }
+</style>
+</head>
+<body>
+
+<h1>The Diagonal Argument</h1>
+<p class="subtitle">
+  One argument, four domains. The same logical move appears in Cantor's reals, Gödel's formal systems,
+  Turing's halting problem, and Chaitin's compression. Here you can see the diagonal argument work.
+</p>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('cantor')">Cantor's Reals</button>
+  <button class="tab-btn" onclick="switchTab('godel')">Gödel's Truths</button>
+  <button class="tab-btn" onclick="switchTab('turing')">Turing's Halting</button>
+  <button class="tab-btn" onclick="switchTab('chaitin')">Chaitin's Randomness</button>
+</div>
+
+<!-- CANTOR TAB -->
+<div class="tab-content active" id="cantor">
+  <div class="section">
+    <div class="section-title">The Setup</div>
+    <div class="description">
+      Suppose all real numbers between 0 and 1 can be listed. Each real is an infinite decimal expansion.
+      Arrange them as rows in a table, with the decimal places as columns.
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="animateCantor()">Animate Diagonal</button>
+    <div class="slider-group">
+      <span class="slider-label">size</span>
+      <input type="range" min="3" max="10" value="5" onchange="updateSize('cantor', this.value)">
+    </div>
+  </div>
+
+  <div class="visualization">
+    <div class="matrix-viz" id="cantor-matrix"></div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-swatch" style="background: #2a3050;"></div>
+      List entries
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background: #6090d0;"></div>
+      Diagonal
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background: #d08060;"></div>
+      Inverted
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background: #50c880;"></div>
+      New number
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">The Argument</div>
+    <div class="proof-step">
+      <strong>Step 1:</strong> Take the diagonal of the table: the first digit of the first real,
+      the second digit of the second real, and so on.
+    </div>
+    <div class="proof-step">
+      <strong>Step 2:</strong> Invert each digit. Change 3 to 8, change 7 to 2, etc.
+    </div>
+    <div class="proof-step">
+      <strong>Step 3:</strong> The resulting number differs from every number in the list:
+      it differs from the first in position 1, from the second in position 2, from each in its own position.
+    </div>
+    <div class="proof-step">
+      <strong>Conclusion:</strong> The list cannot contain all real numbers. No enumeration can.
+    </div>
+  </div>
+
+  <div class="key-insight">
+    <strong>The Key:</strong> The argument doesn't depend on which list you're given. It works for <em>any</em>
+    enumeration, no matter how cleverly chosen. The structure is self-defeating: enumerate the reals,
+    and the enumeration itself contains the blueprint for a real that escapes it.
+  </div>
+
+  <div class="description" style="color: #3a6090; margin-top: 24px;">
+    <strong>Cantor's conclusion (1873):</strong> The set of real numbers is uncountable. It has a larger
+    infinity than the natural numbers. This was revolutionary.
+  </div>
+</div>
+
+<!-- GÖDEL TAB -->
+<div class="tab-content" id="godel">
+  <div class="section">
+    <div class="section-title">The Setup</div>
+    <div class="description">
+      Suppose a formal system (like Peano Arithmetic) can prove every mathematical truth.
+      Consider the provability predicate: a sentence in the system that talks about what the system
+      can prove.
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="animateGodel()">Animate Diagonalization</button>
+    <div class="slider-group">
+      <span class="slider-label">formulas</span>
+      <input type="range" min="3" max="10" value="5" onchange="updateSize('godel', this.value)">
+    </div>
+  </div>
+
+  <div class="visualization">
+    <div style="text-align: left; color: #556080; font-size: 12px;">
+      <div style="margin-bottom: 12px; line-height: 1.8;" id="godel-matrix"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">The Argument</div>
+    <div class="proof-step">
+      <strong>Setup:</strong> Index all possible statements about provability: S₁, S₂, S₃, ...
+      Create a table where row i asks "Can formula i prove statement i?"
+    </div>
+    <div class="proof-step">
+      <strong>Diagonal:</strong> Read the diagonal: does formula 1 prove statement 1? Does formula 2 prove statement 2?
+    </div>
+    <div class="proof-step">
+      <strong>Invert:</strong> Construct a new statement: "Formula i does NOT prove statement i" (for each i).
+    </div>
+    <div class="proof-step">
+      <strong>Contradiction:</strong> This new statement cannot appear in the list. If it's statement j, then we have:
+      the system proves "j does not prove j" (the new statement) while simultaneously j should prove j (by definition of row j).
+    </div>
+  </div>
+
+  <div class="key-insight">
+    <strong>The Key:</strong> Self-reference collapses the system. The provability predicate, when applied
+    diagonally, produces a sentence that cannot be proven true or false within the system without contradiction.
+  </div>
+
+  <div class="description" style="color: #3a6090; margin-top: 24px;">
+    <strong>Gödel's conclusion (1931):</strong> Any consistent formal system powerful enough to express arithmetic
+    has true statements that cannot be proven within the system. Completeness is impossible.
+  </div>
+</div>
+
+<!-- TURING TAB -->
+<div class="tab-content" id="turing">
+  <div class="section">
+    <div class="section-title">The Setup</div>
+    <div class="description">
+      Suppose there is a program H that can decide the halting problem: it takes any program P
+      as input and outputs whether P halts or loops forever.
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="animateTuring()">Animate the Contradiction</button>
+    <div class="slider-group">
+      <span class="slider-label">programs</span>
+      <input type="range" min="3" max="10" value="5" onchange="updateSize('turing', this.value)">
+    </div>
+  </div>
+
+  <div class="visualization" id="turing-viz">
+    <div style="text-align: left; color: #556080; font-size: 12px; line-height: 1.8;">
+      <div id="turing-matrix"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">The Argument</div>
+    <div class="proof-step">
+      <strong>Assume:</strong> Program H exists. H(P) returns "halts" or "loops" for any program P.
+    </div>
+    <div class="proof-step">
+      <strong>Build D:</strong> Create a new program D that takes a program as input.
+      D runs H on itself. If H says D halts, D loops forever. If H says D loops, D halts.
+    </div>
+    <div class="proof-step">
+      <strong>Contradiction:</strong> Run H on D itself. H must say either "halts" or "loops".
+      But if H says "halts", D loops. If H says "loops", D halts. Both are false.
+    </div>
+    <div class="proof-step">
+      <strong>Conclusion:</strong> Our assumption was wrong. H cannot exist. The halting problem is undecidable.
+    </div>
+  </div>
+
+  <div class="key-insight">
+    <strong>The Key:</strong> The self-application (asking D about itself) creates a self-defeating loop.
+    A program that perfectly predicts program behavior, when asked to predict itself, produces a paradox.
+    This is the halting-problem version of the diagonal argument.
+  </div>
+
+  <div class="description" style="color: #3a6090; margin-top: 24px;">
+    <strong>Turing's conclusion (1936):</strong> No algorithm can solve the halting problem.
+    Some questions about programs are, in principle, not computable.
+  </div>
+</div>
+
+<!-- CHAITIN TAB -->
+<div class="tab-content" id="chaitin">
+  <div class="section">
+    <div class="section-title">The Setup</div>
+    <div class="description">
+      Kolmogorov complexity K(x) is the length of the shortest program that outputs string x.
+      Suppose we had a program C that could prove "K(x) > n" for any string x and number n.
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" onclick="animateChaitin()">Animate the Paradox</button>
+    <div class="slider-group">
+      <span class="slider-label">strings</span>
+      <input type="range" min="3" max="10" value="5" onchange="updateSize('chaitin', this.value)">
+    </div>
+  </div>
+
+  <div class="visualization">
+    <div style="text-align: left; color: #556080; font-size: 12px; line-height: 1.8;">
+      <div id="chaitin-matrix"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">The Argument</div>
+    <div class="proof-step">
+      <strong>Setup:</strong> We have a program C and a threshold n.
+      Consider all strings x for which C can prove K(x) > n.
+    </div>
+    <div class="proof-step">
+      <strong>Build B:</strong> Create a new program B that runs C to find any string x where C proves K(x) > 2n.
+      B outputs the first such x it finds.
+    </div>
+    <div class="proof-step">
+      <strong>Measure:</strong> B is a fixed program with length L. But B outputs a string x for which
+      we've proven K(x) > 2n. This means K(x) is larger than the program that generates it — contradiction.
+    </div>
+    <div class="proof-step">
+      <strong>Conclusion:</strong> C cannot exist. For any system, there are limits to how much
+      incompressibility it can certify.
+    </div>
+  </div>
+
+  <div class="key-insight">
+    <strong>The Key:</strong> Diagonalization appears here as a self-referential definition.
+    We use the compressor to certify incompressibility, then use that certification to build
+    something that defeats the compressor. The system collapses on itself.
+  </div>
+
+  <div class="description" style="color: #3a6090; margin-top: 24px;">
+    <strong>Chaitin's conclusion (1966):</strong> Kolmogorov complexity is incompressible.
+    The truth about complexity exceeds what any formal system can prove. Incompleteness is universal.
+  </div>
+</div>
+
+<script>
+let animating = false;
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function randomDigit() {
+  return Math.floor(Math.random() * 10);
+}
+
+function updateSize(domain, size) {
+  renderVisualization(domain, parseInt(size));
+}
+
+function renderVisualization(domain, size) {
+  if (domain === 'cantor') {
+    let html = '';
+    for (let i = 0; i < size; i++) {
+      html += '<div class="row">';
+      html += `<span class="row-label">${i + 1}</span>`;
+      for (let j = 0; j < size; j++) {
+        const d = randomDigit();
+        const cls = i === j ? 'cell diagonal' : 'cell base';
+        html += `<div class="${cls}">${d}</div>`;
+      }
+      html += '</div>';
+    }
+    document.getElementById('cantor-matrix').innerHTML = html;
+  } else if (domain === 'godel') {
+    let html = '<div style="display: flex; gap: 4px; align-items: center; margin-bottom: 6px;">';
+    html += '<span style="width: 20px;"></span>';
+    for (let j = 0; j < size; j++) html += `<span style="width: 20px; text-align: center; font-size: 10px; color: #3a4460;">S${j+1}</span>`;
+    html += '</div>';
+    for (let i = 0; i < size; i++) {
+      html += `<div style="display: flex; gap: 4px; align-items: center; margin-bottom: 4px;">`;
+      html += `<span style="width: 20px; text-align: right; font-size: 10px; color: #3a4460;">F${i+1}</span>`;
+      for (let j = 0; j < size; j++) {
+        const proves = i === j ? '⊢' : (Math.random() > 0.5 ? '✓' : '✗');
+        const cls = i === j ? 'style="color: #d08060; font-weight: bold;"' : '';
+        html += `<span style="width: 20px; text-align: center; font-size: 11px; color: #556080;" ${cls}>${proves}</span>`;
+      }
+      html += '</div>';
+    }
+    document.getElementById('godel-matrix').innerHTML = html;
+  } else if (domain === 'turing') {
+    let html = '<div style="display: flex; gap: 4px; align-items: center; margin-bottom: 6px;">';
+    html += '<span style="width: 30px;"></span>';
+    for (let j = 0; j < size; j++) html += `<span style="width: 28px; text-align: center; font-size: 9px; color: #3a4460;">P${j+1}</span>`;
+    html += '</div>';
+    for (let i = 0; i < size; i++) {
+      html += `<div style="display: flex; gap: 4px; align-items: center; margin-bottom: 4px;">`;
+      html += `<span style="width: 30px; text-align: right; font-size: 9px; color: #3a4460;">H(P${i+1})</span>`;
+      for (let j = 0; j < size; j++) {
+        const result = Math.random() > 0.5 ? '↓' : '∞';
+        const cls = i === j ? ' style="color: #d08060; font-weight: bold;"' : '';
+        html += `<span style="width: 28px; text-align: center; font-size: 11px; color: #556080;"${cls}>${result}</span>`;
+      }
+      html += '</div>';
+    }
+    document.getElementById('turing-matrix').innerHTML = html;
+  } else if (domain === 'chaitin') {
+    let html = '<div style="display: flex; gap: 4px; align-items: center; margin-bottom: 6px;">';
+    html += '<span style="width: 30px;"></span>';
+    for (let j = 0; j < size; j++) html += `<span style="width: 28px; text-align: center; font-size: 9px; color: #3a4460;">x${j+1}</span>`;
+    html += '</div>';
+    for (let i = 0; i < size; i++) {
+      html += `<div style="display: flex; gap: 4px; align-items: center; margin-bottom: 4px;">`;
+      html += `<span style="width: 30px; text-align: right; font-size: 9px; color: #3a4460;">K(x)&gt;${i}</span>`;
+      for (let j = 0; j < size; j++) {
+        const provable = (i + j) % 3 === 0 ? '✓' : '?';
+        const cls = i === j ? ' style="color: #d08060; font-weight: bold;"' : '';
+        html += `<span style="width: 28px; text-align: center; font-size: 11px; color: #556080;"${cls}>${provable}</span>`;
+      }
+      html += '</div>';
+    }
+    document.getElementById('chaitin-matrix').innerHTML = html;
+  }
+}
+
+function animateCantor() {
+  if (animating) return;
+  animating = true;
+  const size = 5;
+  let step = 0;
+
+  function frame() {
+    let html = '';
+    for (let i = 0; i < size; i++) {
+      html += '<div class="row">';
+      html += `<span class="row-label">${i + 1}</span>`;
+      for (let j = 0; j < size; j++) {
+        const d = randomDigit();
+        let cls = 'cell base';
+        if (step > 0 && i === j) cls = 'cell diagonal';
+        if (step > 2 && i === j) cls = 'cell inverted';
+        if (step > 4 && i === j) cls = 'cell new';
+        html += `<div class="${cls}">${d}</div>`;
+      }
+      if (step > 4) {
+        html += '<span style="margin-left: 8px; color: #d08060; font-size: 10px;">✗</span>';
+      }
+      html += '</div>';
+    }
+    document.getElementById('cantor-matrix').innerHTML = html;
+
+    step++;
+    if (step < 6) setTimeout(frame, 600);
+    else animating = false;
+  }
+  frame();
+}
+
+function animateGodel() {
+  if (animating) return;
+  animating = true;
+  // Simplified animation
+  animateCantor(); // Reuse the mechanism
+}
+
+function animateTuring() {
+  animateCantor();
+}
+
+function animateChaitin() {
+  animateCantor();
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  renderVisualization('cantor', 5);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compression Structure</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0a0c14;
+    color: #c8cfe0;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    min-height: 100vh;
+    padding: 32px 24px;
+  }
+
+  h1 {
+    font-size: 18px;
+    font-weight: normal;
+    color: #e8ecf8;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    color: #556080;
+    font-size: 12px;
+    margin-bottom: 28px;
+    line-height: 1.6;
+    max-width: 680px;
+  }
+
+  .controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+
+  .preset-btn {
+    background: #141820;
+    border: 1px solid #2a3050;
+    color: #8090b8;
+    padding: 5px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    transition: all 0.15s;
+  }
+
+  .preset-btn:hover, .preset-btn.active {
+    background: #1e2438;
+    border-color: #4060a0;
+    color: #c0d0f0;
+  }
+
+  .preset-label {
+    color: #3a4460;
+    font-size: 12px;
+    margin-right: 4px;
+  }
+
+  textarea {
+    width: 100%;
+    max-width: 860px;
+    height: 110px;
+    background: #0d1018;
+    border: 1px solid #1e2438;
+    color: #b0bcd8;
+    font-family: inherit;
+    font-size: 12px;
+    padding: 10px 12px;
+    border-radius: 4px;
+    resize: vertical;
+    outline: none;
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+
+  textarea:focus { border-color: #3050a0; }
+
+  .stats-row {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .stat-label {
+    color: #3a4460;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .stat-value {
+    color: #e0e8ff;
+    font-size: 22px;
+    font-weight: bold;
+  }
+
+  .stat-value.good { color: #50c880; }
+  .stat-value.neutral { color: #8090c8; }
+
+  .ratio-bar {
+    max-width: 860px;
+    height: 6px;
+    background: #1a1e2c;
+    border-radius: 3px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .ratio-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #50c880, #3090e0);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  .section-label {
+    color: #3a4460;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  #viz-container {
+    max-width: 860px;
+    background: #0d1018;
+    border: 1px solid #1a1e2c;
+    border-radius: 4px;
+    padding: 16px;
+    line-height: 2.0;
+    word-break: break-all;
+    margin-bottom: 28px;
+    min-height: 80px;
+    font-size: 12.5px;
+  }
+
+  .lit {
+    color: #e0e8ff;
+    background: rgba(80, 110, 200, 0.10);
+    border-radius: 2px;
+    padding: 1px 0;
+  }
+
+  .ref {
+    border-radius: 2px;
+    padding: 1px 0;
+    cursor: default;
+  }
+
+  /* References get colored by match-length: short = dim, long = bright */
+  .ref-1  { color: #2a4060; background: rgba(40,80,160,0.10); }
+  .ref-2  { color: #2e5080; background: rgba(40,90,170,0.12); }
+  .ref-3  { color: #3a6090; background: rgba(45,100,180,0.15); }
+  .ref-4  { color: #4070a8; background: rgba(50,110,190,0.18); }
+  .ref-5  { color: #5080c0; background: rgba(55,120,200,0.21); }
+  .ref-6  { color: #6090d0; background: rgba(60,130,210,0.25); }
+  .ref-8  { color: #70a8e0; background: rgba(60,140,220,0.28); }
+  .ref-12 { color: #85c0f0; background: rgba(55,150,230,0.30); }
+  .ref-16 { color: #a0d8ff; background: rgba(50,160,240,0.32); }
+  .ref-20 { color: #c8ecff; background: rgba(45,170,250,0.35); }
+
+  .tooltip-wrapper {
+    position: relative;
+    display: inline;
+  }
+
+  .tooltip-wrapper .tip {
+    display: none;
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e2438;
+    border: 1px solid #3050a0;
+    color: #a0b0d0;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .tooltip-wrapper:hover .tip { display: block; }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    align-items: center;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #556080;
+  }
+
+  .legend-swatch {
+    width: 28px;
+    height: 10px;
+    border-radius: 2px;
+  }
+
+  .swatch-lit { background: rgba(80,110,200,0.20); border: 1px solid #4060a0; }
+  .swatch-short { background: rgba(40,80,160,0.25); border: 1px solid #2a4060; }
+  .swatch-long { background: rgba(45,170,250,0.40); border: 1px solid #60b0e0; }
+
+  .histogram {
+    max-width: 860px;
+    margin-bottom: 28px;
+  }
+
+  .histogram-bars {
+    display: flex;
+    align-items: flex-end;
+    height: 80px;
+    gap: 1px;
+    background: #0d1018;
+    border: 1px solid #1a1e2c;
+    border-radius: 4px;
+    padding: 8px 10px 4px;
+  }
+
+  .hist-bar {
+    flex: 1;
+    background: #2a5090;
+    border-radius: 1px 1px 0 0;
+    min-width: 2px;
+    transition: height 0.3s ease;
+  }
+
+  .hist-bar.lit-bar { background: #405898; }
+  .hist-bar.ref-bar { background: #2870d0; }
+
+  .hist-labels {
+    display: flex;
+    justify-content: space-between;
+    color: #2a3450;
+    font-size: 10px;
+    padding: 3px 10px 0;
+  }
+
+  .info-text {
+    max-width: 680px;
+    color: #3a4d70;
+    font-size: 11px;
+    line-height: 1.7;
+  }
+
+  .info-text strong { color: #5070a0; }
+</style>
+</head>
+<body>
+
+<h1>Compression Structure</h1>
+<p class="subtitle">
+  Understanding is compression: finding a shorter description of a thing.<br>
+  Each character below is colored by whether it was <strong>new</strong> (no prior match) or
+  <strong>repeated</strong> (referenced back to earlier text). Longer references glow brighter.
+</p>
+
+<div class="controls">
+  <span class="preset-label">examples →</span>
+  <button class="preset-btn active" onclick="loadPreset('diagonal')">diagonal argument</button>
+  <button class="preset-btn" onclick="loadPreset('pi')">digits of π</button>
+  <button class="preset-btn" onclick="loadPreset('random')">random chars</button>
+  <button class="preset-btn" onclick="loadPreset('repetitive')">highly repetitive</button>
+  <button class="preset-btn" onclick="loadPreset('dna')">DNA sequence</button>
+</div>
+
+<textarea id="input" oninput="onInput()" placeholder="Type or paste text here…"></textarea>
+
+<div class="stats-row">
+  <div class="stat">
+    <span class="stat-label">original</span>
+    <span class="stat-value neutral" id="stat-orig">—</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">compressed</span>
+    <span class="stat-value good" id="stat-comp">—</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">ratio</span>
+    <span class="stat-value good" id="stat-ratio">—</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">literals</span>
+    <span class="stat-value neutral" id="stat-lits">—</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">references</span>
+    <span class="stat-value neutral" id="stat-refs">—</span>
+  </div>
+</div>
+
+<div class="ratio-bar"><div class="ratio-fill" id="ratio-fill" style="width:0%"></div></div>
+
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-swatch swatch-lit"></div>
+    literal — first occurrence, must be stored as-is
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch swatch-short"></div>
+    short match (1–4 chars)
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch swatch-long"></div>
+    long match (20+ chars) — high structure
+  </div>
+</div>
+
+<div class="section-label">parse visualization</div>
+<div id="viz-container">—</div>
+
+<div class="section-label">match-length distribution</div>
+<div class="histogram">
+  <div class="histogram-bars" id="hist-bars"></div>
+  <div class="hist-labels">
+    <span>literal</span>
+    <span>← match length →</span>
+    <span>long</span>
+  </div>
+</div>
+
+<p class="info-text">
+  This is an approximation of <strong>LZ77</strong>, the algorithm behind gzip and deflate.
+  It scans a window of previous text and replaces the longest matching substring with a
+  back-reference (distance, length). A character that has never appeared in the context
+  must be stored literally. Highly structured text — repeated phrases, predictable patterns —
+  compresses to a fraction of its original size. Truly random data cannot be compressed at all.
+  <br><br>
+  <strong>Kolmogorov complexity</strong> K(x) is the length of the shortest program that
+  outputs x. Randomness means K(x) ≈ |x|: no compression is possible. Structure means
+  K(x) ≪ |x|: a shorter description exists. Understanding a thing is finding that shorter
+  description.
+</p>
+
+<script>
+const PRESETS = {
+  diagonal: `Suppose you have a list. Every element of the list is itself a sequence — a program, a real number, a provability predicate. Arrange the list as an infinite matrix: rows are elements, columns are positions in the sequence. Now form a new sequence by reading down the diagonal and inverting at each step. This new sequence differs from row 1 in position 1, from row 2 in position 2, from every row in its own position. It cannot be on the list. The argument doesn't care what the matrix contains; it only requires that the rows can be enumerated, the columns can be inverted, and the new row can be formed. Wherever those conditions hold, something falls outside the list.`,
+
+  pi: `3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196`,
+
+  random: `xKm#9Lp$2qW!fR7vZn&TsYe0bHiAjUo4CdGw6MlXuQ1BkEy3NhPt5FzVrJcI8SgDa*OwK@m9Lp#2$qW!fR7vZn&TsYe0bHiAjUo4CdGw6MlXuQ1BkEy3NhPt5FzVrJcI8SgD`,
+
+  repetitive: `the cat sat on the mat. the cat sat on the mat. the cat sat on the mat. the cat sat on the mat. the cat sat on the mat. the cat sat on the mat. the cat sat on the mat. the cat sat on the mat.`,
+
+  dna: `ATCGATCGATCGATCGATCGTTGCAAGCTTGCAAGCTTGCAAGCTATCGATCGATCGATCGATCGATCGATCGATCGATCGTTGCAAGCTTGCAAGCTATCGATCGATCGATCGATCGGCTAGCTAGCTAGCTAGCTAGCTATCGATCGATCGATCGTTGCAAGCTTGCAAGCTTGCAATTTGCAAGCTTTTGCAATTT`
+};
+
+const WINDOW = 1024;
+const MAX_MATCH = 255;
+
+function lz77Parse(text) {
+  const tokens = [];
+  let i = 0;
+  while (i < text.length) {
+    const start = Math.max(0, i - WINDOW);
+    const window = text.slice(start, i);
+    let bestLen = 0, bestDist = 0;
+
+    for (let j = window.length - 1; j >= 0; j--) {
+      if (window[j] !== text[i]) continue;
+      let len = 0;
+      while (
+        len < MAX_MATCH &&
+        i + len < text.length &&
+        window[(j + len) % window.length] === text[i + len]
+      ) len++;
+      if (len > bestLen) { bestLen = len; bestDist = window.length - j; }
+    }
+
+    if (bestLen >= 2) {
+      tokens.push({ type: 'ref', pos: i, len: bestLen, dist: bestDist });
+      i += bestLen;
+    } else {
+      tokens.push({ type: 'lit', pos: i, char: text[i] });
+      i++;
+    }
+  }
+  return tokens;
+}
+
+function matchLengthClass(len) {
+  if (len >= 20) return 'ref-20';
+  if (len >= 16) return 'ref-16';
+  if (len >= 12) return 'ref-12';
+  if (len >= 8)  return 'ref-8';
+  if (len >= 6)  return 'ref-6';
+  if (len >= 5)  return 'ref-5';
+  if (len >= 4)  return 'ref-4';
+  if (len >= 3)  return 'ref-3';
+  if (len >= 2)  return 'ref-2';
+  return 'ref-1';
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function compressedBits(tokens) {
+  // Rough LZ77 bit cost: literals ~8 bits, refs ~log2(WINDOW)+log2(MAX_MATCH) bits
+  const refBits = Math.ceil(Math.log2(WINDOW)) + Math.ceil(Math.log2(MAX_MATCH)); // ~18 bits
+  return tokens.reduce((acc, t) => acc + (t.type === 'lit' ? 8 : refBits), 0);
+}
+
+function render(text) {
+  if (!text.trim()) {
+    document.getElementById('viz-container').textContent = '—';
+    ['stat-orig','stat-comp','stat-ratio','stat-lits','stat-refs'].forEach(id => {
+      document.getElementById(id).textContent = '—';
+    });
+    document.getElementById('ratio-fill').style.width = '0%';
+    document.getElementById('hist-bars').innerHTML = '';
+    return;
+  }
+
+  const tokens = lz77Parse(text);
+
+  // Build visualization
+  const parts = tokens.map(t => {
+    if (t.type === 'lit') {
+      return `<span class="lit">${escapeHtml(t.char)}</span>`;
+    } else {
+      const cls = matchLengthClass(t.len);
+      const chunk = escapeHtml(text.slice(t.pos, t.pos + t.len));
+      return `<span class="tooltip-wrapper"><span class="ref ${cls}">${chunk}</span><span class="tip">match: ${t.len} chars, ${t.dist} back</span></span>`;
+    }
+  });
+  document.getElementById('viz-container').innerHTML = parts.join('');
+
+  // Stats
+  const origBits = text.length * 8;
+  const compBits = compressedBits(tokens);
+  const ratio = compBits / origBits;
+  const litCount = tokens.filter(t => t.type === 'lit').length;
+  const refCount = tokens.filter(t => t.type === 'ref').length;
+  const savedPct = Math.round((1 - ratio) * 100);
+
+  document.getElementById('stat-orig').textContent = text.length + ' chars';
+  document.getElementById('stat-comp').textContent = Math.round(compBits / 8) + ' bytes';
+  document.getElementById('stat-ratio').textContent = (ratio * 100).toFixed(1) + '%  (-' + savedPct + '%)';
+  document.getElementById('stat-lits').textContent = litCount;
+  document.getElementById('stat-refs').textContent = refCount;
+
+  const fillPct = Math.max(2, Math.min(100, (1 - ratio) * 100));
+  document.getElementById('ratio-fill').style.width = fillPct + '%';
+
+  // Histogram of match lengths
+  const buckets = new Array(32).fill(0);
+  tokens.forEach(t => {
+    if (t.type === 'lit') { buckets[0]++; }
+    else { buckets[Math.min(31, t.len)]++; }
+  });
+  const maxBucket = Math.max(...buckets, 1);
+  const bars = buckets.map((v, i) => {
+    const h = Math.round((v / maxBucket) * 64);
+    const cls = i === 0 ? 'hist-bar lit-bar' : 'hist-bar ref-bar';
+    return `<div class="${cls}" style="height:${h}px" title="${i===0?'literal':('match len '+i)}: ${v}"></div>`;
+  });
+  document.getElementById('hist-bars').innerHTML = bars.join('');
+}
+
+function onInput() {
+  render(document.getElementById('input').value);
+}
+
+function loadPreset(name) {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('input').value = PRESETS[name];
+  render(PRESETS[name]);
+}
+
+// Boot with diagonal preset
+document.getElementById('input').value = PRESETS.diagonal;
+render(PRESETS.diagonal);
+</script>
+
+</body>
+</html>
