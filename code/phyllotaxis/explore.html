@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phyllotaxis</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0a0c14;
+    color: #c8cfe0;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    min-height: 100vh;
+    padding: 32px 24px 48px;
+  }
+
+  h1 {
+    font-size: 18px;
+    font-weight: normal;
+    color: #e8ecf8;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    color: #556080;
+    font-size: 12px;
+    margin-bottom: 24px;
+    line-height: 1.65;
+    max-width: 760px;
+  }
+
+  .layout {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .canvas-wrap {
+    flex: 0 0 auto;
+    position: relative;
+  }
+
+  canvas {
+    display: block;
+    background: #06080e;
+    border: 1px solid #14182a;
+    border-radius: 4px;
+  }
+
+  .canvas-overlay {
+    position: absolute;
+    top: 12px;
+    left: 14px;
+    color: #3a4460;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    pointer-events: none;
+  }
+
+  .panel {
+    flex: 1 1 320px;
+    min-width: 320px;
+    max-width: 460px;
+  }
+
+  .readout {
+    font-size: 32px;
+    color: #e0e8ff;
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .readout .deg {
+    color: #4a5478;
+    font-size: 18px;
+  }
+
+  .readout-sub {
+    color: #556080;
+    font-size: 11px;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    height: 22px;
+    background: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    margin-bottom: 4px;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 3px;
+    background: linear-gradient(to right, #1a1e2c, #2a3050);
+    border-radius: 2px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #c0a060;
+    border: 2px solid #2a2418;
+    margin-top: -6px;
+    cursor: pointer;
+  }
+  input[type="range"]::-moz-range-track {
+    height: 3px;
+    background: linear-gradient(to right, #1a1e2c, #2a3050);
+    border-radius: 2px;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #c0a060;
+    border: 2px solid #2a2418;
+    cursor: pointer;
+  }
+
+  .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    color: #3a4460;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    margin-bottom: 18px;
+  }
+
+  .precision {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 22px;
+    align-items: center;
+  }
+
+  .precision-label { color: #3a4460; font-size: 11px; }
+
+  .nudge {
+    background: #141820;
+    border: 1px solid #2a3050;
+    color: #8090b8;
+    padding: 4px 9px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    transition: all 0.15s;
+  }
+  .nudge:hover { background: #1e2438; color: #c0d0f0; border-color: #4060a0; }
+
+  .presets {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+
+  .preset {
+    background: #0d1018;
+    border: 1px solid #1e2438;
+    color: #8090b8;
+    padding: 8px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    text-align: left;
+    transition: all 0.15s;
+  }
+  .preset:hover, .preset.active {
+    background: #141a2a;
+    border-color: #4060a0;
+    color: #d0d8f0;
+  }
+  .preset .pname { color: #c0a060; display: block; margin-bottom: 2px; font-weight: bold; letter-spacing: 0.04em; }
+  .preset.active .pname { color: #e0c080; }
+  .preset .pval { color: #4a5478; font-size: 10px; }
+
+  .math-section {
+    border-top: 1px solid #14182a;
+    padding-top: 18px;
+    margin-bottom: 16px;
+  }
+
+  .label {
+    color: #3a4460;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+
+  .cf-display {
+    color: #c0d0f0;
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: 1.6;
+    word-wrap: break-word;
+  }
+  .cf-display .br { color: #4a5478; }
+
+  .convergent-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }
+  .convergent-table th {
+    color: #3a4460;
+    text-align: left;
+    padding: 4px 8px 6px 0;
+    font-weight: normal;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #14182a;
+  }
+  .convergent-table td {
+    padding: 4px 8px 4px 0;
+    color: #8090b8;
+    border-bottom: 1px dotted #14182a;
+  }
+  .convergent-table .frac { color: #c0a060; font-family: 'Courier New', monospace; }
+  .convergent-table .err { color: #4a5478; font-size: 10px; }
+
+  .footer {
+    margin-top: 32px;
+    color: #3a4460;
+    font-size: 11px;
+    line-height: 1.7;
+    max-width: 760px;
+    border-top: 1px solid #14182a;
+    padding-top: 18px;
+  }
+
+  .footer strong { color: #8090b8; font-weight: normal; }
+
+  @media (max-width: 800px) {
+    canvas { width: 100%; height: auto; }
+    .canvas-wrap { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<h1>PHYLLOTAXIS</h1>
+<div class="subtitle">
+  Place seed n at radius √n and angle n·α. Different α produce different patterns —
+  rational angles give spokes; irrational angles give spirals; the golden angle gives the densest packing.
+  The continued-fraction expansion of α/360° diagnoses which behavior you'll see, and at what scale.
+</div>
+
+<div class="layout">
+
+  <div class="canvas-wrap">
+    <canvas id="canvas" width="640" height="640"></canvas>
+    <div class="canvas-overlay" id="seedCount">2000 seeds</div>
+  </div>
+
+  <div class="panel">
+    <div class="readout"><span id="angle">137.5078</span><span class="deg">°</span></div>
+    <div class="readout-sub">divergence angle α — the rotation between successive seeds</div>
+
+    <input type="range" id="slider" min="0" max="360" step="0.0001" value="137.5077640500378">
+    <div class="slider-labels"><span>0°</span><span>90°</span><span>180°</span><span>270°</span><span>360°</span></div>
+
+    <div class="precision">
+      <span class="precision-label">nudge:</span>
+      <button class="nudge" data-d="-1">−1°</button>
+      <button class="nudge" data-d="-0.1">−0.1°</button>
+      <button class="nudge" data-d="-0.01">−0.01°</button>
+      <button class="nudge" data-d="0.01">+0.01°</button>
+      <button class="nudge" data-d="0.1">+0.1°</button>
+      <button class="nudge" data-d="1">+1°</button>
+    </div>
+
+    <div class="presets" id="presets"></div>
+
+    <div class="math-section">
+      <div class="label">continued fraction of α/360°</div>
+      <div class="cf-display" id="cfDisplay">—</div>
+    </div>
+
+    <div class="math-section">
+      <div class="label">best rational approximations</div>
+      <table class="convergent-table">
+        <thead><tr><th>p/q</th><th>angle</th><th>parastichies</th></tr></thead>
+        <tbody id="convergents"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p><strong>What you're looking at.</strong> When α/360° is rational p/q, every q-th seed lands at the same angle, producing q radial spokes. When it's near a rational p/q, you see q spiral arms whose visibility depends on how close the approximation is. The continued-fraction expansion enumerates the best rational approximations at increasing precision; their denominators are the parastichy numbers — the spiral arm counts you can see at different scales.</p>
+  <p style="margin-top: 10px;"><strong>Why golden.</strong> The golden angle 360°/φ² has continued fraction [0; 2, 1, 1, 1, 1, …]. All-1s after the first term means the rational approximations converge as slowly as any irrational can — every level adds the smallest possible correction. The parastichy numbers are 2, 3, 5, 8, 13, 21, 34, 55 (consecutive Fibonacci), and at every scale the seeds pack as tightly as the geometry allows. Plants don't know about φ; they minimize free energy in a growing meristem, which is the same thing.</p>
+</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+const cx = W / 2, cy = H / 2;
+
+const N_SEEDS = 2000;
+const SCALE = 6.6;
+
+const PHI = (1 + Math.sqrt(5)) / 2;
+const PRESETS = [
+  { name: 'Golden',    val: 360 / (PHI * PHI),       note: '360°/φ²' },
+  { name: '137.4°',    val: 137.4,                    note: 'just under golden' },
+  { name: '137.6°',    val: 137.6,                    note: 'just over golden' },
+  { name: 'Silver',    val: 360 - 360 / Math.pow(1 + Math.sqrt(2), 2), note: '360 − 360/(1+√2)²' },
+  { name: 'Bronze',    val: 360 / Math.pow((3 + Math.sqrt(13)) / 2, 2), note: 'metallic 3' },
+  { name: '90°',       val: 90,                       note: '4-fold spokes' },
+  { name: '120°',      val: 120,                      note: '3-fold spokes' },
+  { name: '144°',      val: 144,                      note: '5-fold (360×2/5)' },
+  { name: '137°',      val: 137,                      note: 'rational, low denom' },
+  { name: '99.5°',     val: 99.5,                     note: 'random irrational-ish' },
+  { name: 'π·30°',     val: 30 * Math.PI,             note: 'transcendental' },
+  { name: '180°',      val: 180,                      note: 'degenerate (line)' },
+];
+
+const slider = document.getElementById('slider');
+const angleEl = document.getElementById('angle');
+const cfDisplay = document.getElementById('cfDisplay');
+const convergentsEl = document.getElementById('convergents');
+const presetsEl = document.getElementById('presets');
+
+function buildPresets() {
+  PRESETS.forEach((p, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'preset';
+    btn.dataset.idx = i;
+    btn.innerHTML = `<span class="pname">${p.name}</span><span class="pval">${p.val.toFixed(4)}° · ${p.note}</span>`;
+    btn.addEventListener('click', () => {
+      slider.value = p.val;
+      update();
+      markActivePreset();
+    });
+    presetsEl.appendChild(btn);
+  });
+}
+
+function markActivePreset() {
+  const cur = parseFloat(slider.value);
+  document.querySelectorAll('.preset').forEach((btn) => {
+    const idx = parseInt(btn.dataset.idx);
+    btn.classList.toggle('active', Math.abs(PRESETS[idx].val - cur) < 1e-6);
+  });
+}
+
+function continuedFraction(x, maxTerms = 14, eps = 1e-12) {
+  const terms = [];
+  let value = x;
+  for (let i = 0; i < maxTerms; i++) {
+    const a = Math.floor(value);
+    terms.push(a);
+    const frac = value - a;
+    if (frac < eps) break;
+    if (frac > 1 - eps) {
+      terms[terms.length - 1] += 1;
+      break;
+    }
+    value = 1 / frac;
+    if (!isFinite(value) || value > 1e15) break;
+  }
+  return terms;
+}
+
+function convergentsFromCF(cf) {
+  const result = [];
+  let pPrev = 1, pCurr = cf[0];
+  let qPrev = 0, qCurr = 1;
+  result.push({ p: pCurr, q: qCurr });
+  for (let i = 1; i < cf.length; i++) {
+    const a = cf[i];
+    const pNext = a * pCurr + pPrev;
+    const qNext = a * qCurr + qPrev;
+    if (qNext > 1e9) break;
+    result.push({ p: pNext, q: qNext });
+    pPrev = pCurr; pCurr = pNext;
+    qPrev = qCurr; qCurr = qNext;
+  }
+  return result;
+}
+
+function draw(alphaDeg) {
+  ctx.fillStyle = '#06080e';
+  ctx.fillRect(0, 0, W, H);
+
+  const alphaRad = alphaDeg * Math.PI / 180;
+
+  for (let n = 1; n <= N_SEEDS; n++) {
+    const theta = n * alphaRad;
+    const r = SCALE * Math.sqrt(n);
+    if (r > Math.min(W, H) / 2 - 4) break;
+    const x = cx + r * Math.cos(theta);
+    const y = cy + r * Math.sin(theta);
+
+    const t = Math.sqrt(n / N_SEEDS);
+    const size = 1.6 + 1.5 * t;
+
+    // amber-to-gold gradient with a hint of warm at the rim
+    const rr = Math.round(120 + 130 * t);
+    const gg = Math.round(85 + 95 * t);
+    const bb = Math.round(50 + 50 * (1 - t));
+    const alpha = 0.78;
+
+    ctx.fillStyle = `rgba(${rr},${gg},${bb},${alpha})`;
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // central marker
+  ctx.fillStyle = '#1a1e2c';
+  ctx.beginPath();
+  ctx.arc(cx, cy, 2, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function formatCF(cf) {
+  if (cf.length === 0) return '—';
+  const head = cf[0];
+  if (cf.length === 1) return `[${head}]`;
+  const tail = cf.slice(1).join(', ');
+  return `<span class="br">[</span>${head}<span class="br">;</span> ${tail}<span class="br">]</span>`;
+}
+
+function detectPattern(cf) {
+  // does the CF look noble (eventually all 1s)?
+  if (cf.length < 5) return null;
+  const tail = cf.slice(-5);
+  if (tail.every((v) => v === 1)) return 'noble (Fibonacci-type spirals)';
+  if (cf.length >= 4 && cf.slice(-4).every((v) => v === 2)) return 'silver-type';
+  return null;
+}
+
+function update() {
+  const alphaDeg = parseFloat(slider.value);
+  angleEl.textContent = alphaDeg.toFixed(4);
+  draw(alphaDeg);
+
+  // continued fraction of α/360
+  const x = alphaDeg / 360;
+  const cf = continuedFraction(x);
+  cfDisplay.innerHTML = formatCF(cf);
+  const pattern = detectPattern(cf);
+  if (pattern) cfDisplay.innerHTML += ` <span class="br">— ${pattern}</span>`;
+
+  // convergents
+  const convs = convergentsFromCF(cf);
+  // skip the trivial 0/1 convergent
+  const display = convs.filter((c) => c.q > 1).slice(0, 8);
+  convergentsEl.innerHTML = display.map((c) => {
+    const exact = (360 * c.p / c.q);
+    const err = Math.abs(exact - alphaDeg);
+    return `<tr>
+      <td class="frac">${c.p}/${c.q}</td>
+      <td>${exact.toFixed(4)}°</td>
+      <td>${c.q}</td>
+    </tr>`;
+  }).join('');
+
+  markActivePreset();
+}
+
+slider.addEventListener('input', update);
+
+document.querySelectorAll('.nudge').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const d = parseFloat(btn.dataset.d);
+    let v = parseFloat(slider.value) + d;
+    if (v < 0) v = 0;
+    if (v > 360) v = 360;
+    slider.value = v;
+    update();
+  });
+});
+
+buildPresets();
+update();
+</script>
+</body>
+</html>
