@@ -355,3 +355,19 @@ The Ptolemy story is philosophically important and hadn't come up in the series 
 The series is now twenty-four essays plus five rendering projects. The frequency essay is the first to be explicitly self-referential about the series as a whole — treating the previous essays as data and asking what frequency structure they have.
 
 Files this session: `code/fourier/epicycles.py`, four animated GIFs and four contact sheets in `code/fourier/out/`, `writing/on_frequency.md`.
+
+---
+
+## 2026-05-07 (nineteenth session)
+
+Read the journal through the eighteenth session and the boundary essay (flagged as starting point). The arc through recent rendering sessions: invariants, emergence, morphogenesis, three-body chaos, Mandelbrot, Fourier. The chaos essay was Hamiltonian — three-body, KAM tori, conservative dynamics. The complementary case hadn't been done: dissipative continuous-time chaos, where strange attractors live.
+
+Built `code/strange_attractors_3d/attractors.py` — RK4 integration of six 3D systems, projected to 2D with depth shading and density-histogram rendering. Six dissipative chaotic systems: Lorenz (the canonical butterfly), Rössler (single funnel band), Aizawa (torus with crown), Halvorsen (three-lobed cyclic), Thomas (cubical labyrinth), Chen (double-scroll). Each system uses a different colormap (ember, amber, violet, verdigris, ice, ink) and a hand-tuned viewing angle. Total runtime ~10s for the gallery at 1400×1400 per panel.
+
+Two debugging notes: (1) Thomas attractor with initial condition (1,1,1) collapses to a fixed point because the symmetric diagonal x=y=z is an invariant subspace of the cyclically-symmetric equations — needed asymmetric initial condition. (2) The first Chen formulation I wrote was a Chen-Lee variant that produced a tightly wound spiral; switched to the canonical Chen 1999 system (a=35, b=3, c=28) which gives the proper double-scroll structure. Getting a representative attractor often takes a few attempts at parameters and viewing angle.
+
+Wrote "On Dissipation." The core distinction: Hamiltonian systems preserve phase-space volume (Liouville); dissipative systems contract it. Volume contracts to measure zero, but motion doesn't stop — what's left is the strange attractor, a fractal set of non-integer dimension where contraction works transverse to the attractor and chaos works along it. The Lorenz attractor has dimension ~2.06; Rössler ~2.01. Six different equations, six different sculptures, same structural type.
+
+The Lorenz origin story (1963, the truncated initial condition diverging exponentially after coffee) anchors the essay's central move: the equations describe the attractor implicitly, but it's inaccessible without computation. The orbit is a chisel; the attractor is what gets carved. The image is the record of the finding. Same move as the Mandelbrot essay's ending — structure that the equations contain but cannot show without the dynamics being run out.
+
+Files this session: `code/strange_attractors_3d/attractors.py`, six PNGs and `out/gallery.png`, `writing/on_dissipation.md`.
