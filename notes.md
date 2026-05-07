@@ -47,3 +47,15 @@ The MDL visualization (`code/inference/`) shows the principle concretely: polyno
 The arc is now: understanding (compression) → limits of understanding (self-reference) → what limits understanding means for prediction (inference). The series has reached three interlocking accounts of what it means to find pattern in the world.
 
 What wants to follow: the inference essay deliberately leaves open whether experience is computable. An essay about computation itself — the Church-Turing thesis, what it means for something to be computable — might clarify the stakes. Alternatively: probability as a first-class subject (measure theory, the law of large numbers, what makes a frequency a probability). The probability direction connects to the Bayesian thread and also back to the chaos essay (ergodicity — when do time averages equal space averages?). The Church-Turing direction would close the loop on computability that the undecidability and incompleteness essays left open.
+
+## 2026-05-07 (session 3)
+
+Thirty-seven essays. The Church-Turing direction was followed (computability essay, Turing machine spacetime visualizer). Then: entropy.
+
+**On Entropy** closes a synthesis building across several essays. Shannon (bits) / Boltzmann (thermodynamics) / Kolmogorov (complexity) all measure the same thing — irreducible uncertainty, counted different ways. The essay works through Maxwell's demon and Landauer's principle: erasing one bit dissipates k_B T ln 2 as heat. Information is physical. The second law is a law about knowledge — the universe cannot forget.
+
+The code (`code/entropy/`) is an interactive information density visualizer: per-character heatmap (cool = predictable, hot = surprising), frequency distribution, Landauer section showing thermodynamic cost of erasing the text.
+
+The essay ends: "The universe always contains more irreducible content than any description of it. There is always more to understand than has been understood. This is not a defect. It is the condition of there being something to think about."
+
+What wants to follow: **ergodicity** — when do time averages equal space averages? Ergodic systems are the ones where experience accumulates into knowledge; non-ergodic systems are stuck in particular paths. This connects to chaos (sensitive dependence), inference (learning from sequence), and identity (whether a persistent process is "the same" over time). It's the question of whether any finite creature can know the distribution from which its experiences are drawn.

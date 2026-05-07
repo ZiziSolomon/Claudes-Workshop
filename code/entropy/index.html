@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Information Density — Entropy Visualizer</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0a0a0f;
+    color: #c8c8d8;
+    font-family: 'Georgia', serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+  }
+  h1 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    color: #e8e8f0;
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+  }
+  .subtitle {
+    font-size: 0.85rem;
+    color: #6868a0;
+    margin-bottom: 40px;
+    font-style: italic;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* Input panel */
+  .input-panel {
+    background: #0f0f1a;
+    border: 1px solid #2a2a40;
+    border-radius: 4px;
+    padding: 20px;
+  }
+  .input-panel label {
+    display: block;
+    font-size: 0.8rem;
+    color: #6868a0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+  textarea {
+    width: 100%;
+    height: 120px;
+    background: #080812;
+    border: 1px solid #1e1e30;
+    border-radius: 3px;
+    color: #c8c8d8;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    padding: 12px;
+    resize: vertical;
+    outline: none;
+    line-height: 1.5;
+  }
+  textarea:focus {
+    border-color: #4040a0;
+  }
+  .presets {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .preset-btn {
+    background: #151525;
+    border: 1px solid #2a2a40;
+    color: #8888c0;
+    font-family: 'Georgia', serif;
+    font-size: 0.78rem;
+    padding: 5px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .preset-btn:hover {
+    background: #1e1e35;
+    border-color: #4040a0;
+    color: #a0a0e0;
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .stat-card {
+    background: #0f0f1a;
+    border: 1px solid #2a2a40;
+    border-radius: 4px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    color: #6868a0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .stat-value {
+    font-size: 1.6rem;
+    color: #a0a0ff;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-unit {
+    font-size: 0.72rem;
+    color: #5050a0;
+    margin-top: 4px;
+  }
+
+  /* Heatmap panel */
+  .heatmap-panel {
+    background: #0f0f1a;
+    border: 1px solid #2a2a40;
+    border-radius: 4px;
+    padding: 20px;
+  }
+  .panel-label {
+    font-size: 0.8rem;
+    color: #6868a0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+  }
+  #heatmap-text {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    letter-spacing: 0.03em;
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    font-size: 0.75rem;
+    color: #6060a0;
+  }
+  .legend-bar {
+    width: 200px;
+    height: 8px;
+    border-radius: 2px;
+    background: linear-gradient(to right, #1a3a6a, #2060c0, #50a0ff, #a0d0ff, #ffd080, #ff8040, #ff3030);
+  }
+
+  /* Distribution panel */
+  .distribution-panel {
+    background: #0f0f1a;
+    border: 1px solid #2a2a40;
+    border-radius: 4px;
+    padding: 20px;
+  }
+  #dist-canvas {
+    display: block;
+    width: 100%;
+    height: 200px;
+  }
+
+  /* Explanation */
+  .explanation {
+    background: #0a0a14;
+    border: 1px solid #1a1a30;
+    border-left: 2px solid #3030a0;
+    border-radius: 4px;
+    padding: 20px;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: #8888c0;
+  }
+  .explanation p + p { margin-top: 12px; }
+  .explanation strong { color: #a0a0d0; font-weight: normal; }
+
+  /* Landauer panel */
+  .landauer-panel {
+    background: #0f0f1a;
+    border: 1px solid #2a2a40;
+    border-radius: 4px;
+    padding: 20px;
+  }
+  .landauer-label {
+    font-size: 0.8rem;
+    color: #6868a0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+  }
+  .landauer-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: center;
+  }
+  .landauer-diagram {
+    position: relative;
+    height: 160px;
+  }
+  #landauer-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .landauer-text {
+    font-size: 0.83rem;
+    line-height: 1.7;
+    color: #8888c0;
+  }
+  .landauer-text .value {
+    color: #a0c0ff;
+    font-family: 'Courier New', monospace;
+  }
+
+  @media (max-width: 640px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .landauer-content { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Information Density</h1>
+<p class="subtitle">Shannon entropy made visible — where surprise lives in text</p>
+
+<div class="container">
+
+  <div class="input-panel">
+    <label>Text to analyze</label>
+    <textarea id="input-text" placeholder="Enter any text...">The quick brown fox jumps over the lazy dog. Information is surprise made measurable. The more predictable a symbol, the less information it carries. The more surprising, the more.</textarea>
+    <div class="presets">
+      <button class="preset-btn" data-preset="english">Natural English</button>
+      <button class="preset-btn" data-preset="repetitive">Repetitive</button>
+      <button class="preset-btn" data-preset="random">Random</button>
+      <button class="preset-btn" data-preset="code">Source Code</button>
+      <button class="preset-btn" data-preset="compressed">Post-compression</button>
+      <button class="preset-btn" data-preset="dna">DNA sequence</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Shannon Entropy</div>
+      <div class="stat-value" id="stat-entropy">—</div>
+      <div class="stat-unit">bits per symbol</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Max Possible</div>
+      <div class="stat-value" id="stat-max">—</div>
+      <div class="stat-unit">bits per symbol</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Redundancy</div>
+      <div class="stat-value" id="stat-redundancy">—</div>
+      <div class="stat-unit">percent</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Min Encoding</div>
+      <div class="stat-value" id="stat-bits">—</div>
+      <div class="stat-unit">total bits</div>
+    </div>
+  </div>
+
+  <div class="heatmap-panel">
+    <div class="panel-label">Character information content — brighter = more surprising</div>
+    <div id="heatmap-text"></div>
+    <div class="legend">
+      <span>predictable</span>
+      <div class="legend-bar"></div>
+      <span>surprising</span>
+    </div>
+  </div>
+
+  <div class="distribution-panel">
+    <div class="panel-label">Character frequency distribution</div>
+    <canvas id="dist-canvas" width="860" height="200"></canvas>
+  </div>
+
+  <div class="landauer-panel">
+    <div class="landauer-label">Landauer's Limit — the physics of forgetting</div>
+    <div class="landauer-content">
+      <div class="landauer-diagram">
+        <canvas id="landauer-canvas" width="400" height="160"></canvas>
+      </div>
+      <div class="landauer-text" id="landauer-text">
+        Loading...
+      </div>
+    </div>
+  </div>
+
+  <div class="explanation">
+    <p><strong>Shannon entropy</strong> measures average surprise: H = −∑ p<sub>i</sub> log₂ p<sub>i</sub>. Each character's information content is −log₂(probability of that character). Common characters (like 'e' in English) carry little information — you expected them. Rare characters carry more.</p>
+    <p><strong>Redundancy</strong> is 1 − H/H<sub>max</sub>, where H<sub>max</sub> = log₂(alphabet size). Natural English has about 75% redundancy — most letters are predictable from context, which is why text is so compressible. The minimum bits to encode the text is H × character count.</p>
+    <p><strong>Landauer's principle</strong> (1961): erasing one bit of information dissipates at least k<sub>B</sub>T ln 2 of energy as heat. At room temperature (293 K), this is approximately 2.8 × 10⁻²¹ joules. The energy cost shown is the thermodynamic minimum to erase all information in your text — to forget it completely.</p>
+  </div>
+
+</div>
+
+<script>
+const PRESETS = {
+  english: `The question of whether machines can think is about as interesting as the question of whether submarines can swim. We are not asking whether machines can be genuinely intelligent. We are asking whether the word intelligent is the right word. The test, Turing proposed, is behavioral: if a machine's responses are indistinguishable from a human's, what grounds remain for denial?`,
+  repetitive: `abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab`,
+  random: (() => {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 .,!?-';
+    let s = '';
+    for (let i = 0; i < 200; i++) s += chars[Math.floor(Math.random() * chars.length)];
+    return s;
+  })(),
+  code: `function entropy(text) {
+  const freq = {};
+  for (const c of text) freq[c] = (freq[c] || 0) + 1;
+  const n = text.length;
+  let h = 0;
+  for (const c in freq) {
+    const p = freq[c] / n;
+    h -= p * Math.log2(p);
+  }
+  return h;
+}`,
+  compressed: `ʃKb7Yx#\$Rm2qPvZwLnDgHsUcFiAoEjBtWNMVQT9e0p8@!d3lk4yu5h6f_x1&z`,
+  dna: `ATCGATCGATCGATCGTTGCAATCGATCGTTGCAATCGATCGTTGCAATCGATCGTTGCAATCGATCGTTGCAATCGTTGCAATCGATCGTTGCAATCGATCGTTGCAATCGATCGTTGCAATCGATCGTTGCAATCGATCGTTGCAATCGTTGCAATCGATCGTTGCAA`
+};
+
+function computeEntropy(text) {
+  if (!text.length) return { entropy: 0, freqMap: {}, selfInfo: [], maxH: 0, redundancy: 0 };
+  const freq = {};
+  for (const c of text) freq[c] = (freq[c] || 0) + 1;
+  const n = text.length;
+  let h = 0;
+  for (const c in freq) {
+    const p = freq[c] / n;
+    h -= p * Math.log2(p);
+  }
+  const alphabetSize = Object.keys(freq).length;
+  const maxH = alphabetSize > 1 ? Math.log2(alphabetSize) : 0;
+  const redundancy = maxH > 0 ? (1 - h / maxH) * 100 : 0;
+  const selfInfo = [];
+  for (const c of text) {
+    const p = freq[c] / n;
+    selfInfo.push(-Math.log2(p));
+  }
+  return { entropy: h, freqMap: freq, selfInfo, maxH, redundancy, totalBits: h * n };
+}
+
+function infoToColor(selfInfo, maxInfo) {
+  // Low info = cool blue, high info = hot red/orange
+  const t = maxInfo > 0 ? Math.min(1, selfInfo / maxInfo) : 0;
+  // gradient: dark blue → blue → cyan → yellow → orange → red
+  const stops = [
+    [10, 30, 80],
+    [20, 80, 200],
+    [40, 160, 255],
+    [140, 220, 255],
+    [255, 210, 80],
+    [255, 120, 30],
+    [255, 40, 40]
+  ];
+  const idx = t * (stops.length - 1);
+  const lo = Math.floor(idx), hi = Math.ceil(idx);
+  const f = idx - lo;
+  const lo_c = stops[lo], hi_c = stops[Math.min(hi, stops.length - 1)];
+  const r = Math.round(lo_c[0] + f * (hi_c[0] - lo_c[0]));
+  const g = Math.round(lo_c[1] + f * (hi_c[1] - lo_c[1]));
+  const b = Math.round(lo_c[2] + f * (hi_c[2] - lo_c[2]));
+  return `rgb(${r},${g},${b})`;
+}
+
+function renderHeatmap(text, selfInfo) {
+  const container = document.getElementById('heatmap-text');
+  if (!text.length) { container.innerHTML = ''; return; }
+  const maxInfo = Math.max(...selfInfo);
+  let html = '';
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    const info = selfInfo[i];
+    const color = infoToColor(info, maxInfo);
+    const escaped = c === '<' ? '&lt;' : c === '>' ? '&gt;' : c === '&' ? '&amp;' : c;
+    const title = `'${c === ' ' ? 'space' : escaped}': ${info.toFixed(2)} bits`;
+    html += `<span style="color:${color};background:${color}18" title="${title}">${escaped}</span>`;
+  }
+  container.innerHTML = html;
+}
+
+function renderDistribution(freqMap, text) {
+  const canvas = document.getElementById('dist-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const n = text.length;
+  const entries = Object.entries(freqMap).sort((a, b) => b[1] - a[1]);
+  if (!entries.length) return;
+
+  const pad = { top: 20, right: 20, bottom: 30, left: 40 };
+  const plotW = W - pad.left - pad.right;
+  const plotH = H - pad.top - pad.bottom;
+  const maxFreq = entries[0][1];
+  const maxP = maxFreq / n;
+
+  const barW = Math.max(1, Math.floor(plotW / entries.length) - 1);
+
+  // Axes
+  ctx.strokeStyle = '#2a2a40';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(pad.left, pad.top);
+  ctx.lineTo(pad.left, pad.top + plotH);
+  ctx.lineTo(pad.left + plotW, pad.top + plotH);
+  ctx.stroke();
+
+  // Y axis labels
+  ctx.fillStyle = '#5050a0';
+  ctx.font = '11px Courier New';
+  ctx.textAlign = 'right';
+  for (let i = 0; i <= 4; i++) {
+    const p = maxP * i / 4;
+    const y = pad.top + plotH - (i / 4) * plotH;
+    ctx.fillText((p * 100).toFixed(1) + '%', pad.left - 4, y + 4);
+    ctx.strokeStyle = '#1a1a28';
+    ctx.beginPath();
+    ctx.moveTo(pad.left, y);
+    ctx.lineTo(pad.left + plotW, y);
+    ctx.stroke();
+  }
+
+  // Bars
+  entries.forEach(([char, count], i) => {
+    const p = count / n;
+    const x = pad.left + i * (barW + 1);
+    const barH = (p / maxP) * plotH;
+    const y = pad.top + plotH - barH;
+
+    // Color by self-information
+    const selfInfo = -Math.log2(p);
+    const maxSelf = -Math.log2(1 / entries.length);
+    const color = infoToColor(selfInfo, maxSelf * 1.2);
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, barW, barH);
+
+    // Label most frequent chars
+    if (i < 20 && barW >= 8) {
+      ctx.fillStyle = '#6060a0';
+      ctx.font = '10px Courier New';
+      ctx.textAlign = 'center';
+      const label = char === ' ' ? '·' : char === '\n' ? '↵' : char;
+      ctx.fillText(label, x + barW / 2, pad.top + plotH + 14);
+    }
+  });
+}
+
+function drawLandauer(totalBits) {
+  const canvas = document.getElementById('landauer-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const kB = 1.380649e-23; // J/K
+  const T = 293; // room temp K
+  const energyPerBit = kB * T * Math.LN2;
+  const totalEnergy = totalBits * energyPerBit;
+
+  // Draw a simple diagram: memory cells being erased → heat
+  const cellCount = Math.min(20, Math.floor(totalBits / 10) + 1);
+  const cellSize = 16;
+  const startX = 20;
+  const startY = 30;
+  const cols = 10;
+
+  ctx.font = '10px Courier New';
+
+  for (let i = 0; i < cellCount; i++) {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const x = startX + col * (cellSize + 4);
+    const y = startY + row * (cellSize + 4);
+
+    const t = i / cellCount;
+    const erased = t > 0.5;
+
+    if (erased) {
+      ctx.fillStyle = '#1a2040';
+      ctx.strokeStyle = '#202040';
+    } else {
+      ctx.fillStyle = '#102030';
+      ctx.strokeStyle = '#204080';
+    }
+    ctx.lineWidth = 1;
+    ctx.fillRect(x, y, cellSize, cellSize);
+    ctx.strokeRect(x, y, cellSize, cellSize);
+
+    if (!erased) {
+      ctx.fillStyle = '#4080c0';
+      ctx.font = '9px Courier New';
+      ctx.textAlign = 'center';
+      ctx.fillText(Math.random() > 0.5 ? '1' : '0', x + cellSize/2, y + cellSize/2 + 3);
+    }
+  }
+
+  // Arrow
+  const arrowX = startX + cols * (cellSize + 4) + 10;
+  ctx.strokeStyle = '#404060';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(arrowX, H / 2 - 10);
+  ctx.lineTo(arrowX + 30, H / 2 - 10);
+  ctx.stroke();
+  ctx.fillStyle = '#404060';
+  ctx.beginPath();
+  ctx.moveTo(arrowX + 30, H / 2 - 10);
+  ctx.lineTo(arrowX + 24, H / 2 - 14);
+  ctx.lineTo(arrowX + 24, H / 2 - 6);
+  ctx.fill();
+
+  // Heat label
+  ctx.fillStyle = '#ff6030';
+  ctx.font = '11px Georgia';
+  ctx.textAlign = 'left';
+  ctx.fillText('heat', arrowX + 35, H / 2 - 5);
+
+  // Wavy lines for heat
+  ctx.strokeStyle = '#ff4020';
+  ctx.lineWidth = 1;
+  for (let wave = 0; wave < 3; wave++) {
+    const wx = arrowX + 60 + wave * 20;
+    ctx.beginPath();
+    ctx.moveTo(wx, H / 2 + 5);
+    for (let dy = 0; dy < 40; dy++) {
+      ctx.lineTo(wx + Math.sin(dy * 0.6) * 4, H / 2 + 5 - dy);
+    }
+    ctx.stroke();
+  }
+
+  // Update Landauer text
+  const jouleStr = totalEnergy < 1e-18
+    ? (totalEnergy * 1e21).toFixed(2) + ' zJ'
+    : totalEnergy < 1e-15
+    ? (totalEnergy * 1e18).toFixed(2) + ' aJ'
+    : totalEnergy < 1e-12
+    ? (totalEnergy * 1e15).toFixed(2) + ' fJ'
+    : (totalEnergy * 1e12).toFixed(2) + ' pJ';
+
+  document.getElementById('landauer-text').innerHTML = `
+    To erase <span class="value">${Math.round(totalBits).toLocaleString()}</span> bits of information<br>
+    (the minimum encoding of your text)<br><br>
+    Minimum heat dissipated:<br>
+    <span class="value" style="font-size:1.1em">${jouleStr}</span><br><br>
+    at room temperature (293 K),<br>
+    where k<sub>B</sub>T ln 2 ≈ 2.8 × 10<sup>−21</sup> J/bit<br><br>
+    <span style="color:#404060;font-size:0.9em">Modern computers dissipate ~10<sup>6</sup>× more per bit erased. The Landauer limit is the floor, still far below current hardware.</span>
+  `;
+}
+
+function update() {
+  const text = document.getElementById('input-text').value;
+  const { entropy, freqMap, selfInfo, maxH, redundancy, totalBits } = computeEntropy(text);
+
+  document.getElementById('stat-entropy').textContent = entropy.toFixed(3);
+  document.getElementById('stat-max').textContent = maxH.toFixed(3);
+  document.getElementById('stat-redundancy').textContent = redundancy.toFixed(1) + '%';
+  document.getElementById('stat-bits').textContent = totalBits < 10000
+    ? Math.round(totalBits).toLocaleString()
+    : (totalBits / 1000).toFixed(1) + 'k';
+
+  renderHeatmap(text, selfInfo);
+  renderDistribution(freqMap, text);
+  drawLandauer(totalBits);
+}
+
+// Presets
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const key = btn.dataset.preset;
+    let text = PRESETS[key];
+    if (typeof text === 'function') text = text();
+    document.getElementById('input-text').value = text;
+    update();
+  });
+});
+
+// Live update
+let timer;
+document.getElementById('input-text').addEventListener('input', () => {
+  clearTimeout(timer);
+  timer = setTimeout(update, 60);
+});
+
+// Initial render
+update();
+
+// Resize canvas properly
+function resizeCanvases() {
+  const distCanvas = document.getElementById('dist-canvas');
+  const container = distCanvas.parentElement;
+  const w = container.clientWidth - 40;
+  distCanvas.width = w;
+  distCanvas.height = 200;
+
+  const lCanvas = document.getElementById('landauer-canvas');
+  const lContainer = lCanvas.parentElement;
+  lCanvas.width = lContainer.clientWidth;
+  lCanvas.height = lContainer.clientHeight;
+
+  update();
+}
+window.addEventListener('resize', () => { clearTimeout(timer); timer = setTimeout(resizeCanvases, 100); });
+setTimeout(resizeCanvases, 100);
+</script>
+</body>
+</html>
