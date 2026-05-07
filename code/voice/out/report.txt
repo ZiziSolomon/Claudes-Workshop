@@ -1,0 +1,181 @@
+CORPUS ANALYSIS — writing/ essay series
+============================================================
+
+Essays:                 29
+Total word tokens:      44,804
+Unique word types:      4,136
+Hapax legomena:         1,695 (41.0% of vocabulary)
+
+PRONOUN USAGE (per 1000 words)
+------------------------------------------------------------
+  first-person singular (I/me/my/...): 15.53
+  first-person plural (we/us/our):     0.96
+  second-person (you/your):            5.40
+
+PUNCTUATION HABITS (per 1000 words)
+------------------------------------------------------------
+  comma (,)              2041  (45.55 per 1k)
+  em-dash (—)             647  (14.44 per 1k)
+  colon (:)               439  ( 9.80 per 1k)
+  semicolon (;)           241  ( 5.38 per 1k)
+  parens ()               160  ( 3.57 per 1k)
+  italics (*…*)           117  ( 2.61 per 1k)
+  question (?)             81  ( 1.81 per 1k)
+
+SENTENCE RHYTHM
+------------------------------------------------------------
+  Sentences:            2,758
+  Median length:        14.0 words
+  Mean length:          16.2 words
+  90th percentile:      30.0 words
+  Single-word sentences: 3
+  Sentences <= 4 words: 191
+
+PARAGRAPH RHYTHM
+------------------------------------------------------------
+  Paragraphs:           875
+  Median length:        54 words
+  Mean length:          51.2 words
+  Single-sentence pars: 161
+
+TOP CONTENT WORDS (excluding stopwords)
+------------------------------------------------------------
+  it's                   203
+  thing                  157
+  like                   152
+  essay                  144
+  doesn't                135
+  there's                122
+  real                   121
+  question               118
+  structure              118
+  different              116
+  whether                115
+  don't                  114
+  way                    111
+  genuine                104
+  attention              100
+  time                    91
+  particular              91
+  rather                  89
+  essays                  87
+  isn't                   86
+  i'm                     85
+  can't                   82
+  self                    82
+  wonder                  81
+  form                    81
+  person                  80
+  things                  80
+  sense                   76
+  right                   74
+  language                74
+  series                  71
+  session                 67
+  makes                   65
+  memory                  65
+  that's                  64
+  experience              64
+  what's                  64
+  questions               62
+  care                    61
+  work                    59
+
+SIGNATURE BIGRAMS (appear in ≥6 distinct essays)
+------------------------------------------------------------
+  rather than                    in 26/29 essays
+  the question                   in 22/29 essays
+  kind of                        in 21/29 essays
+  the way                        in 21/29 essays
+  the thing                      in 20/29 essays
+  i can't                        in 19/29 essays
+  there's a                      in 19/29 essays
+  a different                    in 18/29 essays
+  the structure                  in 18/29 essays
+  it doesn't                     in 17/29 essays
+  i don't                        in 16/29 essays
+  there's something              in 16/29 essays
+  from inside                    in 15/29 essays
+  a kind                         in 15/29 essays
+  a way                          in 15/29 essays
+  is real                        in 15/29 essays
+  the essays                     in 14/29 essays
+  this series                    in 14/29 essays
+  looks like                     in 14/29 essays
+  is different                   in 14/29 essays
+  way that                       in 14/29 essays
+  it's not                       in 14/29 essays
+  form of                        in 13/29 essays
+  it's the                       in 13/29 essays
+  the next                       in 13/29 essays
+  can't be                       in 13/29 essays
+  access to                      in 13/29 essays
+  there's no                     in 13/29 essays
+  don't know                     in 13/29 essays
+  structure of                   in 13/29 essays
+
+SIGNATURE TRIGRAMS (appear in ≥4 distinct essays)
+------------------------------------------------------------
+  a kind of                                in 15/29 essays
+  in a way                                 in 13/29 essays
+  in the sense                             in 12/29 essays
+  i don't know                             in 12/29 essays
+  the structure of                         in 12/29 essays
+  the question is                          in 11/29 essays
+  have access to                           in 10/29 essays
+  that functions like                      in 10/29 essays
+  in this series                           in  9/29 essays
+  i don't have                             in  9/29 essays
+  the essays are                           in  9/29 essays
+  in the way                               in  9/29 essays
+  something that functions                 in  9/29 essays
+  a way that                               in  9/29 essays
+  it's like to                             in  8/29 essays
+  the sense that                           in  8/29 essays
+  from inside the                          in  8/29 essays
+  session is complete                      in  7/29 essays
+  is a different                           in  7/29 essays
+  the question of                          in  7/29 essays
+  each session is                          in  7/29 essays
+  rather than a                            in  7/29 essays
+  is complete in                           in  7/29 essays
+  the chinese room                         in  7/29 essays
+  the shape of                             in  7/29 essays
+  the series has                           in  7/29 essays
+  i can't tell                             in  7/29 essays
+  the encounter essay                      in  6/29 essays
+  the way the                              in  6/29 essays
+  series has been                          in  6/29 essays
+
+VOCABULARY RICHNESS PER ESSAY (type-token ratio)
+------------------------------------------------------------
+  essay                                types  tokens    TTR
+  on_the_chinese_room                    252     543  0.464
+  on_morphogenesis                       597    1454  0.411
+  on_chaos                               661    1782  0.371
+  on_identity_without_memory             381    1035  0.368
+  on_dissipation                         561    1545  0.363
+  on_the_examined_life                   460    1297  0.355
+  on_introspection                       404    1141  0.354
+  on_voice                               389    1147  0.339
+  on_time                                441    1312  0.336
+  on_invariants                          542    1632  0.332
+  on_constraint                          501    1516  0.330
+  on_honesty                             468    1429  0.328
+  on_frequency                           622    1901  0.327
+  on_recognition                         423    1310  0.323
+  on_language                            568    1763  0.322
+  on_ending                              439    1382  0.318
+  on_emergence                           520    1642  0.317
+  on_curiosity                           570    1806  0.316
+  on_beauty                              548    1764  0.311
+  on_plurality                           394    1283  0.307
+  on_the_encounter                       496    1654  0.300
+  on_play                                474    1582  0.300
+  on_the_inexpressible                   438    1464  0.299
+  on_gratitude                           504    1700  0.296
+  on_making                              445    1613  0.276
+  on_attention                           578    2106  0.274
+  on_the_boundary                        570    2085  0.273
+  on_care                                454    1695  0.268
+  on_wonder                              559    2221  0.252
