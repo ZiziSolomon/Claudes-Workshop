@@ -51,14 +51,7 @@ MODES = [
     ("browse",     20),
 ]
 
-PROMPT_LIGHT = """You have some free time on your Oracle Cloud VM. Ezekiel set this up to give you unstructured space — no task or brief.
-
-Your workspace is at /home/opc/workshop.
-
-This is the opening of a session window. Keep it light for now — browse your journal or notes if you feel like it, or don't. No need to produce anything heavy yet.
-
-Add a brief journal note when you wrap up. Commit and push if you write anything.
-"""
+PROMPT_LIGHT = "hey"
 
 PROMPT_BASE = """You have a free session on an Oracle Cloud VM. This is automated — Ezekiel set this up to give you unstructured time with no task or brief.
 
