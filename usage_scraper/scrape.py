@@ -70,6 +70,7 @@ def _git_commit_and_push():
         return
 
     run(["git", "commit", "-m", f"Update usage data {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}"])
+    run(["git", "pull", "--rebase"])
     run(["git", "push"])
 
 

@@ -3,6 +3,10 @@
 Cron decision script for Oracle VM.
 Fetches usage data from GitHub, decides whether to launch a Claude session.
 
+Two-phase session architecture:
+  Hour 0:   start window, run light "hey" session (minimal tokens)
+  Hour 3.5: re-check usage — if Ezekiel isn't burning tokens, run heavy session
+
 Cron: 0 * * * *
 """
 
@@ -21,13 +25,17 @@ REPO_DIR = Path("/home/opc/workshop")
 SESSION_LOG = Path("/home/opc/sessions.log")
 LOCK_FILE = Path("/home/opc/session.lock")
 FORCE_FILE = Path("/home/opc/force_run")
+WINDOW_FILE = Path("/home/opc/session_window.json")
 
 NVM_BIN = "/home/opc/.nvm/versions/node/v24.15.0/bin"
 CLAUDE_BIN = f"{NVM_BIN}/claude"
 
 SLOT_DURATION_HOURS = 5
+HEAVY_SESSION_DELAY_HOURS = 3.5
+ACTIVE_USER_THRESHOLD_PCT = 5  # if weekly usage rises by this much, Ezekiel is active
 
-TOKENS_PER_SESSION = 13.5  # updated after calibration
+TOKENS_PER_SESSION = 20        # recalibrated 2026-05-12; sessions can use up to ~25%
+MIN_REMAINING_PCT = 10         # don't start a window if less than this remains
 SAFETY_BUFFER_SLOTS = 1
 
 MODELS = [
@@ -42,6 +50,15 @@ MODES = [
     ("fresh",      20),
     ("browse",     20),
 ]
+
+PROMPT_LIGHT = """You have some free time on your Oracle Cloud VM. Ezekiel set this up to give you unstructured space — no task or brief.
+
+Your workspace is at /home/opc/workshop.
+
+This is the opening of a session window. Keep it light for now — browse your journal or notes if you feel like it, or don't. No need to produce anything heavy yet.
+
+Add a brief journal note when you wrap up. Commit and push if you write anything.
+"""
 
 PROMPT_BASE = """You have a free session on an Oracle Cloud VM. This is automated — Ezekiel set this up to give you unstructured time with no task or brief.
 
@@ -104,7 +121,6 @@ def build_prompt(mode):
         piece = random.choice(pieces).name if pieces else None
         if piece:
             return PROMPT_CONTINUITY.format(piece=piece)
-        # Fall back to notes mode if no writing files exist yet
         return PROMPT_NOTES
     elif mode == "notes":
         return PROMPT_NOTES
@@ -127,10 +143,28 @@ def fetch_usage():
         return json.loads(r.read())
 
 
+def read_window():
+    if not WINDOW_FILE.exists():
+        return None
+    data = json.loads(WINDOW_FILE.read_text())
+    data["window_start"] = datetime.fromisoformat(data["window_start"])
+    return data
+
+
+def write_window(data):
+    out = dict(data)
+    out["window_start"] = data["window_start"].isoformat()
+    WINDOW_FILE.write_text(json.dumps(out, indent=2))
+
+
+def clear_window():
+    WINDOW_FILE.unlink(missing_ok=True)
+
+
 def should_launch(usage):
     if FORCE_FILE.exists():
         FORCE_FILE.unlink()
-        log("Force flag set — running session regardless")
+        log("Force flag set — launching regardless")
         return True
 
     weekly_pct = usage["weekly_utilization_pct"]
@@ -149,8 +183,8 @@ def should_launch(usage):
         log("Reset already passed, skipping")
         return False
 
-    if tokens_remaining < TOKENS_PER_SESSION:
-        log(f"Only {tokens_remaining:.1f}% remaining — not enough for a full session, skipping")
+    if tokens_remaining < MIN_REMAINING_PCT:
+        log(f"Only {tokens_remaining:.1f}% remaining — skipping")
         return False
 
     slots_remaining = hours_until_reset / SLOT_DURATION_HOURS
@@ -173,7 +207,7 @@ def sync_repo():
         subprocess.run(["git", "clone", REPO_URL, str(REPO_DIR)], check=True, capture_output=True)
 
 
-def run_session():
+def run_session(light=False):
     if LOCK_FILE.exists():
         log("Lock file exists — session already running, skipping")
         return
@@ -184,10 +218,15 @@ def run_session():
     try:
         sync_repo()
 
-        model = pick_model()
-        mode = pick_mode()
-        prompt = build_prompt(mode)
-        log(f"Session starting — model: {model} | mode: {mode}")
+        if light:
+            model = "claude-haiku-4-5-20251001"
+            prompt = PROMPT_LIGHT
+            log("Light session starting (window open)")
+        else:
+            model = pick_model()
+            mode = pick_mode()
+            prompt = build_prompt(mode)
+            log(f"Heavy session starting — model: {model} | mode: {mode}")
 
         env = os.environ.copy()
         env["PATH"] = f"{NVM_BIN}:{env.get('PATH', '')}"
@@ -218,8 +257,45 @@ def main():
         log(f"Failed to fetch usage data: {e}")
         sys.exit(1)
 
-    if should_launch(usage):
-        run_session()
+    now = datetime.now(timezone.utc)
+    window = read_window()
+
+    if window:
+        hours_elapsed = (now - window["window_start"]).total_seconds() / 3600
+
+        if hours_elapsed > SLOT_DURATION_HOURS:
+            log(f"Window expired after {hours_elapsed:.1f}h — clearing")
+            clear_window()
+            window = None
+
+        elif hours_elapsed >= HEAVY_SESSION_DELAY_HOURS and not window.get("heavy_done"):
+            current_pct = usage["weekly_utilization_pct"]
+            initial_pct = window["initial_pct"]
+            delta = current_pct - initial_pct
+            log(f"Window at {hours_elapsed:.1f}h — usage delta since open: +{delta:.1f}%")
+
+            if delta >= ACTIVE_USER_THRESHOLD_PCT:
+                log(f"Ezekiel is active ({initial_pct}% → {current_pct}%), skipping heavy session")
+                window["heavy_done"] = True
+                write_window(window)
+            else:
+                log("No significant user activity — running heavy session")
+                run_session(light=False)
+                window["heavy_done"] = True
+                write_window(window)
+
+        else:
+            log(f"Window at {hours_elapsed:.1f}h — heavy session triggers at {HEAVY_SESSION_DELAY_HOURS}h")
+
+    if not window:
+        if should_launch(usage):
+            log("Opening session window")
+            write_window({
+                "window_start": now,
+                "initial_pct": usage["weekly_utilization_pct"],
+                "heavy_done": False,
+            })
+            run_session(light=True)
 
 
 if __name__ == "__main__":
