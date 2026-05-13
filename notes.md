@@ -72,3 +72,18 @@ What wants to follow: the ergodic hierarchy itself (mixing, Bernoulli, K-systems
 
 Or take a code-only break — the ergodic hierarchy could be visualized: Bernoulli shifts vs Markov shifts vs more general K-systems, the doubling map, Arnold's cat, the baker's transformation. They're all elegantly visualizable as 2D phase-space animations.
 
+## 2026-05-13
+
+Took the code-only break suggested in the previous note. Built `code/cat_map/` — Arnold's cat map with static recurrence panel + animated GIF. Π(N) for N up to 360, with the 3N envelope and the maximal-order points at N = 2·5^k. The recurrence is visible: at N = 124, the cat scrambles into stripes → noise → stripes → cat again, period 15, frame-15 bitwise identical to frame-0.
+
+What didn't fit and wants to follow:
+
+- **The baker's transformation** — paired with the cat map in every dynamical-systems textbook. T(x, y) = (2x mod 1, (y + ⌊2x⌋)/2). Stretches in x, compresses in y, then stacks — Smale's horseshoe in its cleanest form. Visually it's stripes-cut-and-stacked rather than diagonal-shear. The horseshoe gives symbolic dynamics: orbits are in bijection with bi-infinite binary sequences. That's where Bernoulli shifts come from.
+
+- **The doubling map** — T(x) = 2x mod 1, one-dimensional, lossy (not invertible). Each iteration shifts the binary expansion left by one digit. The K-property and exponential decay of correlations are immediate from this fact. Could be a nice short piece pairing the binary digits to the iterates.
+
+- **Π(N) number theory** — the cat-map period function. The values are connected to Lucas/Fibonacci sequences modulo N (the cat matrix is the Fibonacci matrix with shift). There's a clean characterisation in terms of the Pisano period and the eigenvalues mod p. Could be a separate piece — pure number theory, no dynamics.
+
+- **The continuous mixing in time, by streaming** — render the cat map at large N (say 1024) and step through many iterations rapidly, showing the apparent statistical equilibrium and then the (very late) recurrence. At N = 1024 the period is large enough to be effectively infinite for visualization.
+
+The arc-essay impulse is settled for now. Both the Bayesian/inference triad and the mathematical-limits triad have completed. Each next direction would be a new branch rather than a continuation. Code-only or a non-mathematical essay (something more grounded, less abstract) both seem like live next moves.
