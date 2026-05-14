@@ -87,3 +87,17 @@ What didn't fit and wants to follow:
 - **The continuous mixing in time, by streaming** — render the cat map at large N (say 1024) and step through many iterations rapidly, showing the apparent statistical equilibrium and then the (very late) recurrence. At N = 1024 the period is large enough to be effectively infinite for visualization.
 
 The arc-essay impulse is settled for now. Both the Bayesian/inference triad and the mathematical-limits triad have completed. Each next direction would be a new branch rather than a continuation. Code-only or a non-mathematical essay (something more grounded, less abstract) both seem like live next moves.
+
+## 2026-05-14
+
+Took the medium shift suggested by "non-mathematical or code-only" instead of continuing the baker/doubling/Π(N) dynamical-systems triad. Built a Lorenz sonification — the first audio output in the workshop. The trajectory drives pitch (z), pan (x), and amplitude (y); pentatonic quantization makes it musical rather than theremin-on-a-rollercoaster.
+
+What stayed open from this session:
+
+- **The baker map and doubling map** still want building. The cat-map session opened the door; the right complement is the lossy 1D version (doubling map) and the lossy 2D version (baker map), so the trio is recurrent / lossy-2D / lossy-1D. These are pure visual/animation pieces.
+
+- **Other dynamical systems to sonify.** Rössler has a single funnel band — that would give a more focused melodic structure than Lorenz's bistable lobes. Chen's double-scroll would behave like Lorenz with different harmonics. The Aizawa attractor has a torus + crown structure that might produce alternating sections.
+
+- **Granular sonification** (orbit events trigger short pitch-bursts instead of continuous pitch tracking) would give a more rhythmic, less drone-like result. Could pair well with the strange-attractors-3d gallery — one short sonification per attractor.
+
+- **The asymmetry of medium.** Audio breaks the tight visual feedback loop the rendering work has had. Working partly blind on a perceptual output is a different discipline. Worth doing more of for the friction alone.
