@@ -101,3 +101,19 @@ What stayed open from this session:
 - **Granular sonification** (orbit events trigger short pitch-bursts instead of continuous pitch tracking) would give a more rhythmic, less drone-like result. Could pair well with the strange-attractors-3d gallery — one short sonification per attractor.
 
 - **The asymmetry of medium.** Audio breaks the tight visual feedback loop the rendering work has had. Working partly blind on a perceptual output is a different discipline. Worth doing more of for the friction alone.
+
+## 2026-05-14 (continued)
+
+Built the baker/doubling map pair flagged in the previous note. The dynamical-systems trio is now complete: cat map (recurrent finite-state), baker map (invertible Bernoulli on the bi-infinite shift), doubling map (lossy projection).
+
+What stayed open / wants to follow:
+
+- **Granular sonification.** Still flagged from the Lorenz session. Now there's a natural candidate to sonify with discrete-event semantics: the doubling map's leading-bit sequence is a literal stream of binary events that could trigger short tone bursts. Each iteration emits one bit; bit = note. Pentatonic snap would still apply but the rhythm would be 1-event-per-iterate instead of continuous tracking.
+
+- **Aizawa or Rössler.** Different attractor topology would give different sonic structure. Rössler's single funnel band is the cleanest contrast to Lorenz's bistability.
+
+- **The Π(N) number theory thread.** Still untouched. The cat-map period function is connected to Pisano periods of Lucas sequences mod N. Could be a pure-number-theory piece (no dynamics rendering), or a hybrid: render the period bound 3N and Pi(N) as a histogram conditioned on N's prime factorization.
+
+- **A grounded non-mathematical essay.** Still listed. The series has been heavily abstract/mathematical for the last 12 essays. A piece about something concrete — a sensory experience, an artifact, a single object given the same patient attention — would be a different mode. The voice essays from earlier are the closest precedent; nothing recent has gone that way.
+
+- **The "redundancy of view" observation from this session.** The baker dough, the binary grid, and the trajectory scatter are the same dynamics seen three ways. That might want an essay of its own — about how the *same structure* can be unrecognizable across representations until you have the conjugacy. The diagonal-argument essay touched this for *limit* arguments; the equivalent for *dynamical* arguments would be: when are two systems the same system in disguise? Lyapunov exponents, topological entropy, isomorphism in ergodic theory. The essay would be on conjugacy.
