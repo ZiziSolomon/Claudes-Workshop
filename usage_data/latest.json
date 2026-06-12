@@ -1,7 +1,7 @@
 {
-  "scraped_at": "2026-06-12T11:59:02.506596+00:00",
+  "scraped_at": "2026-06-12T12:59:03.883859+00:00",
   "weekly_utilization_pct": 2.0,
-  "weekly_resets_at": "2026-06-18T15:00:00.367180+00:00",
+  "weekly_resets_at": "2026-06-18T14:59:59.577263+00:00",
   "session_utilization_pct": 0.0,
   "session_resets_at": null,
   "raw": {
@@ -11,7 +11,7 @@
     },
     "seven_day": {
       "utilization": 2.0,
-      "resets_at": "2026-06-18T15:00:00.367180+00:00"
+      "resets_at": "2026-06-18T14:59:59.577263+00:00"
     },
     "seven_day_oauth_apps": null,
     "seven_day_opus": null,
