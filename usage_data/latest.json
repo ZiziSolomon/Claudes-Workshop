@@ -1,17 +1,23 @@
 {
-  "scraped_at": "2026-06-19T13:59:12.195301+00:00",
-  "weekly_utilization_pct": 2.0,
-  "weekly_resets_at": "2026-06-25T14:59:59.458936+00:00",
-  "session_utilization_pct": 6.0,
-  "session_resets_at": "2026-06-19T18:09:59.458901+00:00",
+  "scraped_at": "2026-06-19T18:59:11.153065+00:00",
+  "weekly_utilization_pct": 3.0,
+  "weekly_resets_at": "2026-06-25T15:00:00.415764+00:00",
+  "session_utilization_pct": 0.0,
+  "session_resets_at": null,
   "raw": {
     "five_hour": {
-      "utilization": 6.0,
-      "resets_at": "2026-06-19T18:09:59.458901+00:00"
+      "utilization": 0.0,
+      "resets_at": null,
+      "limit_dollars": null,
+      "used_dollars": null,
+      "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 2.0,
-      "resets_at": "2026-06-25T14:59:59.458936+00:00"
+      "utilization": 3.0,
+      "resets_at": "2026-06-25T15:00:00.415764+00:00",
+      "limit_dollars": null,
+      "used_dollars": null,
+      "remaining_dollars": null
     },
     "seven_day_oauth_apps": null,
     "seven_day_opus": null,
@@ -22,13 +28,14 @@
     "iguana_necktie": null,
     "omelette_promotional": null,
     "cinder_cove": null,
+    "amber_ladder": null,
     "extra_usage": {
       "is_enabled": false,
-      "monthly_limit": null,
-      "used_credits": null,
+      "monthly_limit": 0,
+      "used_credits": 0.0,
       "utilization": null,
-      "currency": null,
-      "decimal_places": null,
+      "currency": "GBP",
+      "decimal_places": 2,
       "disabled_reason": "org_level_disabled_until",
       "daily": null,
       "weekly": null
@@ -37,29 +44,33 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 6,
+        "percent": 0,
         "severity": "normal",
-        "resets_at": "2026-06-19T18:09:59.458901+00:00",
+        "resets_at": null,
         "scope": null,
-        "is_active": true
+        "is_active": false
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 2,
+        "percent": 3,
         "severity": "normal",
-        "resets_at": "2026-06-25T14:59:59.458936+00:00",
+        "resets_at": "2026-06-25T15:00:00.415764+00:00",
         "scope": null,
-        "is_active": false
+        "is_active": true
       }
     ],
     "spend": {
       "used": {
         "amount_minor": 0,
-        "currency": "USD",
+        "currency": "GBP",
         "exponent": 2
       },
-      "limit": null,
+      "limit": {
+        "amount_minor": 0,
+        "currency": "GBP",
+        "exponent": 2
+      },
       "percent": 0,
       "severity": "normal",
       "enabled": false,
