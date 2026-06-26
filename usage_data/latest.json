@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-06-25T11:59:02.024792+00:00",
-  "weekly_utilization_pct": 66.0,
-  "weekly_resets_at": "2026-06-25T14:59:59.258386+00:00",
-  "session_utilization_pct": 15.0,
-  "session_resets_at": "2026-06-25T16:30:00.258361+00:00",
+  "scraped_at": "2026-06-26T07:59:14.780888+00:00",
+  "weekly_utilization_pct": 0.0,
+  "weekly_resets_at": null,
+  "session_utilization_pct": 0.0,
+  "session_resets_at": null,
   "raw": {
     "five_hour": {
-      "utilization": 15.0,
-      "resets_at": "2026-06-25T16:30:00.258361+00:00",
+      "utilization": 0.0,
+      "resets_at": null,
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 66.0,
-      "resets_at": "2026-06-25T14:59:59.258386+00:00",
+      "utilization": 0.0,
+      "resets_at": null,
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -44,20 +44,20 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 15,
+        "percent": 0,
         "severity": "normal",
-        "resets_at": "2026-06-25T16:30:00.258361+00:00",
+        "resets_at": null,
         "scope": null,
-        "is_active": false
+        "is_active": true
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 66,
+        "percent": 0,
         "severity": "normal",
-        "resets_at": "2026-06-25T14:59:59.258386+00:00",
+        "resets_at": null,
         "scope": null,
-        "is_active": true
+        "is_active": false
       }
     ],
     "spend": {
@@ -88,6 +88,7 @@
       "disclaimer": "Usage credits cover you when you hit your plan limits. [Learn more](https://support.claude.com/articles/11647753)",
       "can_purchase_credits": true,
       "can_toggle": true
-    }
+    },
+    "member_dashboard_available": false
   }
 }
