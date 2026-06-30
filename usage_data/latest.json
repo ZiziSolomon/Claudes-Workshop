@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-06-29T19:59:03.956959+00:00",
-  "weekly_utilization_pct": 20.0,
-  "weekly_resets_at": "2026-07-02T14:59:59.805027+00:00",
-  "session_utilization_pct": 83.0,
-  "session_resets_at": "2026-06-29T21:09:59.805009+00:00",
+  "scraped_at": "2026-06-30T08:59:04.288983+00:00",
+  "weekly_utilization_pct": 21.0,
+  "weekly_resets_at": "2026-07-02T15:00:00.829592+00:00",
+  "session_utilization_pct": 11.0,
+  "session_resets_at": "2026-06-30T13:40:00.829570+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 83.0,
-      "resets_at": "2026-06-29T21:09:59.805009+00:00",
+      "utilization": 11.0,
+      "resets_at": "2026-06-30T13:40:00.829570+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 20.0,
-      "resets_at": "2026-07-02T14:59:59.805027+00:00",
+      "utilization": 21.0,
+      "resets_at": "2026-07-02T15:00:00.829592+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -44,20 +44,20 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 83,
-        "severity": "warning",
-        "resets_at": "2026-06-29T21:09:59.805009+00:00",
+        "percent": 11,
+        "severity": "normal",
+        "resets_at": "2026-06-30T13:40:00.829570+00:00",
         "scope": null,
-        "is_active": true
+        "is_active": false
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 20,
+        "percent": 21,
         "severity": "normal",
-        "resets_at": "2026-07-02T14:59:59.805027+00:00",
+        "resets_at": "2026-07-02T15:00:00.829592+00:00",
         "scope": null,
-        "is_active": false
+        "is_active": true
       }
     ],
     "spend": {
@@ -85,7 +85,7 @@
       },
       "balance": null,
       "auto_reload": null,
-      "disclaimer": "Usage credits cover you when you hit your plan limits. [Learn more](https://support.claude.com/articles/11647753)",
+      "disclaimer": "Usage credits cover you when you hit your plan limits. [Learn more](https://support.claude.com/articles/12429409)",
       "can_purchase_credits": true,
       "can_toggle": true
     },
