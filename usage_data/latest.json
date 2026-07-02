@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-07-02T14:59:02.352899+00:00",
-  "weekly_utilization_pct": 31.0,
-  "weekly_resets_at": "2026-07-02T14:59:59.762908+00:00",
-  "session_utilization_pct": 99.0,
-  "session_resets_at": "2026-07-02T16:59:59.762884+00:00",
+  "scraped_at": "2026-07-02T21:59:09.607707+00:00",
+  "weekly_utilization_pct": 4.0,
+  "weekly_resets_at": "2026-07-09T14:59:59.925247+00:00",
+  "session_utilization_pct": 24.0,
+  "session_resets_at": "2026-07-03T00:39:59.925228+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 99.0,
-      "resets_at": "2026-07-02T16:59:59.762884+00:00",
+      "utilization": 24.0,
+      "resets_at": "2026-07-03T00:39:59.925228+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 31.0,
-      "resets_at": "2026-07-02T14:59:59.762908+00:00",
+      "utilization": 4.0,
+      "resets_at": "2026-07-09T14:59:59.925247+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -45,27 +45,27 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 99,
-        "severity": "critical",
-        "resets_at": "2026-07-02T16:59:59.762884+00:00",
+        "percent": 24,
+        "severity": "normal",
+        "resets_at": "2026-07-03T00:39:59.925228+00:00",
         "scope": null,
         "is_active": true
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 31,
+        "percent": 4,
         "severity": "normal",
-        "resets_at": "2026-07-02T14:59:59.762908+00:00",
+        "resets_at": "2026-07-09T14:59:59.925247+00:00",
         "scope": null,
         "is_active": false
       },
       {
         "kind": "weekly_scoped",
         "group": "weekly",
-        "percent": 40,
+        "percent": 4,
         "severity": "normal",
-        "resets_at": "2026-07-02T14:59:59.763223+00:00",
+        "resets_at": "2026-07-09T14:59:59.925519+00:00",
         "scope": {
           "model": {
             "id": null,
@@ -99,7 +99,14 @@
         },
         "credits": null
       },
-      "balance": null,
+      "balance": {
+        "money": {
+          "amount_minor": 1,
+          "currency": "GBP",
+          "exponent": 2
+        },
+        "credits": null
+      },
       "auto_reload": null,
       "disclaimer": "Usage credits cover you when you hit your plan limits. [Learn more](https://support.claude.com/articles/12429409)",
       "can_purchase_credits": true,
