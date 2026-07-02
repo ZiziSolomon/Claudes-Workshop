@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-07-02T11:59:02.770577+00:00",
-  "weekly_utilization_pct": 21.0,
-  "weekly_resets_at": "2026-07-02T14:59:59.908941+00:00",
-  "session_utilization_pct": 100.0,
-  "session_resets_at": "2026-07-02T11:59:59.908915+00:00",
+  "scraped_at": "2026-07-02T12:59:02.956776+00:00",
+  "weekly_utilization_pct": 29.0,
+  "weekly_resets_at": "2026-07-02T15:00:00.977038+00:00",
+  "session_utilization_pct": 83.0,
+  "session_resets_at": "2026-07-02T17:00:00.977018+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 100.0,
-      "resets_at": "2026-07-02T11:59:59.908915+00:00",
+      "utilization": 83.0,
+      "resets_at": "2026-07-02T17:00:00.977018+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 21.0,
-      "resets_at": "2026-07-02T14:59:59.908941+00:00",
+      "utilization": 29.0,
+      "resets_at": "2026-07-02T15:00:00.977038+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -45,27 +45,27 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 100,
-        "severity": "critical",
-        "resets_at": "2026-07-02T11:59:59.908915+00:00",
+        "percent": 83,
+        "severity": "warning",
+        "resets_at": "2026-07-02T17:00:00.977018+00:00",
         "scope": null,
         "is_active": true
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 21,
+        "percent": 29,
         "severity": "normal",
-        "resets_at": "2026-07-02T14:59:59.908941+00:00",
+        "resets_at": "2026-07-02T15:00:00.977038+00:00",
         "scope": null,
         "is_active": false
       },
       {
         "kind": "weekly_scoped",
         "group": "weekly",
-        "percent": 21,
+        "percent": 36,
         "severity": "normal",
-        "resets_at": "2026-07-02T14:59:59.909862+00:00",
+        "resets_at": "2026-07-02T15:00:00.977348+00:00",
         "scope": {
           "model": {
             "id": null,
