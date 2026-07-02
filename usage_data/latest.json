@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-07-02T21:59:09.607707+00:00",
-  "weekly_utilization_pct": 4.0,
-  "weekly_resets_at": "2026-07-09T14:59:59.925247+00:00",
-  "session_utilization_pct": 24.0,
-  "session_resets_at": "2026-07-03T00:39:59.925228+00:00",
+  "scraped_at": "2026-07-02T22:59:02.507160+00:00",
+  "weekly_utilization_pct": 8.0,
+  "weekly_resets_at": "2026-07-09T14:59:59.845183+00:00",
+  "session_utilization_pct": 62.0,
+  "session_resets_at": "2026-07-03T00:39:59.845159+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 24.0,
-      "resets_at": "2026-07-03T00:39:59.925228+00:00",
+      "utilization": 62.0,
+      "resets_at": "2026-07-03T00:39:59.845159+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 4.0,
-      "resets_at": "2026-07-09T14:59:59.925247+00:00",
+      "utilization": 8.0,
+      "resets_at": "2026-07-09T14:59:59.845183+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -45,27 +45,27 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 24,
+        "percent": 62,
         "severity": "normal",
-        "resets_at": "2026-07-03T00:39:59.925228+00:00",
+        "resets_at": "2026-07-03T00:39:59.845159+00:00",
         "scope": null,
         "is_active": true
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 4,
+        "percent": 8,
         "severity": "normal",
-        "resets_at": "2026-07-09T14:59:59.925247+00:00",
+        "resets_at": "2026-07-09T14:59:59.845183+00:00",
         "scope": null,
         "is_active": false
       },
       {
         "kind": "weekly_scoped",
         "group": "weekly",
-        "percent": 4,
+        "percent": 5,
         "severity": "normal",
-        "resets_at": "2026-07-09T14:59:59.925519+00:00",
+        "resets_at": "2026-07-09T14:59:59.845445+00:00",
         "scope": {
           "model": {
             "id": null,
