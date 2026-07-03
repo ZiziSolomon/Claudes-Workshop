@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-07-03T05:59:01.870486+00:00",
-  "weekly_utilization_pct": 22.0,
-  "weekly_resets_at": "2026-07-09T15:00:00.114974+00:00",
-  "session_utilization_pct": 14.0,
-  "session_resets_at": "2026-07-03T10:40:00.114956+00:00",
+  "scraped_at": "2026-07-03T06:59:01.946271+00:00",
+  "weekly_utilization_pct": 24.0,
+  "weekly_resets_at": "2026-07-09T15:00:00.184323+00:00",
+  "session_utilization_pct": 43.0,
+  "session_resets_at": "2026-07-03T10:40:00.184271+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 14.0,
-      "resets_at": "2026-07-03T10:40:00.114956+00:00",
+      "utilization": 43.0,
+      "resets_at": "2026-07-03T10:40:00.184271+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 22.0,
-      "resets_at": "2026-07-09T15:00:00.114974+00:00",
+      "utilization": 24.0,
+      "resets_at": "2026-07-09T15:00:00.184323+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -45,27 +45,27 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 14,
+        "percent": 43,
         "severity": "normal",
-        "resets_at": "2026-07-03T10:40:00.114956+00:00",
-        "scope": null,
-        "is_active": false
-      },
-      {
-        "kind": "weekly_all",
-        "group": "weekly",
-        "percent": 22,
-        "severity": "normal",
-        "resets_at": "2026-07-09T15:00:00.114974+00:00",
+        "resets_at": "2026-07-03T10:40:00.184271+00:00",
         "scope": null,
         "is_active": true
       },
       {
+        "kind": "weekly_all",
+        "group": "weekly",
+        "percent": 24,
+        "severity": "normal",
+        "resets_at": "2026-07-09T15:00:00.184323+00:00",
+        "scope": null,
+        "is_active": false
+      },
+      {
         "kind": "weekly_scoped",
         "group": "weekly",
-        "percent": 16,
+        "percent": 22,
         "severity": "normal",
-        "resets_at": "2026-07-09T15:00:00.115227+00:00",
+        "resets_at": "2026-07-09T15:00:00.184533+00:00",
         "scope": {
           "model": {
             "id": null,
