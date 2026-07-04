@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-07-04T19:59:06.446771+00:00",
-  "weekly_utilization_pct": 50.0,
-  "weekly_resets_at": "2026-07-09T14:59:59.968208+00:00",
-  "session_utilization_pct": 84.0,
-  "session_resets_at": "2026-07-04T21:19:59.968187+00:00",
+  "scraped_at": "2026-07-04T22:59:13.663780+00:00",
+  "weekly_utilization_pct": 52.0,
+  "weekly_resets_at": "2026-07-09T15:00:00.229136+00:00",
+  "session_utilization_pct": 13.0,
+  "session_resets_at": "2026-07-05T03:10:00.229111+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 84.0,
-      "resets_at": "2026-07-04T21:19:59.968187+00:00",
+      "utilization": 13.0,
+      "resets_at": "2026-07-05T03:10:00.229111+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 50.0,
-      "resets_at": "2026-07-09T14:59:59.968208+00:00",
+      "utilization": 52.0,
+      "resets_at": "2026-07-09T15:00:00.229136+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -45,27 +45,27 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 84,
-        "severity": "warning",
-        "resets_at": "2026-07-04T21:19:59.968187+00:00",
+        "percent": 13,
+        "severity": "normal",
+        "resets_at": "2026-07-05T03:10:00.229111+00:00",
         "scope": null,
-        "is_active": true
+        "is_active": false
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 50,
+        "percent": 52,
         "severity": "normal",
-        "resets_at": "2026-07-09T14:59:59.968208+00:00",
+        "resets_at": "2026-07-09T15:00:00.229136+00:00",
         "scope": null,
         "is_active": false
       },
       {
         "kind": "weekly_scoped",
         "group": "weekly",
-        "percent": 53,
+        "percent": 55,
         "severity": "normal",
-        "resets_at": "2026-07-09T14:59:59.968507+00:00",
+        "resets_at": "2026-07-09T15:00:00.229376+00:00",
         "scope": {
           "model": {
             "id": null,
@@ -73,7 +73,7 @@
           },
           "surface": null
         },
-        "is_active": false
+        "is_active": true
       }
     ],
     "spend": {
