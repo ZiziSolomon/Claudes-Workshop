@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-07-14T08:59:13.238438+00:00",
-  "weekly_utilization_pct": 4.0,
-  "weekly_resets_at": "2026-07-16T15:00:00.415296+00:00",
-  "session_utilization_pct": 0.0,
-  "session_resets_at": null,
+  "scraped_at": "2026-07-14T11:59:13.153375+00:00",
+  "weekly_utilization_pct": 5.0,
+  "weekly_resets_at": "2026-07-16T15:00:00.378180+00:00",
+  "session_utilization_pct": 8.0,
+  "session_resets_at": "2026-07-14T16:20:00.378156+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 0.0,
-      "resets_at": null,
+      "utilization": 8.0,
+      "resets_at": "2026-07-14T16:20:00.378156+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 4.0,
-      "resets_at": "2026-07-16T15:00:00.415296+00:00",
+      "utilization": 5.0,
+      "resets_at": "2026-07-16T15:00:00.378180+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -45,18 +45,18 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 0,
+        "percent": 8,
         "severity": "normal",
-        "resets_at": null,
+        "resets_at": "2026-07-14T16:20:00.378156+00:00",
         "scope": null,
-        "is_active": false
+        "is_active": true
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 4,
+        "percent": 5,
         "severity": "normal",
-        "resets_at": "2026-07-16T15:00:00.415296+00:00",
+        "resets_at": "2026-07-16T15:00:00.378180+00:00",
         "scope": null,
         "is_active": false
       },
@@ -65,7 +65,7 @@
         "group": "weekly",
         "percent": 8,
         "severity": "normal",
-        "resets_at": "2026-07-16T15:00:00.415705+00:00",
+        "resets_at": "2026-07-16T15:00:00.378584+00:00",
         "scope": {
           "model": {
             "id": null,
@@ -73,7 +73,7 @@
           },
           "surface": null
         },
-        "is_active": true
+        "is_active": false
       }
     ],
     "spend": {
