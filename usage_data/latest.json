@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-07-15T16:59:01.721595+00:00",
-  "weekly_utilization_pct": 25.0,
-  "weekly_resets_at": "2026-07-16T15:00:00.023512+00:00",
-  "session_utilization_pct": 91.0,
-  "session_resets_at": "2026-07-15T17:20:00.023484+00:00",
+  "scraped_at": "2026-07-15T17:59:01.805285+00:00",
+  "weekly_utilization_pct": 27.0,
+  "weekly_resets_at": "2026-07-16T15:00:00.176033+00:00",
+  "session_utilization_pct": 21.0,
+  "session_resets_at": "2026-07-15T22:20:00.176009+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 91.0,
-      "resets_at": "2026-07-15T17:20:00.023484+00:00",
+      "utilization": 21.0,
+      "resets_at": "2026-07-15T22:20:00.176009+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 25.0,
-      "resets_at": "2026-07-16T15:00:00.023512+00:00",
+      "utilization": 27.0,
+      "resets_at": "2026-07-16T15:00:00.176033+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -45,18 +45,18 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 91,
-        "severity": "critical",
-        "resets_at": "2026-07-15T17:20:00.023484+00:00",
+        "percent": 21,
+        "severity": "normal",
+        "resets_at": "2026-07-15T22:20:00.176009+00:00",
         "scope": null,
-        "is_active": true
+        "is_active": false
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 25,
+        "percent": 27,
         "severity": "normal",
-        "resets_at": "2026-07-16T15:00:00.023512+00:00",
+        "resets_at": "2026-07-16T15:00:00.176033+00:00",
         "scope": null,
         "is_active": false
       },
@@ -65,7 +65,7 @@
         "group": "weekly",
         "percent": 35,
         "severity": "normal",
-        "resets_at": "2026-07-16T15:00:00.023909+00:00",
+        "resets_at": "2026-07-16T15:00:00.176448+00:00",
         "scope": {
           "model": {
             "id": null,
@@ -73,7 +73,7 @@
           },
           "surface": null
         },
-        "is_active": false
+        "is_active": true
       }
     ],
     "spend": {
