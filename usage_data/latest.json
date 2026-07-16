@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-07-16T16:59:02.216788+00:00",
-  "weekly_utilization_pct": 6.0,
-  "weekly_resets_at": "2026-07-23T15:00:00.124645+00:00",
-  "session_utilization_pct": 76.0,
-  "session_resets_at": "2026-07-16T19:40:00.124616+00:00",
+  "scraped_at": "2026-07-16T17:59:02.479711+00:00",
+  "weekly_utilization_pct": 7.0,
+  "weekly_resets_at": "2026-07-23T15:00:00.494378+00:00",
+  "session_utilization_pct": 85.0,
+  "session_resets_at": "2026-07-16T19:40:00.494353+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 76.0,
-      "resets_at": "2026-07-16T19:40:00.124616+00:00",
+      "utilization": 85.0,
+      "resets_at": "2026-07-16T19:40:00.494353+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 6.0,
-      "resets_at": "2026-07-23T15:00:00.124645+00:00",
+      "utilization": 7.0,
+      "resets_at": "2026-07-23T15:00:00.494378+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -45,27 +45,27 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 76,
+        "percent": 85,
         "severity": "warning",
-        "resets_at": "2026-07-16T19:40:00.124616+00:00",
+        "resets_at": "2026-07-16T19:40:00.494353+00:00",
         "scope": null,
         "is_active": true
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 6,
+        "percent": 7,
         "severity": "normal",
-        "resets_at": "2026-07-23T15:00:00.124645+00:00",
+        "resets_at": "2026-07-23T15:00:00.494378+00:00",
         "scope": null,
         "is_active": false
       },
       {
         "kind": "weekly_scoped",
         "group": "weekly",
-        "percent": 6,
+        "percent": 8,
         "severity": "normal",
-        "resets_at": "2026-07-23T15:00:00.125120+00:00",
+        "resets_at": "2026-07-23T15:00:00.494722+00:00",
         "scope": {
           "model": {
             "id": null,
