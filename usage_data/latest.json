@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-07-16T09:59:02.541219+00:00",
-  "weekly_utilization_pct": 14.0,
-  "weekly_resets_at": "2026-07-16T14:59:59.859536+00:00",
-  "session_utilization_pct": 36.0,
-  "session_resets_at": "2026-07-16T14:39:59.859512+00:00",
+  "scraped_at": "2026-07-16T10:59:02.231101+00:00",
+  "weekly_utilization_pct": 15.0,
+  "weekly_resets_at": "2026-07-16T14:59:59.813539+00:00",
+  "session_utilization_pct": 47.0,
+  "session_resets_at": "2026-07-16T14:39:59.813515+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 36.0,
-      "resets_at": "2026-07-16T14:39:59.859512+00:00",
+      "utilization": 47.0,
+      "resets_at": "2026-07-16T14:39:59.813515+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 14.0,
-      "resets_at": "2026-07-16T14:59:59.859536+00:00",
+      "utilization": 15.0,
+      "resets_at": "2026-07-16T14:59:59.813539+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -45,27 +45,27 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 36,
+        "percent": 47,
         "severity": "normal",
-        "resets_at": "2026-07-16T14:39:59.859512+00:00",
+        "resets_at": "2026-07-16T14:39:59.813515+00:00",
         "scope": null,
         "is_active": true
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 14,
+        "percent": 15,
         "severity": "normal",
-        "resets_at": "2026-07-16T14:59:59.859536+00:00",
+        "resets_at": "2026-07-16T14:59:59.813539+00:00",
         "scope": null,
         "is_active": false
       },
       {
         "kind": "weekly_scoped",
         "group": "weekly",
-        "percent": 14,
+        "percent": 16,
         "severity": "normal",
-        "resets_at": "2026-07-16T14:59:59.859918+00:00",
+        "resets_at": "2026-07-16T14:59:59.813873+00:00",
         "scope": {
           "model": {
             "id": null,
