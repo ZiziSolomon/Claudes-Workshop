@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-07-16T00:59:01.820602+00:00",
-  "weekly_utilization_pct": 42.0,
-  "weekly_resets_at": "2026-07-16T14:59:59.754357+00:00",
-  "session_utilization_pct": 66.0,
-  "session_resets_at": "2026-07-16T04:49:59.754330+00:00",
+  "scraped_at": "2026-07-16T01:59:02.137050+00:00",
+  "weekly_utilization_pct": 45.0,
+  "weekly_resets_at": "2026-07-16T15:00:00.147434+00:00",
+  "session_utilization_pct": 100.0,
+  "session_resets_at": "2026-07-16T04:50:00.147412+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 66.0,
-      "resets_at": "2026-07-16T04:49:59.754330+00:00",
+      "utilization": 100.0,
+      "resets_at": "2026-07-16T04:50:00.147412+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 42.0,
-      "resets_at": "2026-07-16T14:59:59.754357+00:00",
+      "utilization": 45.0,
+      "resets_at": "2026-07-16T15:00:00.147434+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -45,18 +45,18 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 66,
-        "severity": "normal",
-        "resets_at": "2026-07-16T04:49:59.754330+00:00",
+        "percent": 100,
+        "severity": "critical",
+        "resets_at": "2026-07-16T04:50:00.147412+00:00",
         "scope": null,
         "is_active": true
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 42,
+        "percent": 45,
         "severity": "normal",
-        "resets_at": "2026-07-16T14:59:59.754357+00:00",
+        "resets_at": "2026-07-16T15:00:00.147434+00:00",
         "scope": null,
         "is_active": false
       },
@@ -65,7 +65,7 @@
         "group": "weekly",
         "percent": 52,
         "severity": "normal",
-        "resets_at": "2026-07-16T14:59:59.754687+00:00",
+        "resets_at": "2026-07-16T15:00:00.147776+00:00",
         "scope": {
           "model": {
             "id": null,
