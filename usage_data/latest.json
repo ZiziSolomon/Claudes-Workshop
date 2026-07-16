@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-07-16T14:59:02.142882+00:00",
-  "weekly_utilization_pct": 22.0,
-  "weekly_resets_at": "2026-07-16T14:59:59.977209+00:00",
-  "session_utilization_pct": 21.0,
-  "session_resets_at": "2026-07-16T19:39:59.977187+00:00",
+  "scraped_at": "2026-07-16T15:59:02.183101+00:00",
+  "weekly_utilization_pct": 5.0,
+  "weekly_resets_at": "2026-07-23T15:00:00.083215+00:00",
+  "session_utilization_pct": 64.0,
+  "session_resets_at": "2026-07-16T19:40:00.083168+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 21.0,
-      "resets_at": "2026-07-16T19:39:59.977187+00:00",
+      "utilization": 64.0,
+      "resets_at": "2026-07-16T19:40:00.083168+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 22.0,
-      "resets_at": "2026-07-16T14:59:59.977209+00:00",
+      "utilization": 5.0,
+      "resets_at": "2026-07-23T15:00:00.083215+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -45,27 +45,27 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 21,
+        "percent": 64,
         "severity": "normal",
-        "resets_at": "2026-07-16T19:39:59.977187+00:00",
+        "resets_at": "2026-07-16T19:40:00.083168+00:00",
         "scope": null,
-        "is_active": false
+        "is_active": true
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 22,
+        "percent": 5,
         "severity": "normal",
-        "resets_at": "2026-07-16T14:59:59.977209+00:00",
+        "resets_at": "2026-07-23T15:00:00.083215+00:00",
         "scope": null,
         "is_active": false
       },
       {
         "kind": "weekly_scoped",
         "group": "weekly",
-        "percent": 26,
+        "percent": 4,
         "severity": "normal",
-        "resets_at": "2026-07-16T14:59:59.977524+00:00",
+        "resets_at": "2026-07-23T15:00:00.083465+00:00",
         "scope": {
           "model": {
             "id": null,
@@ -73,7 +73,7 @@
           },
           "surface": null
         },
-        "is_active": true
+        "is_active": false
       }
     ],
     "spend": {
