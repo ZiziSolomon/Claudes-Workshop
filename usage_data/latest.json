@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-07-18T23:59:02.033453+00:00",
-  "weekly_utilization_pct": 11.0,
-  "weekly_resets_at": "2026-07-23T15:00:00.368061+00:00",
-  "session_utilization_pct": 17.0,
-  "session_resets_at": "2026-07-19T03:50:00.368043+00:00",
+  "scraped_at": "2026-07-20T11:59:14.815930+00:00",
+  "weekly_utilization_pct": 12.0,
+  "weekly_resets_at": "2026-07-23T15:00:00.133104+00:00",
+  "session_utilization_pct": 0.0,
+  "session_resets_at": null,
   "raw": {
     "five_hour": {
-      "utilization": 17.0,
-      "resets_at": "2026-07-19T03:50:00.368043+00:00",
+      "utilization": 0.0,
+      "resets_at": null,
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 11.0,
-      "resets_at": "2026-07-23T15:00:00.368061+00:00",
+      "utilization": 12.0,
+      "resets_at": "2026-07-23T15:00:00.133104+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -45,27 +45,27 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 17,
+        "percent": 0,
         "severity": "normal",
-        "resets_at": "2026-07-19T03:50:00.368043+00:00",
+        "resets_at": null,
         "scope": null,
-        "is_active": true
+        "is_active": false
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 11,
+        "percent": 12,
         "severity": "normal",
-        "resets_at": "2026-07-23T15:00:00.368061+00:00",
+        "resets_at": "2026-07-23T15:00:00.133104+00:00",
         "scope": null,
         "is_active": false
       },
       {
         "kind": "weekly_scoped",
         "group": "weekly",
-        "percent": 17,
+        "percent": 18,
         "severity": "normal",
-        "resets_at": "2026-07-23T15:00:00.368339+00:00",
+        "resets_at": "2026-07-23T15:00:00.133509+00:00",
         "scope": {
           "model": {
             "id": null,
@@ -73,7 +73,7 @@
           },
           "surface": null
         },
-        "is_active": false
+        "is_active": true
       }
     ],
     "spend": {
