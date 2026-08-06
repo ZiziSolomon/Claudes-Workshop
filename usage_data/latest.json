@@ -1,7 +1,7 @@
 {
-  "scraped_at": "2026-08-06T09:59:03.355161+00:00",
+  "scraped_at": "2026-08-06T10:59:09.288511+00:00",
   "weekly_utilization_pct": 9.0,
-  "weekly_resets_at": "2026-08-06T15:00:00.298966+00:00",
+  "weekly_resets_at": "2026-08-06T14:59:59.844465+00:00",
   "session_utilization_pct": 0.0,
   "session_resets_at": null,
   "raw": {
@@ -14,7 +14,7 @@
     },
     "seven_day": {
       "utilization": 9.0,
-      "resets_at": "2026-08-06T15:00:00.298966+00:00",
+      "resets_at": "2026-08-06T14:59:59.844465+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -59,7 +59,7 @@
         "group": "weekly",
         "percent": 9,
         "severity": "normal",
-        "resets_at": "2026-08-06T15:00:00.298966+00:00",
+        "resets_at": "2026-08-06T14:59:59.844465+00:00",
         "scope": null,
         "is_active": true
       }
