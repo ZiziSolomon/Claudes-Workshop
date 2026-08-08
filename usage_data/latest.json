@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-08-07T20:59:02.121353+00:00",
-  "weekly_utilization_pct": 4.0,
-  "weekly_resets_at": "2026-08-13T15:00:00.402607+00:00",
-  "session_utilization_pct": 5.0,
-  "session_resets_at": "2026-08-07T23:50:00.402583+00:00",
+  "scraped_at": "2026-08-08T10:59:03.392267+00:00",
+  "weekly_utilization_pct": 5.0,
+  "weekly_resets_at": "2026-08-13T15:00:00.228763+00:00",
+  "session_utilization_pct": 7.0,
+  "session_resets_at": "2026-08-08T15:40:00.228744+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 5.0,
-      "resets_at": "2026-08-07T23:50:00.402583+00:00",
+      "utilization": 7.0,
+      "resets_at": "2026-08-08T15:40:00.228744+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 4.0,
-      "resets_at": "2026-08-13T15:00:00.402607+00:00",
+      "utilization": 5.0,
+      "resets_at": "2026-08-13T15:00:00.228763+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -27,7 +27,13 @@
     "tangelo": null,
     "iguana_necktie": null,
     "omelette_promotional": null,
-    "nimbus_quill": null,
+    "nimbus_quill": {
+      "utilization": 0.0,
+      "resets_at": null,
+      "limit_dollars": null,
+      "used_dollars": null,
+      "remaining_dollars": null
+    },
     "cinder_cove": null,
     "amber_ladder": null,
     "extra_usage": {
@@ -48,18 +54,18 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 5,
+        "percent": 7,
         "severity": "normal",
-        "resets_at": "2026-08-07T23:50:00.402583+00:00",
+        "resets_at": "2026-08-08T15:40:00.228744+00:00",
         "scope": null,
         "is_active": true
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 4,
+        "percent": 5,
         "severity": "normal",
-        "resets_at": "2026-08-13T15:00:00.402607+00:00",
+        "resets_at": "2026-08-13T15:00:00.228763+00:00",
         "scope": null,
         "is_active": false
       }
