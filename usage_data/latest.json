@@ -1,20 +1,20 @@
 {
-  "scraped_at": "2026-08-23T16:59:13.152572+00:00",
-  "weekly_utilization_pct": 11.0,
-  "weekly_resets_at": "2026-08-27T15:00:00.169869+00:00",
+  "scraped_at": "2026-08-23T17:59:02.559684+00:00",
+  "weekly_utilization_pct": 21.0,
+  "weekly_resets_at": "2026-08-27T15:00:00.416689+00:00",
   "session_utilization_pct": 100.0,
-  "session_resets_at": "2026-08-23T17:20:00.169841+00:00",
+  "session_resets_at": "2026-08-23T22:20:00.416667+00:00",
   "raw": {
     "five_hour": {
       "utilization": 100.0,
-      "resets_at": "2026-08-23T17:20:00.169841+00:00",
+      "resets_at": "2026-08-23T22:20:00.416667+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
     },
     "seven_day": {
-      "utilization": 11.0,
-      "resets_at": "2026-08-27T15:00:00.169869+00:00",
+      "utilization": 21.0,
+      "resets_at": "2026-08-27T15:00:00.416689+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null
@@ -37,15 +37,15 @@
     "cinder_cove": null,
     "amber_ladder": null,
     "extra_usage": {
-      "is_enabled": false,
-      "monthly_limit": 5000,
-      "used_credits": 5233.0,
-      "utilization": 100.0,
+      "is_enabled": true,
+      "monthly_limit": 7500,
+      "used_credits": 7186.0,
+      "utilization": 95.81333333333333,
       "currency": "GBP",
       "decimal_places": 2,
-      "disabled_reason": "org_level_disabled_until",
+      "disabled_reason": null,
       "user_disabled": false,
-      "spend_limit_reached": true,
+      "spend_limit_reached": false,
       "credits_ever_enabled": true,
       "daily": null,
       "weekly": null
@@ -56,38 +56,38 @@
         "group": "session",
         "percent": 100,
         "severity": "critical",
-        "resets_at": "2026-08-23T17:20:00.169841+00:00",
+        "resets_at": "2026-08-23T22:20:00.416667+00:00",
         "scope": null,
         "is_active": true
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 11,
+        "percent": 21,
         "severity": "normal",
-        "resets_at": "2026-08-27T15:00:00.169869+00:00",
+        "resets_at": "2026-08-27T15:00:00.416689+00:00",
         "scope": null,
         "is_active": false
       }
     ],
     "spend": {
       "used": {
-        "amount_minor": 5233,
+        "amount_minor": 7186,
         "currency": "GBP",
         "exponent": 2
       },
       "limit": {
-        "amount_minor": 5000,
+        "amount_minor": 7500,
         "currency": "GBP",
         "exponent": 2
       },
-      "percent": 100,
+      "percent": 96,
       "severity": "critical",
-      "enabled": false,
-      "disabled_reason": "org_level_disabled_until",
+      "enabled": true,
+      "disabled_reason": null,
       "cap": {
         "money": {
-          "amount_minor": 5000,
+          "amount_minor": 7500,
           "currency": "GBP",
           "exponent": 2
         },
