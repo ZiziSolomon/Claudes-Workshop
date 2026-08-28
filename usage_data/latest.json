@@ -1,23 +1,25 @@
 {
-  "scraped_at": "2026-08-28T15:59:02.567245+00:00",
-  "weekly_utilization_pct": 15.0,
-  "weekly_resets_at": "2026-09-03T14:59:59.935657+00:00",
-  "session_utilization_pct": 27.0,
-  "session_resets_at": "2026-08-28T19:49:59.935634+00:00",
+  "scraped_at": "2026-08-28T16:59:02.619738+00:00",
+  "weekly_utilization_pct": 16.0,
+  "weekly_resets_at": "2026-09-03T15:00:00.033812+00:00",
+  "session_utilization_pct": 35.0,
+  "session_resets_at": "2026-08-28T19:50:00.033780+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 27.0,
-      "resets_at": "2026-08-28T19:49:59.935634+00:00",
+      "utilization": 35.0,
+      "resets_at": "2026-08-28T19:50:00.033780+00:00",
       "limit_dollars": null,
       "used_dollars": null,
-      "remaining_dollars": null
+      "remaining_dollars": null,
+      "locked_reason": null
     },
     "seven_day": {
-      "utilization": 15.0,
-      "resets_at": "2026-09-03T14:59:59.935657+00:00",
+      "utilization": 16.0,
+      "resets_at": "2026-09-03T15:00:00.033812+00:00",
       "limit_dollars": null,
       "used_dollars": null,
-      "remaining_dollars": null
+      "remaining_dollars": null,
+      "locked_reason": null
     },
     "seven_day_oauth_apps": null,
     "seven_day_opus": null,
@@ -32,7 +34,8 @@
       "resets_at": null,
       "limit_dollars": null,
       "used_dollars": null,
-      "remaining_dollars": null
+      "remaining_dollars": null,
+      "locked_reason": null
     },
     "cinder_cove": null,
     "amber_ladder": null,
@@ -55,18 +58,18 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 27,
+        "percent": 35,
         "severity": "normal",
-        "resets_at": "2026-08-28T19:49:59.935634+00:00",
+        "resets_at": "2026-08-28T19:50:00.033780+00:00",
         "scope": null,
         "is_active": true
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 15,
+        "percent": 16,
         "severity": "normal",
-        "resets_at": "2026-09-03T14:59:59.935657+00:00",
+        "resets_at": "2026-09-03T15:00:00.033812+00:00",
         "scope": null,
         "is_active": false
       }
