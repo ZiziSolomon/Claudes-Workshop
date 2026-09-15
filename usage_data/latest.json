@@ -1,21 +1,21 @@
 {
-  "scraped_at": "2026-09-14T12:59:02.147511+00:00",
-  "weekly_utilization_pct": 4.0,
-  "weekly_resets_at": "2026-09-17T14:59:59.956483+00:00",
-  "session_utilization_pct": 31.0,
-  "session_resets_at": "2026-09-14T13:09:59.956459+00:00",
+  "scraped_at": "2026-09-15T07:59:26.136564+00:00",
+  "weekly_utilization_pct": 5.0,
+  "weekly_resets_at": "2026-09-17T14:59:59.760693+00:00",
+  "session_utilization_pct": 4.0,
+  "session_resets_at": "2026-09-15T12:39:59.760673+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 31.0,
-      "resets_at": "2026-09-14T13:09:59.956459+00:00",
+      "utilization": 4.0,
+      "resets_at": "2026-09-15T12:39:59.760673+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
       "locked_reason": null
     },
     "seven_day": {
-      "utilization": 4.0,
-      "resets_at": "2026-09-17T14:59:59.956483+00:00",
+      "utilization": 5.0,
+      "resets_at": "2026-09-17T14:59:59.760693+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
@@ -42,6 +42,7 @@
     "harbor_lantern": null,
     "amber_ladder": null,
     "juniper_tide": null,
+    "cedar_ember": null,
     "extra_usage": {
       "is_enabled": false,
       "monthly_limit": null,
@@ -60,20 +61,20 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 31,
+        "percent": 4,
         "severity": "normal",
-        "resets_at": "2026-09-14T13:09:59.956459+00:00",
+        "resets_at": "2026-09-15T12:39:59.760673+00:00",
         "scope": null,
-        "is_active": true
+        "is_active": false
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 4,
+        "percent": 5,
         "severity": "normal",
-        "resets_at": "2026-09-17T14:59:59.956483+00:00",
+        "resets_at": "2026-09-17T14:59:59.760693+00:00",
         "scope": null,
-        "is_active": false
+        "is_active": true
       }
     ],
     "spend": {
@@ -96,8 +97,8 @@
     },
     "member_dashboard_available": false,
     "seven_day_breakdown": {
-      "as_of": "2026-09-14T12:59:02.984186+00:00",
-      "window_started_at": "2026-09-10T14:59:59.956483+00:00",
+      "as_of": "2026-09-15T07:59:27.783121+00:00",
+      "window_started_at": "2026-09-10T14:59:59.760693+00:00",
       "rows": [
         {
           "key": "claude_code",
