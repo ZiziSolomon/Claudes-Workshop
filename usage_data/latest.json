@@ -1,5 +1,5 @@
 {
-  "scraped_at": "2026-09-18T08:59:12.373273+00:00",
+  "scraped_at": "2026-09-19T06:59:04.210511+00:00",
   "weekly_utilization_pct": 0.0,
   "weekly_resets_at": "2026-09-24T15:00:00+00:00",
   "session_utilization_pct": 0.0,
@@ -40,6 +40,7 @@
     "cinder_cove": null,
     "copper_kite": null,
     "harbor_lantern": null,
+    "wattle_ember": null,
     "amber_ladder": null,
     "juniper_tide": null,
     "cedar_ember": null,
