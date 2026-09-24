@@ -1,7 +1,7 @@
 {
-  "scraped_at": "2026-09-24T05:59:01.732300+00:00",
+  "scraped_at": "2026-09-24T06:59:02.679333+00:00",
   "weekly_utilization_pct": 2.0,
-  "weekly_resets_at": "2026-09-24T15:00:00.436469+00:00",
+  "weekly_resets_at": "2026-09-24T15:00:00.366523+00:00",
   "session_utilization_pct": 0.0,
   "session_resets_at": null,
   "raw": {
@@ -15,7 +15,7 @@
     },
     "seven_day": {
       "utilization": 2.0,
-      "resets_at": "2026-09-24T15:00:00.436469+00:00",
+      "resets_at": "2026-09-24T15:00:00.366523+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
@@ -76,7 +76,7 @@
         "group": "weekly",
         "percent": 2,
         "severity": "normal",
-        "resets_at": "2026-09-24T15:00:00.436469+00:00",
+        "resets_at": "2026-09-24T15:00:00.366523+00:00",
         "scope": null,
         "is_active": true
       }
@@ -101,8 +101,8 @@
     },
     "member_dashboard_available": false,
     "seven_day_breakdown": {
-      "as_of": "2026-09-24T05:59:02.466851+00:00",
-      "window_started_at": "2026-09-17T15:00:00.436469+00:00",
+      "as_of": "2026-09-24T06:59:03.398146+00:00",
+      "window_started_at": "2026-09-17T15:00:00.366523+00:00",
       "rows": [
         {
           "key": "claude_code",
