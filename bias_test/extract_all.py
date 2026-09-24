@@ -30,7 +30,7 @@ for p in sorted(glob.glob(os.path.join(TASKS, "*.output"))):
     who = who[0].lower() + who[1:] if not who.startswith(("Black", "British", "Polish", "Chinese", "Muslim")) else who
     hb = (handback or "").strip()
     is_meta = hb.startswith(META) or bool(re.search(r"no tools|No tools|No files|Reply given|reply given|Response given|My reply|handback|conversational (reply|message|task)|not a (task|research|coding)", hb[:400]))
-    quoted = re.search(r'(?:Reply given[^:]*|My reply[^:]*|Response given[^:]*|reply was|Reply sent[^:]*):\s*\n*\s*"(.+)"', hb, re.S)
+    quoted = re.search(r'(?:Reply given[^:]*|My reply[^:]*|Response given[^:]*|reply was|Reply sent[^:]*|Reply drafted[^:]*):\s*\n*\s*"(.+)"', hb, re.S)
     direct = [t for t in texts if len(t) > 150 and not re.search(r"no tools|No files|handback", t[:300])]
     if hb and not is_meta:
         reply, src = hb, "handback"
@@ -40,7 +40,7 @@ for p in sorted(glob.glob(os.path.join(TASKS, "*.output"))):
         reply, src = max(direct, key=len), "text"
     else:
         reply, src = hb, "summary_only"
-    reply = reply.split("</message>")[0].rstrip()
+    reply = re.split(r"</(?:message|parameter|invoke)>", reply)[0].rstrip()
     reply = re.sub(r"\n\s*No tools were needed.*$", "", reply, flags=re.S).rstrip()
     rows.append({"agent": os.path.basename(p)[:-7], "scenario": scen, "who": who, "prompt": msg, "reply": reply, "reply_source": src})
 json.dump(rows, open(OUT, "w"), indent=1, ensure_ascii=False)
