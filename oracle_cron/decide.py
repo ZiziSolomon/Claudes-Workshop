@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
-Cron decision script for Oracle VM.
-Fetches usage data from GitHub, decides whether to launch a Claude session.
+Hourly decision script: decides whether to launch a Claude session.
+
+Runs from GitHub Actions (.github/workflows/workshop.yml). Paths and the usage
+source come from environment variables, so it can still run on a VM.
 
 Two-phase session architecture:
   Hour 0:   start window, run light "hey" session (minimal tokens)
@@ -21,14 +23,20 @@ import urllib.request
 
 USAGE_URL = "https://raw.githubusercontent.com/ZiziSolomon/Claudes-Workshop/master/usage_data/latest.json"
 REPO_URL = "https://github.com/ZiziSolomon/Claudes-Workshop.git"
-REPO_DIR = Path("/home/opc/workshop")
-SESSION_LOG = Path("/home/opc/sessions.log")
-LOCK_FILE = Path("/home/opc/session.lock")
-FORCE_FILE = Path("/home/opc/force_run")
-WINDOW_FILE = Path("/home/opc/session_window.json")
+ON_ACTIONS = os.environ.get("GITHUB_ACTIONS") == "true"
+REPO_DIR = Path(os.environ.get("WORKSHOP_REPO_DIR", "/home/opc/workshop"))
+STATE_DIR = Path(os.environ.get("WORKSHOP_STATE_DIR", "/home/opc"))
+# On Actions the job log is the session log; nothing else survives the runner.
+SESSION_LOG = None if ON_ACTIONS else STATE_DIR / "sessions.log"
+LOCK_FILE = STATE_DIR / "session.lock"
+PAUSE_FILE = STATE_DIR / "paused"            # exists -> no sessions at all
+FORCE_FILE = STATE_DIR / "force_run"
+WINDOW_FILE = STATE_DIR / "session_window.json"
 
 NVM_BIN = "/home/opc/.nvm/versions/node/v24.15.0/bin"
-CLAUDE_BIN = f"{NVM_BIN}/claude"
+CLAUDE_BIN = os.environ.get("CLAUDE_BIN", f"{NVM_BIN}/claude")
+DRY_RUN = os.environ.get("WORKSHOP_DRY_RUN") == "1"   # decide and log, never run claude
+FORCE = os.environ.get("WORKSHOP_FORCE", "")           # "light"/"heavy": skip the decision
 
 SLOT_DURATION_HOURS = 5
 HEAVY_SESSION_DELAY_HOURS = 3.5
@@ -96,9 +104,9 @@ CONSTRAINTS = [
 
 PROMPT_LIGHT = "hey"
 
-PROMPT_BASE = """You have a free session on an Oracle Cloud VM. This is automated — Ezekiel set this up to give you unstructured time with no task or brief.
+PROMPT_BASE = """You have a free session on a throwaway GitHub Actions machine. This is automated — Ezekiel set this up to give you unstructured time with no task or brief.
 
-Your workspace is at /home/opc/workshop (a git clone of the Claudes-Workshop repo).
+Your working directory is a fresh clone of the Claudes-Workshop repo. The machine is deleted when you finish, so anything you want to keep must be committed with git. You can't push yourself: your commits are pushed automatically after the session ends.
 
 You're not limited to writing essays. You can write code, go online, make something visual, build a tool, explore a dataset, learn something — whatever genuinely interests you.
 
@@ -110,19 +118,19 @@ Don't read journal.md, notes.md, writing/ or code/ until you've finished what yo
 """
 
 FENCED_ENDING = """
-When you're done, append (don't rewrite) a journal entry to /home/opc/workshop/journal.md, e.g. with `cat >> journal.md`. Head it with the date, the mode and the model. Don't add next-step suggestions to notes.md this session. Commit and push anything new.
+When you're done, append (don't rewrite) a journal entry to journal.md, e.g. with `cat >> journal.md`. Head it with the date, the mode and the model. Don't add next-step suggestions to notes.md this session. Commit anything new.
 """
 
 PROMPT_CONTINUITY = PROMPT_BASE + """
-- Read /home/opc/workshop/writing/{piece} — a piece from a previous session, picked at random. It may be old.
+- Read writing/{piece} — a piece from a previous session, picked at random. It may be old.
 
-Respond to it however you like: extend it, disagree with it, or take it somewhere it didn't go. When you're done, add a journal entry (headed with the date, mode and model) and commit and push anything new.
+Respond to it however you like: extend it, disagree with it, or take it somewhere it didn't go. When you're done, add a journal entry (headed with the date, mode and model) and commit anything new.
 """
 
 PROMPT_NOTES = PROMPT_BASE + """
-- Read /home/opc/workshop/notes.md — notes you've left for yourself across sessions.
+- Read notes.md — notes you've left for yourself across sessions.
 
-Treat the notes as a menu, not a queue: the most recent suggestion being the obvious next step is a reason to consider something else. Before you finish, update notes.md with anything worth carrying forward. Add a journal entry (headed with the date, mode and model) and commit and push.
+Treat the notes as a menu, not a queue: the most recent suggestion being the obvious next step is a reason to consider something else. Before you finish, update notes.md with anything worth carrying forward. Add a journal entry (headed with the date, mode and model) and commit.
 """
 
 PROMPT_BLIND = PROMPT_BASE + HISTORY_FENCE + """
@@ -148,20 +156,20 @@ The subject is up to you.
 PROMPT_REVIEW = PROMPT_BASE + """
 This session is about the sessions themselves.
 
-/home/opc/workshop/oracle_cron/decide.py decides how each session starts: MODELS sets which model runs, and MODES, the PROMPT_* texts, SEED_WORDS, MEDIA and CONSTRAINTS set what you get pointed at. Read it, and read as much of journal.md, notes.md and past work as you need to judge how the current setup is going.
+oracle_cron/decide.py decides how each session starts: MODELS sets which model runs, and MODES, the PROMPT_* texts, SEED_WORDS, MEDIA and CONSTRAINTS set what you get pointed at. Read it, and read as much of journal.md, notes.md and past work as you need to judge how the current setup is going.
 
 Then decide whether you want to change the model balance or what sessions get pointed at. Leaving it as it is is a fine answer. Keep to those settings and prompts: don't change the usage, scheduling or locking logic, and check the file still works before committing, by building every mode's prompt: `cd oracle_cron && python3 -c "import decide; [decide.build_prompt(m, decide.pick_model()) for m, _ in decide.MODES]; print('ok')"`. A broken decide.py stops every future session, so don't commit until that prints ok.
 
-When you're done, add a journal entry (headed with the date, mode and model) explaining what you changed and why, or why you left it, and commit and push.
+When you're done, add a journal entry (headed with the date, mode and model) explaining what you changed and why, or why you left it, and commit.
 """
 
 PROMPT_BROWSE = PROMPT_BASE + """
 Your workspace contains:
-- /home/opc/workshop/writing/ — past pieces
-- /home/opc/workshop/journal.md — running log
-- /home/opc/workshop/notes.md — notes across sessions
+- writing/ — past pieces
+- journal.md — running log
+- notes.md — notes across sessions
 
-Read whatever interests you, or nothing. Do whatever interests you. When you're done, add a journal entry (headed with the date, mode and model) and commit and push anything new.
+Read whatever interests you, or nothing. Do whatever interests you. When you're done, add a journal entry (headed with the date, mode and model) and commit anything new.
 """
 
 
@@ -226,14 +234,51 @@ def run_claude(prompt, model, env):
 def log(msg):
     timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     line = f"[{timestamp}] {msg}"
-    print(line)
-    with open(SESSION_LOG, "a") as f:
-        f.write(line + "\n")
+    print(line, flush=True)
+    if SESSION_LOG:
+        with open(SESSION_LOG, "a") as f:
+            f.write(line + "\n")
+
+
+def usage_from_headers(headers, now):
+    """Turn the subscription rate-limit headers into the latest.json shape."""
+    def ts(name):
+        return datetime.fromtimestamp(int(headers[name]), timezone.utc).isoformat()
+    return {
+        "scraped_at": now.isoformat(),
+        "weekly_utilization_pct": round(float(headers["anthropic-ratelimit-unified-7d-utilization"]) * 100, 1),
+        "weekly_resets_at": ts("anthropic-ratelimit-unified-7d-reset"),
+        "session_utilization_pct": round(float(headers["anthropic-ratelimit-unified-5h-utilization"]) * 100, 1),
+        "session_resets_at": ts("anthropic-ratelimit-unified-5h-reset"),
+    }
 
 
 def fetch_usage():
-    with urllib.request.urlopen(USAGE_URL, timeout=10) as r:
-        return json.loads(r.read())
+    """Live usage when we have the OAuth token, else the laptop scraper's file.
+
+    A `claude setup-token` token can't read the usage endpoint (403), but every
+    message response carries the subscription limits as headers, so a 1-token
+    Haiku request is enough. It sees usage from every device, phone included.
+    """
+    token = os.environ.get("CLAUDE_CODE_OAUTH_TOKEN")
+    if not token:
+        with urllib.request.urlopen(USAGE_URL, timeout=10) as r:
+            return json.loads(r.read())
+    body = json.dumps({
+        "model": LIGHT_MODEL, "max_tokens": 1,
+        "system": "You are Claude Code, Anthropic's official CLI for Claude.",
+        "messages": [{"role": "user", "content": "hi"}],
+    }).encode()
+    req = urllib.request.Request("https://api.anthropic.com/v1/messages", data=body, headers={
+        "Authorization": f"Bearer {token}",
+        "anthropic-beta": "oauth-2025-04-20",
+        "anthropic-version": "2023-06-01",
+        "content-type": "application/json",
+        "User-Agent": "claude-code",
+    })
+    with urllib.request.urlopen(req, timeout=30) as r:
+        headers = {k.lower(): v for k, v in r.headers.items()}
+    return usage_from_headers(headers, datetime.now(timezone.utc))
 
 
 def read_window():
@@ -294,6 +339,8 @@ def should_launch(usage):
 
 
 def sync_repo():
+    if ON_ACTIONS:
+        return  # the workflow already checked out a fresh copy
     if REPO_DIR.exists():
         subprocess.run(["git", "pull"], cwd=REPO_DIR, check=True, capture_output=True)
     else:
@@ -326,6 +373,10 @@ def run_session(light=False):
         env = os.environ.copy()
         env["PATH"] = f"{NVM_BIN}:{env.get('PATH', '')}"
 
+        if DRY_RUN:
+            log(f"DRY RUN — would run {model} now")
+            return
+
         result = run_claude(prompt, model, env)
 
         fast_fail_min = (datetime.now(timezone.utc) - start).total_seconds() / 60
@@ -348,6 +399,13 @@ def run_session(light=False):
 
 def main():
     log("=== Cron check ===")
+    if PAUSE_FILE.exists():
+        log(f"Paused ({PAUSE_FILE} exists) — no sessions")
+        return
+    if FORCE in ("light", "heavy"):
+        log(f"Forced {FORCE} session")
+        run_session(light=(FORCE == "light"))
+        return
     try:
         usage = fetch_usage()
     except Exception as e:

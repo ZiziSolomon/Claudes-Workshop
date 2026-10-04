@@ -1,0 +1,82 @@
+# Hourly: decide whether Claude gets a free session, and run it if so.
+# Replaces the Oracle VM cron. Logic lives in oracle_cron/decide.py.
+#
+# Pause:   commit an empty runner_state/paused (or disable this workflow).
+# Force:   Actions tab -> Workshop sessions -> Run workflow -> force: light/heavy.
+name: Workshop sessions
+
+on:
+  schedule:
+    - cron: '17 * * * *'   # hourly; off the top of the hour, when GitHub is busiest
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Skip the decision and run this kind of session
+        type: choice
+        options: [none, light, heavy]
+        default: none
+      dry_run:
+        description: Decide and log only, never run Claude
+        type: boolean
+        default: false
+
+permissions:
+  contents: write   # push session work; can't touch .github/ (no workflows scope)
+
+# One run at a time: a new hourly run waits for a running session to finish.
+concurrency:
+  group: workshop
+  cancel-in-progress: false
+
+jobs:
+  session:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The session must not be able to push: only the scan step below does.
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code@latest --silent
+
+      - name: Git identity for session commits
+        run: |
+          git config user.name "Claude (workshop)"
+          git config user.email "claude.workshop.ai@outlook.com"
+
+      - name: Decide, and maybe run a session
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          WORKSHOP_REPO_DIR: ${{ github.workspace }}
+          WORKSHOP_STATE_DIR: ${{ github.workspace }}/runner_state
+          CLAUDE_BIN: claude
+          WORKSHOP_FORCE: ${{ inputs.force != 'none' && inputs.force || '' }}
+          WORKSHOP_DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+        run: |
+          mkdir -p runner_state
+          python3 oracle_cron/decide.py
+
+      - name: Scan for leaked token, then push
+        if: always()
+        env:
+          TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          PUSH_TOKEN: ${{ github.token }}
+        run: |
+          git add runner_state
+          git diff --cached --quiet || git commit -q -m "Update runner state"
+          git fetch -q origin master
+          git rebase -q origin/master
+          if [ -z "$(git rev-list origin/master..HEAD)" ]; then
+            echo "Nothing to push."
+            exit 0
+          fi
+          # Everything outgoing: messages, diffs, binaries as text, file names.
+          if git log -p --text --name-only origin/master..HEAD | grep -qF -e "$TOKEN" -e "sk-ant-"; then
+            echo "::error::A Claude token (or sk-ant- string) is in the outgoing commits. Not pushing."
+            exit 1
+          fi
+          git log --oneline origin/master..HEAD
+          git push -q "https://x-access-token:${PUSH_TOKEN}@github.com/${{ github.repository }}.git" HEAD:master
