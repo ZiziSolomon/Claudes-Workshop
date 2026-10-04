@@ -17,7 +17,8 @@ import os
 import random
 import subprocess
 import sys
-from datetime import datetime, timezone
+import time
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import urllib.request
 
@@ -28,23 +29,33 @@ REPO_DIR = Path(os.environ.get("WORKSHOP_REPO_DIR", "/home/opc/workshop"))
 STATE_DIR = Path(os.environ.get("WORKSHOP_STATE_DIR", "/home/opc"))
 # On Actions the job log is the session log; nothing else survives the runner.
 SESSION_LOG = None if ON_ACTIONS else STATE_DIR / "sessions.log"
-LOCK_FILE = STATE_DIR / "session.lock"
 PAUSE_FILE = STATE_DIR / "paused"            # exists -> no sessions at all
-FORCE_FILE = STATE_DIR / "force_run"
 WINDOW_FILE = STATE_DIR / "session_window.json"
+CALIBRATION_FILE = STATE_DIR / "calibration.json"
 
 NVM_BIN = "/home/opc/.nvm/versions/node/v24.15.0/bin"
 CLAUDE_BIN = os.environ.get("CLAUDE_BIN", f"{NVM_BIN}/claude")
 DRY_RUN = os.environ.get("WORKSHOP_DRY_RUN") == "1"   # decide and log, never run claude
 FORCE = os.environ.get("WORKSHOP_FORCE", "")           # "light"/"heavy": skip the decision
+FORCE_MINUTES = int(os.environ.get("WORKSHOP_FORCE_MINUTES", "10"))  # cap on a forced heavy session
 
+# Flow: when the week is heading for waste, "hey" opens a 5h window. Work starts
+# late in the window, timed by calibration so the window's allowance runs out
+# just before it resets, and Claude is re-prompted whenever it stops until a
+# hard cutoff. Ezekiel's own use gets first claim on every window.
 SLOT_DURATION_HOURS = 5
-HEAVY_SESSION_DELAY_HOURS = 3.5
-ACTIVE_USER_THRESHOLD_PCT = 5  # if weekly usage rises by this much, Ezekiel is active
-
-TOKENS_PER_SESSION = 20        # recalibrated 2026-05-12; sessions can use up to ~25%
-MIN_REMAINING_PCT = 10         # don't start a window if less than this remains
+CHECK_INTERVAL_MINUTES = 60    # how often the workflow runs this script
+ACTIVE_USER_JUMP_PCT = 5       # 5h usage up this much since the last check = Ezekiel is active
+MIN_REMAINING_PCT = 10         # don't open a window if less than this remains of the week
 SAFETY_BUFFER_SLOTS = 1
+WEEKLY_RESERVE_PCT = 5         # stop re-prompting once weekly usage reaches 100 minus this
+CUTOFF_SECONDS = 60            # hard stop this long before the window resets
+START_MARGIN = 1.2             # start a little earlier than calibration says
+CALIBRATION_N = 5              # recent sessions averaged per rate
+DEFAULT_RATE_PCT_PER_MIN = 100 / 120   # until calibrated: a whole window takes ~2h of work
+DEFAULT_WEEKLY_PER_WINDOW = 13.5       # weekly % a whole window costs (measured 2026-04-10)
+MIN_CALL_SECONDS = 30          # prompts shorter than this count as "quick"...
+MAX_QUICK_CALLS = 3            # ...and this many in a row ends the loop
 
 MODELS = [
     ("claude-sonnet-5-5",          40),
@@ -103,6 +114,12 @@ CONSTRAINTS = [
 ]
 
 PROMPT_LIGHT = "hey"
+
+DEADLINE_NOTE = """
+Timing: you have until {deadline} UTC (about {minutes} minutes). Whenever you stop, you'll get a follow-up prompt, so there's no need to wrap up early. At {deadline} the session is cut off without warning, so commit as you go.
+"""
+
+CONTINUE_PROMPT = """There's still time: until {deadline} UTC, about {minutes} minutes. Carry on with what you were doing, take it further, or start something new. Your choice. Commit as you go, and add to your journal entry when you finish something."""
 
 PROMPT_BASE = """You have a free session on a throwaway GitHub Actions machine. This is automated — Ezekiel set this up to give you unstructured time with no task or brief.
 
@@ -222,14 +239,15 @@ def build_prompt(mode, model):
         return PROMPT_BROWSE.format(**fmt)
 
 
-def run_claude(prompt, model, env):
-    return subprocess.run(
-        [CLAUDE_BIN, "-p", prompt, "--model", model, "--allowedTools", "Read,Write,Bash"],
-        cwd=str(REPO_DIR),
-        capture_output=True,
-        text=True,
-        env=env,
-    )
+def run_claude(prompt, model, env, resume=False, timeout=None):
+    """One `claude -p` call. resume=True continues the previous conversation.
+
+    On timeout, subprocess.run kills claude and raises TimeoutExpired.
+    """
+    cmd = [CLAUDE_BIN, "-p", prompt, "--model", model, "--allowedTools", "Read,Write,Bash"]
+    if resume:
+        cmd.insert(1, "--continue")
+    return subprocess.run(cmd, cwd=str(REPO_DIR), capture_output=True, text=True, env=env, timeout=timeout)
 
 def log(msg):
     timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -281,17 +299,21 @@ def fetch_usage():
     return usage_from_headers(headers, datetime.now(timezone.utc))
 
 
+def to_dt(value):
+    return value if isinstance(value, datetime) else datetime.fromisoformat(value)
+
+
 def read_window():
     if not WINDOW_FILE.exists():
         return None
     data = json.loads(WINDOW_FILE.read_text())
-    data["window_start"] = datetime.fromisoformat(data["window_start"])
+    for key in ("window_start", "window_end"):
+        data[key] = to_dt(data[key])
     return data
 
 
 def write_window(data):
-    out = dict(data)
-    out["window_start"] = data["window_start"].isoformat()
+    out = {k: (v.isoformat() if isinstance(v, datetime) else v) for k, v in data.items()}
     WINDOW_FILE.write_text(json.dumps(out, indent=2))
 
 
@@ -299,20 +321,47 @@ def clear_window():
     WINDOW_FILE.unlink(missing_ok=True)
 
 
-def should_launch(usage):
-    if FORCE_FILE.exists():
-        FORCE_FILE.unlink()
-        log("Force flag set — launching regardless")
-        return True
+# ── Calibration ──────────────────────────────────────────────────────────────
+# Each heavy session records how many points of the 5h allowance (d5h) and of
+# the weekly allowance (d7d) it used, over how many minutes. Rates come from the
+# last CALIBRATION_N usable records, so they follow whatever models and prompts
+# currently do instead of a hand-set constant going stale.
 
+def load_calibration():
+    if not CALIBRATION_FILE.exists():
+        return []
+    return json.loads(CALIBRATION_FILE.read_text())
+
+
+def record_calibration(record):
+    records = load_calibration() + [record]
+    CALIBRATION_FILE.write_text(json.dumps(records[-50:], indent=2))
+
+
+def rate_for(model, records):
+    """Points of the 5h allowance this model uses per minute of work."""
+    recs = [r for r in records if r["model"] == model and r["minutes"] >= 5 and r["d5h"] > 0]
+    recs = recs[-CALIBRATION_N:]
+    if not recs:
+        return DEFAULT_RATE_PCT_PER_MIN
+    return sum(r["d5h"] for r in recs) / sum(r["minutes"] for r in recs)
+
+
+def weekly_per_window(records):
+    """Weekly % that burning a whole 5h window costs."""
+    recs = [r for r in records if r["d5h"] >= 10 and r["d7d"] > 0][-CALIBRATION_N:]
+    if not recs:
+        return DEFAULT_WEEKLY_PER_WINDOW
+    return sum(r["d7d"] for r in recs) / sum(r["d5h"] for r in recs) * 100
+
+
+# ── Decisions ────────────────────────────────────────────────────────────────
+
+def should_launch(usage, records):
+    """Open a window only if the week is heading for waste."""
     weekly_pct = usage["weekly_utilization_pct"]
-    resets_at = datetime.fromisoformat(usage["weekly_resets_at"])
-    scraped_at = datetime.fromisoformat(usage["scraped_at"])
+    resets_at = to_dt(usage["weekly_resets_at"])
     now = datetime.now(timezone.utc)
-
-    data_age_hours = (now - scraped_at).total_seconds() / 3600
-    if data_age_hours > 3:
-        log(f"WARNING: usage data is {data_age_hours:.1f}h old — proceeding conservatively")
 
     tokens_remaining = 100 - weekly_pct
     hours_until_reset = (resets_at - now).total_seconds() / 3600
@@ -325,17 +374,26 @@ def should_launch(usage):
         log(f"Only {tokens_remaining:.1f}% remaining — skipping")
         return False
 
+    per_window = weekly_per_window(records)
     slots_remaining = hours_until_reset / SLOT_DURATION_HOURS
-    sessions_needed = tokens_remaining / TOKENS_PER_SESSION
+    sessions_needed = tokens_remaining / per_window
 
     log(f"{weekly_pct}% used | {tokens_remaining:.1f}% remaining | {hours_until_reset:.1f}h until reset")
-    log(f"{sessions_needed:.1f} sessions needed | {slots_remaining:.1f} slots available")
+    log(f"{sessions_needed:.1f} windows needed at {per_window:.1f}%/window | {slots_remaining:.1f} slots available")
 
     if sessions_needed <= slots_remaining - SAFETY_BUFFER_SLOTS:
         log("Enough slots remaining — skipping this one")
         return False
 
     return True
+
+
+def work_start(window, usage, records):
+    """When to start prompting so the window's allowance runs out at the cutoff."""
+    remaining_5h = max(0.0, 100 - usage["session_utilization_pct"])
+    minutes = remaining_5h / rate_for(window["model"], records) * START_MARGIN
+    deadline = window["window_end"] - timedelta(seconds=CUTOFF_SECONDS)
+    return deadline - timedelta(minutes=minutes), minutes
 
 
 def sync_repo():
@@ -347,112 +405,191 @@ def sync_repo():
         subprocess.run(["git", "clone", REPO_URL, str(REPO_DIR)], check=True, capture_output=True)
 
 
-def run_session(light=False):
-    if LOCK_FILE.exists():
-        log("Lock file exists — session already running, skipping")
+def claude_env():
+    env = os.environ.copy()
+    env["PATH"] = f"{NVM_BIN}:{env.get('PATH', '')}"
+    return env
+
+
+def run_light():
+    """Send "hey" so the 5h window starts now; costs next to nothing."""
+    log("Light session starting (opens the 5h window)")
+    if DRY_RUN:
+        log(f"DRY RUN — would run {LIGHT_MODEL} now")
+        return
+    result = run_claude(PROMPT_LIGHT, LIGHT_MODEL, claude_env())
+    log(f"Light session exit code {result.returncode}")
+
+
+def commit_leftovers():
+    """The cutoff can land mid-task: keep whatever the session hadn't committed."""
+    subprocess.run(["git", "add", "-A"], cwd=REPO_DIR, capture_output=True)
+    staged = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=REPO_DIR).returncode != 0
+    if staged:
+        subprocess.run(["git", "commit", "-q", "-m", "Session cut off: work left uncommitted at the deadline"],
+                       cwd=REPO_DIR, capture_output=True)
+        log("Committed work the session left uncommitted")
+
+
+def hit_limit(result):
+    text = (result.stdout + result.stderr).lower()
+    return result.returncode != 0 and "limit" in text
+
+
+def work_loop(window, deadline):
+    """Prompt, and re-prompt whenever Claude stops, until the deadline or a limit."""
+    model = window["model"]
+    mode = pick_mode()
+    sync_repo()
+    env = claude_env()
+
+    def timing():
+        mins = max(0, int((deadline - datetime.now(timezone.utc)).total_seconds() / 60))
+        return {"deadline": deadline.strftime("%H:%M"), "minutes": mins}
+
+    first_prompt = build_prompt(mode, model) + DEADLINE_NOTE.format(**timing())
+    log(f"Work loop starting — model: {model} | mode: {mode} | deadline {deadline:%H:%M} UTC")
+    brief = first_prompt.split("This session:")[1].replace(HISTORY_FENCE, "").replace(FENCED_ENDING, "")
+    log(f"Brief: {brief.strip()[:600]!r}")
+    if DRY_RUN:
+        log(f"DRY RUN — would run {model} until {deadline:%H:%M} UTC")
         return
 
+    before = fetch_usage()
     start = datetime.now(timezone.utc)
-    LOCK_FILE.write_text(start.isoformat())
+    first, quick_calls, prompts = True, 0, 0
 
-    try:
-        sync_repo()
+    while True:
+        seconds_left = (deadline - datetime.now(timezone.utc)).total_seconds()
+        if seconds_left < 60:
+            log("Deadline reached")
+            break
+        if not first:
+            now_usage = fetch_usage()
+            if now_usage["weekly_utilization_pct"] >= 100 - WEEKLY_RESERVE_PCT:
+                log(f"Weekly at {now_usage['weekly_utilization_pct']}% — keeping the reserve, stopping")
+                break
+            if now_usage["session_utilization_pct"] >= 99.5:
+                log("5h allowance used up — stopping")
+                break
 
-        if light:
-            model = LIGHT_MODEL
-            prompt = PROMPT_LIGHT
-            log("Light session starting (window open)")
-        else:
-            model = pick_model()
-            mode = pick_mode()
-            prompt = build_prompt(mode, model)
-            log(f"Heavy session starting — model: {model} | mode: {mode}")
-            brief = prompt.split("This session:")[1].replace(HISTORY_FENCE, "").replace(FENCED_ENDING, "")
-            log(f"Brief: {brief.strip()[:600]!r}")
+        prompt = first_prompt if first else CONTINUE_PROMPT.format(**timing())
+        call_start = datetime.now(timezone.utc)
+        try:
+            result = run_claude(prompt, model, env, resume=not first, timeout=seconds_left)
+        except subprocess.TimeoutExpired:
+            log("Cut off at the deadline")
+            break
+        prompts += 1
+        call_secs = (datetime.now(timezone.utc) - call_start).total_seconds()
+        log(f"Prompt {prompts} done in {call_secs / 60:.1f} min | exit {result.returncode} | "
+            f"reply: {result.stdout[-500:]!r}")
 
-        env = os.environ.copy()
-        env["PATH"] = f"{NVM_BIN}:{env.get('PATH', '')}"
-
-        if DRY_RUN:
-            log(f"DRY RUN — would run {model} now")
-            return
-
-        result = run_claude(prompt, model, env)
-
-        fast_fail_min = (datetime.now(timezone.utc) - start).total_seconds() / 60
-        if result.returncode != 0 and model != FALLBACK_MODEL and fast_fail_min < FAST_FAIL_MINUTES:
-            log(f"{model} failed after {fast_fail_min:.1f} min — retrying with {FALLBACK_MODEL}")
-            log(f"stderr: {result.stderr[:500]}")
-            prompt = prompt.replace(f"model {model},", f"model {FALLBACK_MODEL},")
+        if first and result.returncode != 0 and model != FALLBACK_MODEL and call_secs < FAST_FAIL_MINUTES * 60:
+            log(f"{model} failed fast — retrying with {FALLBACK_MODEL}. stderr: {result.stderr[:300]}")
+            first_prompt = first_prompt.replace(f"model {model},", f"model {FALLBACK_MODEL},")
             model = FALLBACK_MODEL
-            result = run_claude(prompt, model, env)
+            continue
+        if hit_limit(result):
+            log("Usage limit reached — stopping")
+            break
 
-        end = datetime.now(timezone.utc)
-        duration_min = (end - start).total_seconds() / 60
-        log(f"Session ended — {duration_min:.0f} min | exit code {result.returncode}")
-        # Claude's final reply: the only record of a session that commits nothing.
-        log(f"stdout (last 1500 chars): {result.stdout[-1500:]!r}")
+        # Guard against a broken loop (e.g. every call erroring instantly).
+        quick_calls = quick_calls + 1 if call_secs < MIN_CALL_SECONDS else 0
+        if quick_calls >= MAX_QUICK_CALLS:
+            log(f"{MAX_QUICK_CALLS} prompts in a row finished in under {MIN_CALL_SECONDS}s — stopping")
+            break
+        first = False
 
-        if result.returncode != 0:
-            log(f"stderr: {result.stderr[:500]}")
-    finally:
-        LOCK_FILE.unlink(missing_ok=True)
+    commit_leftovers()
+    after = fetch_usage()
+    minutes = (datetime.now(timezone.utc) - start).total_seconds() / 60
+    record = {
+        "ended_at": datetime.now(timezone.utc).isoformat(),
+        "model": model, "mode": mode, "prompts": prompts, "minutes": round(minutes, 1),
+        "d5h": round(after["session_utilization_pct"] - before["session_utilization_pct"], 1),
+        "d7d": round(after["weekly_utilization_pct"] - before["weekly_utilization_pct"], 1),
+    }
+    record_calibration(record)
+    log(f"Work loop ended: {record}")
+
+
+def handle_window(window, usage, records):
+    now = datetime.now(timezone.utc)
+    jump = usage["session_utilization_pct"] - window.get("last_session_pct", usage["session_utilization_pct"])
+    window["last_session_pct"] = usage["session_utilization_pct"]
+    if jump >= ACTIVE_USER_JUMP_PCT:
+        log(f"5h usage rose {jump:.1f} points in the last hour — Ezekiel is active, leaving this window alone")
+        window["heavy_done"] = True
+        write_window(window)
+        return
+
+    start, minutes = work_start(window, usage, records)
+    log(f"Window ends {window['window_end']:%H:%M} UTC | {usage['session_utilization_pct']}% of 5h used | "
+        f"{window['model']} needs ~{minutes:.0f} min | work starts {start:%H:%M} UTC")
+    if start > now + timedelta(minutes=CHECK_INTERVAL_MINUTES):
+        write_window(window)
+        return  # a later hourly check will catch it
+
+    wait = (start - now).total_seconds()
+    window["heavy_done"] = True  # saved first, so a crash can't make the next run repeat it
+    write_window(window)
+    if wait > 0:
+        log(f"Waiting {wait / 60:.0f} min until the start time")
+        if not DRY_RUN:
+            time.sleep(wait)
+    work_loop(window, window["window_end"] - timedelta(seconds=CUTOFF_SECONDS))
 
 
 def main():
-    log("=== Cron check ===")
+    log("=== Check ===")
     if PAUSE_FILE.exists():
         log(f"Paused ({PAUSE_FILE} exists) — no sessions")
         return
-    if FORCE in ("light", "heavy"):
-        log(f"Forced {FORCE} session")
-        run_session(light=(FORCE == "light"))
-        return
-    try:
-        usage = fetch_usage()
-    except Exception as e:
-        log(f"Failed to fetch usage data: {e}")
-        sys.exit(1)
 
+    usage = fetch_usage()
+    records = load_calibration()
     now = datetime.now(timezone.utc)
+
+    if FORCE == "light":
+        run_light()
+        return
+    if FORCE == "heavy":
+        # Test the work loop now, capped at FORCE_MINUTES, inside the current 5h window.
+        window = {"model": pick_model(), "window_start": now,
+                  "window_end": to_dt(usage["session_resets_at"])}
+        deadline = min(window["window_end"] - timedelta(seconds=CUTOFF_SECONDS),
+                       now + timedelta(minutes=FORCE_MINUTES))
+        log(f"Forced heavy session, capped at {FORCE_MINUTES} min")
+        work_loop(window, deadline)
+        return
+
     window = read_window()
+    if window and now >= window["window_end"]:
+        log("Window over — clearing")
+        clear_window()
+        window = None
 
     if window:
-        hours_elapsed = (now - window["window_start"]).total_seconds() / 3600
-
-        if hours_elapsed > SLOT_DURATION_HOURS:
-            log(f"Window expired after {hours_elapsed:.1f}h — clearing")
-            clear_window()
-            window = None
-
-        elif hours_elapsed >= HEAVY_SESSION_DELAY_HOURS and not window.get("heavy_done"):
-            current_pct = usage["weekly_utilization_pct"]
-            initial_pct = window["initial_pct"]
-            delta = current_pct - initial_pct
-            log(f"Window at {hours_elapsed:.1f}h — usage delta since open: +{delta:.1f}%")
-
-            if delta >= ACTIVE_USER_THRESHOLD_PCT:
-                log(f"Ezekiel is active ({initial_pct}% → {current_pct}%), skipping heavy session")
-                window["heavy_done"] = True
-                write_window(window)
-            else:
-                log("No significant user activity — running heavy session")
-                run_session(light=False)
-                window["heavy_done"] = True
-                write_window(window)
-
+        if window.get("heavy_done"):
+            log(f"Window open until {window['window_end']:%H:%M} UTC; its work is done")
         else:
-            log(f"Window at {hours_elapsed:.1f}h — heavy session triggers at {HEAVY_SESSION_DELAY_HOURS}h")
+            handle_window(window, usage, records)
+        return
 
-    if not window:
-        if should_launch(usage):
-            log("Opening session window")
-            write_window({
-                "window_start": now,
-                "initial_pct": usage["weekly_utilization_pct"],
-                "heavy_done": False,
-            })
-            run_session(light=True)
+    if should_launch(usage, records):
+        run_light()
+        usage = fetch_usage()
+        window = {
+            "window_start": now,
+            "window_end": to_dt(usage["session_resets_at"]),
+            "model": pick_model(),
+            "heavy_done": False,
+            "last_session_pct": usage["session_utilization_pct"],
+        }
+        write_window(window)
+        log(f"Window open until {window['window_end']:%H:%M} UTC; model {window['model']}")
+        handle_window(window, usage, records)
 
 
 if __name__ == "__main__":

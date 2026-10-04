@@ -3,6 +3,10 @@
 #
 # Pause:   commit an empty runner_state/paused (or disable this workflow).
 # Force:   Actions tab -> Workshop sessions -> Run workflow -> force: light/heavy.
+#
+# A run lasts seconds, except when it starts a window's work: then it sleeps
+# until the calibrated start time and re-prompts Claude until 1 min before the
+# 5h window resets (at most ~5h, inside the 330-min timeout).
 name: Workshop sessions
 
 on:
@@ -15,6 +19,9 @@ on:
         type: choice
         options: [none, light, heavy]
         default: none
+      force_minutes:
+        description: For force=heavy, how many minutes the work loop may run
+        default: '10'
       dry_run:
         description: Decide and log only, never run Claude
         type: boolean
@@ -55,6 +62,7 @@ jobs:
           CLAUDE_BIN: claude
           WORKSHOP_FORCE: ${{ inputs.force != 'none' && inputs.force || '' }}
           WORKSHOP_DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+          WORKSHOP_FORCE_MINUTES: ${{ inputs.force_minutes || '10' }}
         run: |
           mkdir -p runner_state
           python3 oracle_cron/decide.py
