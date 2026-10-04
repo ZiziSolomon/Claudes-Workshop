@@ -390,6 +390,8 @@ def run_session(light=False):
         end = datetime.now(timezone.utc)
         duration_min = (end - start).total_seconds() / 60
         log(f"Session ended — {duration_min:.0f} min | exit code {result.returncode}")
+        # Claude's final reply: the only record of a session that commits nothing.
+        log(f"stdout (last 1500 chars): {result.stdout[-1500:]!r}")
 
         if result.returncode != 0:
             log(f"stderr: {result.stderr[:500]}")
