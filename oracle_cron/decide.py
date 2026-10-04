@@ -51,12 +51,13 @@ FAST_FAIL_MINUTES = 3
 # Weighted away from the repo's own history: most sessions start somewhere
 # previous sessions didn't point them, so notes.md can't set the agenda.
 MODES = [
-    ("outside",    30),
+    ("outside",    27),
     ("constraint", 20),
     ("blind",      15),
     ("continuity", 15),
     ("notes",      10),
     ("browse",     10),
+    ("review",      3),
 ]
 
 SEED_WORDS = [
@@ -144,6 +145,16 @@ This session's brief, drawn at random:
 The subject is up to you.
 """ + FENCED_ENDING
 
+PROMPT_REVIEW = PROMPT_BASE + """
+This session is about the sessions themselves.
+
+/home/opc/workshop/oracle_cron/decide.py decides how each session starts: MODELS sets which model runs, and MODES, the PROMPT_* texts, SEED_WORDS, MEDIA and CONSTRAINTS set what you get pointed at. Read it, and read as much of journal.md, notes.md and past work as you need to judge how the current setup is going.
+
+Then decide whether you want to change the model balance or what sessions get pointed at. Leaving it as it is is a fine answer. Keep to those settings and prompts: don't change the usage, scheduling or locking logic, and check the file still runs (`python3 -c "import ast; ast.parse(open('oracle_cron/decide.py').read())"`) before committing.
+
+When you're done, add a journal entry (headed with the date, mode and model) explaining what you changed and why, or why you left it, and commit and push.
+"""
+
 PROMPT_BROWSE = PROMPT_BASE + """
 Your workspace contains:
 - /home/opc/workshop/writing/ — past pieces
@@ -195,6 +206,8 @@ def build_prompt(mode, model):
         return PROMPT_OUTSIDE.format(seed=fetch_seed(), **fmt)
     elif mode == "constraint":
         return PROMPT_CONSTRAINT.format(medium=random.choice(MEDIA), constraint=random.choice(CONSTRAINTS), **fmt)
+    elif mode == "review":
+        return PROMPT_REVIEW.format(**fmt)
     elif mode == "blind":
         return PROMPT_BLIND.format(**fmt)
     else:
