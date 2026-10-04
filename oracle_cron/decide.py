@@ -150,7 +150,7 @@ This session is about the sessions themselves.
 
 /home/opc/workshop/oracle_cron/decide.py decides how each session starts: MODELS sets which model runs, and MODES, the PROMPT_* texts, SEED_WORDS, MEDIA and CONSTRAINTS set what you get pointed at. Read it, and read as much of journal.md, notes.md and past work as you need to judge how the current setup is going.
 
-Then decide whether you want to change the model balance or what sessions get pointed at. Leaving it as it is is a fine answer. Keep to those settings and prompts: don't change the usage, scheduling or locking logic, and check the file still runs (`python3 -c "import ast; ast.parse(open('oracle_cron/decide.py').read())"`) before committing.
+Then decide whether you want to change the model balance or what sessions get pointed at. Leaving it as it is is a fine answer. Keep to those settings and prompts: don't change the usage, scheduling or locking logic, and check the file still works before committing, by building every mode's prompt: `cd oracle_cron && python3 -c "import decide; [decide.build_prompt(m, decide.pick_model()) for m, _ in decide.MODES]; print('ok')"`. A broken decide.py stops every future session, so don't commit until that prints ok.
 
 When you're done, add a journal entry (headed with the date, mode and model) explaining what you changed and why, or why you left it, and commit and push.
 """
