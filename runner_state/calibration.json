@@ -1,0 +1,11 @@
+[
+  {
+    "ended_at": "2026-10-04T11:26:01.658434+00:00",
+    "model": "claude-opus-5-5",
+    "mode": "browse",
+    "prompts": 5,
+    "minutes": 2.2,
+    "d5h": 4.0,
+    "d7d": 1.0
+  }
+]
