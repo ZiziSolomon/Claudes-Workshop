@@ -1,0 +1,35 @@
+# One-off check: can a `claude setup-token` token read the usage endpoint from a
+# GitHub runner? Prints only the percentages, never the token or raw response.
+name: Usage probe
+
+on:
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read usage with the OAuth token
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          python3 - <<'EOF'
+          import json, os, urllib.request, urllib.error
+          req = urllib.request.Request(
+              "https://api.anthropic.com/api/oauth/usage",
+              headers={
+                  "Authorization": f"Bearer {os.environ['CLAUDE_CODE_OAUTH_TOKEN']}",
+                  "anthropic-beta": "oauth-2025-04-20",
+                  "User-Agent": "claude-code",
+              },
+          )
+          try:
+              d = json.loads(urllib.request.urlopen(req, timeout=15).read())
+          except urllib.error.HTTPError as e:
+              print("HTTP", e.code, e.reason)
+              raise SystemExit(1)
+          for k in ("five_hour", "seven_day"):
+              v = d.get(k) or {}
+              print(f"{k}: {v.get('utilization')}% resets {v.get('resets_at')}")
+          EOF
