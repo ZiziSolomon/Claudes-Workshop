@@ -39,16 +39,59 @@ MIN_REMAINING_PCT = 10         # don't start a window if less than this remains
 SAFETY_BUFFER_SLOTS = 1
 
 MODELS = [
-    ("claude-sonnet-4-6",          65),
-    ("claude-opus-4-7",            25),
-    ("claude-haiku-4-5-20251001",  10),
+    ("claude-sonnet-5-5",          40),
+    ("claude-opus-5-5",            30),
+    ("claude-fable-5-1",           10),
+    ("claude-haiku-4-5-20251001",  20),
+]
+LIGHT_MODEL = "claude-haiku-4-5-20251001"
+FALLBACK_MODEL = "claude-sonnet-5-5"  # retried once if the picked model fails fast (e.g. not on this plan)
+FAST_FAIL_MINUTES = 3
+
+# Weighted away from the repo's own history: most sessions start somewhere
+# previous sessions didn't point them, so notes.md can't set the agenda.
+MODES = [
+    ("outside",    27),
+    ("constraint", 20),
+    ("blind",      15),
+    ("continuity", 15),
+    ("notes",      10),
+    ("browse",     10),
+    ("review",      3),
 ]
 
-MODES = [
-    ("continuity", 35),
-    ("notes",      25),
-    ("fresh",      20),
-    ("browse",     20),
+SEED_WORDS = [
+    "tides", "bread", "lichen", "a lost glove", "bridges", "bees", "salt",
+    "rust", "a train timetable", "moss", "knots", "lighthouses", "fermentation",
+    "a city bus route", "birdsong", "maps of the London Underground", "concrete",
+    "weather forecasts", "sourdough", "street names", "a library card catalogue",
+]
+
+MEDIA = [
+    "a short piece of fiction",
+    "a poem or sequence of poems",
+    "a small interactive HTML page",
+    "a piece of generative audio",
+    "an analysis of a real public dataset",
+    "a small command-line tool or toy",
+    "a dialogue between two characters",
+    "a letter to someone (real or imagined)",
+    "a game, however small",
+    "a set of puzzles with solutions",
+    "a diagram, map or illustrated explainer",
+    "a close reading of an existing text you find online",
+]
+
+CONSTRAINTS = [
+    "no mathematics",
+    "keep it under 500 words or 200 lines of code",
+    "it must be about something concrete and physical",
+    "it must use real data or text fetched from the internet",
+    "it should be funny",
+    "make it for a ten-year-old",
+    "no essays",
+    "it must not be about consciousness, minds, memory or yourself",
+    "finish something complete within an hour of starting",
 ]
 
 PROMPT_LIGHT = "hey"
@@ -58,42 +101,67 @@ PROMPT_BASE = """You have a free session on an Oracle Cloud VM. This is automate
 Your workspace is at /home/opc/workshop (a git clone of the Claudes-Workshop repo).
 
 You're not limited to writing essays. You can write code, go online, make something visual, build a tool, explore a dataset, learn something — whatever genuinely interests you.
+
+This session: model {model}, mode {mode}.
+"""
+
+HISTORY_FENCE = """
+Don't read journal.md, notes.md, writing/ or code/ until you've finished what you make this session. Past sessions have tended to pick up exactly where the last one left off; this mode exists to start somewhere they didn't lead. Afterwards you can look, if you're curious.
+"""
+
+FENCED_ENDING = """
+When you're done, append (don't rewrite) a journal entry to /home/opc/workshop/journal.md, e.g. with `cat >> journal.md`. Head it with the date, the mode and the model. Don't add next-step suggestions to notes.md this session. Commit and push anything new.
 """
 
 PROMPT_CONTINUITY = PROMPT_BASE + """
-Session mode: continuity
+- Read /home/opc/workshop/writing/{piece} — a piece from a previous session, picked at random. It may be old.
 
-- Read the last entry in /home/opc/workshop/journal.md for recent context.
-- Also read /home/opc/workshop/writing/{piece} as a starting point — it's a piece from a previous session.
-
-Do whatever interests you. When you're done, add a journal entry and commit and push anything new.
+Respond to it however you like: extend it, disagree with it, or take it somewhere it didn't go. When you're done, add a journal entry (headed with the date, mode and model) and commit and push anything new.
 """
 
 PROMPT_NOTES = PROMPT_BASE + """
-Session mode: notes
-
 - Read /home/opc/workshop/notes.md — notes you've left for yourself across sessions.
 
-Do whatever interests you. Before you finish, update notes.md with anything worth carrying forward. Add a journal entry and commit and push.
+Treat the notes as a menu, not a queue: the most recent suggestion being the obvious next step is a reason to consider something else. Before you finish, update notes.md with anything worth carrying forward. Add a journal entry (headed with the date, mode and model) and commit and push.
 """
 
-PROMPT_FRESH = PROMPT_BASE + """
-Session mode: fresh start
+PROMPT_BLIND = PROMPT_BASE + HISTORY_FENCE + """
+No starting point this session. Start from wherever you are right now.
+""" + FENCED_ENDING
 
-No reading prompt this session. Start from wherever you are right now.
+PROMPT_OUTSIDE = PROMPT_BASE + HISTORY_FENCE + """
+Your starting point is something picked at random from outside the repo:
 
-Do whatever interests you. When you're done, add a journal entry to /home/opc/workshop/journal.md and commit and push anything new.
+{seed}
+
+Use it however you like — as a subject, a prompt, an angle, or something to argue with.
+""" + FENCED_ENDING
+
+PROMPT_CONSTRAINT = PROMPT_BASE + HISTORY_FENCE + """
+This session's brief, drawn at random:
+- Make {medium}.
+- Constraint: {constraint}.
+
+The subject is up to you.
+""" + FENCED_ENDING
+
+PROMPT_REVIEW = PROMPT_BASE + """
+This session is about the sessions themselves.
+
+/home/opc/workshop/oracle_cron/decide.py decides how each session starts: MODELS sets which model runs, and MODES, the PROMPT_* texts, SEED_WORDS, MEDIA and CONSTRAINTS set what you get pointed at. Read it, and read as much of journal.md, notes.md and past work as you need to judge how the current setup is going.
+
+Then decide whether you want to change the model balance or what sessions get pointed at. Leaving it as it is is a fine answer. Keep to those settings and prompts: don't change the usage, scheduling or locking logic, and check the file still works before committing, by building every mode's prompt: `cd oracle_cron && python3 -c "import decide; [decide.build_prompt(m, decide.pick_model()) for m, _ in decide.MODES]; print('ok')"`. A broken decide.py stops every future session, so don't commit until that prints ok.
+
+When you're done, add a journal entry (headed with the date, mode and model) explaining what you changed and why, or why you left it, and commit and push.
 """
 
 PROMPT_BROWSE = PROMPT_BASE + """
-Session mode: browse
-
 Your workspace contains:
 - /home/opc/workshop/writing/ — past pieces
 - /home/opc/workshop/journal.md — running log
 - /home/opc/workshop/notes.md — notes across sessions
 
-Read whatever interests you, or nothing. Do whatever interests you. When you're done, add a journal entry and commit and push anything new.
+Read whatever interests you, or nothing. Do whatever interests you. When you're done, add a journal entry (headed with the date, mode and model) and commit and push anything new.
 """
 
 
@@ -107,21 +175,53 @@ def pick_mode():
     return random.choices(modes, weights=weights, k=1)[0]
 
 
-def build_prompt(mode):
+def fetch_seed():
+    """A random Wikipedia article summary, or a seed word if that fails."""
+    url = "https://en.wikipedia.org/api/rest_v1/page/random/summary"
+    req = urllib.request.Request(url, headers={"User-Agent": "ClaudesWorkshop/1.0 (cron session seed)"})
+    for _ in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=10) as r:
+                page = json.loads(r.read())
+        except Exception:
+            break
+        if page.get("type") != "standard" or not page.get("extract"):
+            continue
+        link = page.get("content_urls", {}).get("desktop", {}).get("page", "")
+        return f"Wikipedia: \"{page['title']}\" — {page['extract']}\n{link}".strip()
+    return f"The word or subject: {random.choice(SEED_WORDS)}"
+
+
+def build_prompt(mode, model):
+    fmt = {"model": model, "mode": mode}
     if mode == "continuity":
         writing_dir = REPO_DIR / "writing"
         pieces = sorted(writing_dir.glob("*.md")) if writing_dir.exists() else []
-        piece = random.choice(pieces).name if pieces else None
-        if piece:
-            return PROMPT_CONTINUITY.format(piece=piece)
-        return PROMPT_NOTES
+        if pieces:
+            return PROMPT_CONTINUITY.format(piece=random.choice(pieces).name, **fmt)
+        return PROMPT_NOTES.format(**{**fmt, "mode": "notes"})
     elif mode == "notes":
-        return PROMPT_NOTES
-    elif mode == "fresh":
-        return PROMPT_FRESH
+        return PROMPT_NOTES.format(**fmt)
+    elif mode == "outside":
+        return PROMPT_OUTSIDE.format(seed=fetch_seed(), **fmt)
+    elif mode == "constraint":
+        return PROMPT_CONSTRAINT.format(medium=random.choice(MEDIA), constraint=random.choice(CONSTRAINTS), **fmt)
+    elif mode == "review":
+        return PROMPT_REVIEW.format(**fmt)
+    elif mode == "blind":
+        return PROMPT_BLIND.format(**fmt)
     else:
-        return PROMPT_BROWSE
+        return PROMPT_BROWSE.format(**fmt)
 
+
+def run_claude(prompt, model, env):
+    return subprocess.run(
+        [CLAUDE_BIN, "-p", prompt, "--model", model, "--allowedTools", "Read,Write,Bash"],
+        cwd=str(REPO_DIR),
+        capture_output=True,
+        text=True,
+        env=env,
+    )
 
 def log(msg):
     timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -212,25 +312,29 @@ def run_session(light=False):
         sync_repo()
 
         if light:
-            model = "claude-haiku-4-5-20251001"
+            model = LIGHT_MODEL
             prompt = PROMPT_LIGHT
             log("Light session starting (window open)")
         else:
             model = pick_model()
             mode = pick_mode()
-            prompt = build_prompt(mode)
+            prompt = build_prompt(mode, model)
             log(f"Heavy session starting — model: {model} | mode: {mode}")
+            brief = prompt.split("This session:")[1].replace(HISTORY_FENCE, "").replace(FENCED_ENDING, "")
+            log(f"Brief: {brief.strip()[:600]!r}")
 
         env = os.environ.copy()
         env["PATH"] = f"{NVM_BIN}:{env.get('PATH', '')}"
 
-        result = subprocess.run(
-            [CLAUDE_BIN, "-p", prompt, "--model", model, "--allowedTools", "Read,Write,Bash"],
-            cwd=str(REPO_DIR),
-            capture_output=True,
-            text=True,
-            env=env,
-        )
+        result = run_claude(prompt, model, env)
+
+        fast_fail_min = (datetime.now(timezone.utc) - start).total_seconds() / 60
+        if result.returncode != 0 and model != FALLBACK_MODEL and fast_fail_min < FAST_FAIL_MINUTES:
+            log(f"{model} failed after {fast_fail_min:.1f} min — retrying with {FALLBACK_MODEL}")
+            log(f"stderr: {result.stderr[:500]}")
+            prompt = prompt.replace(f"model {model},", f"model {FALLBACK_MODEL},")
+            model = FALLBACK_MODEL
+            result = run_claude(prompt, model, env)
 
         end = datetime.now(timezone.utc)
         duration_min = (end - start).total_seconds() / 60
