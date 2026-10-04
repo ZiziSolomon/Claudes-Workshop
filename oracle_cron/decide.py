@@ -53,9 +53,9 @@ CUTOFF_SECONDS = 60            # hard stop this long before the window resets
 START_MARGIN = 1.2             # start a little earlier than calibration says
 CALIBRATION_N = 5              # recent sessions averaged per rate
 DEFAULT_RATE_PCT_PER_MIN = 100 / 120   # until calibrated: a whole window takes ~2h of work
-DEFAULT_WEEKLY_PER_WINDOW = 13.5       # weekly % a whole window costs (measured 2026-04-10)
-MIN_CALL_SECONDS = 30          # prompts shorter than this count as "quick"...
-MAX_QUICK_CALLS = 3            # ...and this many in a row ends the loop
+DEFAULT_WEEKLY_PER_WINDOW = 11.0       # weekly % a whole window costs: median of 55 windows, Apr-Sep 2026
+MIN_CALL_SECONDS = 30          # failed prompts shorter than this count as "quick"...
+MAX_QUICK_CALLS = 3            # ...and this many in a row ends the loop (a broken loop, not a fast model)
 
 MODELS = [
     ("claude-sonnet-5-5",          40),
@@ -495,9 +495,11 @@ def work_loop(window, deadline):
             break
 
         # Guard against a broken loop (e.g. every call erroring instantly).
-        quick_calls = quick_calls + 1 if call_secs < MIN_CALL_SECONDS else 0
+        # Successful quick replies are fine (Opus often finishes a step in 20s).
+        failed_fast = result.returncode != 0 and call_secs < MIN_CALL_SECONDS
+        quick_calls = quick_calls + 1 if failed_fast else 0
         if quick_calls >= MAX_QUICK_CALLS:
-            log(f"{MAX_QUICK_CALLS} prompts in a row finished in under {MIN_CALL_SECONDS}s — stopping")
+            log(f"{MAX_QUICK_CALLS} prompts in a row failed within {MIN_CALL_SECONDS}s — stopping")
             break
         first = False
 

@@ -82,7 +82,7 @@ class Headers(Base):
 class Calibration(Base):
     def test_defaults_without_data(self):
         self.assertAlmostEqual(self.d.rate_for("m", []), 100 / 120)
-        self.assertEqual(self.d.weekly_per_window([]), 13.5)
+        self.assertEqual(self.d.weekly_per_window([]), 11.0)
 
     def test_rate_is_per_model_and_uses_recent_sessions(self):
         recs = [{"model": "a", "minutes": 60, "d5h": 30, "d7d": 4},
@@ -206,6 +206,17 @@ class WorkLoop(Base):
         models = [c.args[1] for c in self.run_claude.call_args_list]
         self.assertEqual(models[1], self.d.FALLBACK_MODEL)
         self.assertFalse(self.run_claude.call_args_list[1].kwargs["resume"])  # fresh start, not --continue
+
+    def test_quick_successes_keep_going(self):
+        # Fake calls take 10 min; make them count as "quick" with a huge threshold.
+        mock.patch.object(self.d, "MIN_CALL_SECONDS", 10_000).start()
+        self.loop([done()] * 4 + [subprocess.TimeoutExpired("c", 1)], mins=45)
+        self.assertEqual(self.run_claude.call_count, 5)
+
+    def test_quick_failures_stop(self):
+        mock.patch.object(self.d, "MIN_CALL_SECONDS", 10_000).start()
+        self.loop([done()] + [done(1, "", "boom")] * 5, mins=200)
+        self.assertEqual(self.run_claude.call_count, 4)   # 1 ok + 3 quick failures
 
 
 class DryRun(Base):
