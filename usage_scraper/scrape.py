@@ -9,6 +9,7 @@ Usage: python scrape.py
 """
 
 import json
+import logging
 import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
@@ -25,6 +26,8 @@ CALIBRATION_FILE = REPO_ROOT / "usage_data" / "calibration.jsonl"
 USAGE_URL = "https://claude.ai/api/organizations/b49de57b-f2f0-4db3-9f1b-833808b8e371/usage"
 CLAUDE_PROJECTS_DIR = Path.home() / ".claude" / "projects"
 SESSION_DURATION_HOURS = 5
+
+LOG_FILE = SCRIPT_DIR / "scrape.log"
 
 _NO_WINDOW = {"creationflags": subprocess.CREATE_NO_WINDOW} if sys.platform == "win32" else {}
 
@@ -130,7 +133,10 @@ def scrape():
 
 def _git_commit_and_push():
     def run(cmd):
-        subprocess.run(cmd, cwd=REPO_ROOT, check=True, capture_output=True, **_NO_WINDOW)
+        result = subprocess.run(cmd, cwd=REPO_ROOT, capture_output=True, text=True, **_NO_WINDOW)
+        if result.returncode != 0:
+            # Surface git's own message - check=True alone hid a failing pull for months.
+            raise RuntimeError(f"{' '.join(cmd)} failed: {result.stderr.strip()}")
 
     run(["git", "add", str(OUTPUT_FILE), str(CALIBRATION_FILE)])
     changed = subprocess.run(
@@ -142,9 +148,18 @@ def _git_commit_and_push():
         return
 
     run(["git", "commit", "-m", f"Update usage data {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}"])
-    run(["git", "pull", "--rebase"])
+    # --autostash: an unrelated uncommitted edit in the repo must not block the push.
+    run(["git", "pull", "--rebase", "--autostash"])
     run(["git", "push"])
 
 
 if __name__ == "__main__":
-    scrape()
+    # Runs under pythonw from Task Scheduler, so there is no console: log or it's invisible.
+    logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
+                        format="%(asctime)s %(levelname)s %(message)s")
+    try:
+        scrape()
+        logging.info("OK")
+    except Exception:
+        logging.exception("Scrape failed")
+        sys.exit(1)
