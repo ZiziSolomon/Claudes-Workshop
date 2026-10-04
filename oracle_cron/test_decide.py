@@ -189,6 +189,11 @@ class WorkLoop(Base):
         self.assertEqual(len(recs), 1)
         self.assertEqual(recs[0]["prompts"], 2)
 
+    def test_review_mode_gets_its_own_follow_up(self):
+        mock.patch.object(self.d, "pick_mode", return_value="review").start()
+        self.loop([done(), subprocess.TimeoutExpired("c", 1)], mins=25)
+        self.assertIn("no further changes to oracle_cron/decide.py", self.run_claude.call_args_list[1].args[0])
+
     def test_stops_when_usage_limit_hit(self):
         self.loop([done(), done(1, "", "Claude usage limit reached")] + [done()] * 5, mins=200)
         self.assertEqual(self.run_claude.call_count, 2)

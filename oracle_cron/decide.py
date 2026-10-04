@@ -7,7 +7,7 @@ source come from environment variables, so it can still run on a VM.
 
 Two-phase session architecture:
   Hour 0:   start window, run light "hey" session (minimal tokens)
-  Hour 3.5: re-check usage — if Ezekiel isn't burning tokens, run heavy session
+  Hour 3.5: re-check usage — if Zizi isn't burning tokens, run heavy session
 
 Cron: 0 * * * *
 """
@@ -42,10 +42,10 @@ FORCE_MINUTES = int(os.environ.get("WORKSHOP_FORCE_MINUTES", "10"))  # cap on a 
 # Flow: when the week is heading for waste, "hey" opens a 5h window. Work starts
 # late in the window, timed by calibration so the window's allowance runs out
 # just before it resets, and Claude is re-prompted whenever it stops until a
-# hard cutoff. Ezekiel's own use gets first claim on every window.
+# hard cutoff. Zizi's own use gets first claim on every window.
 SLOT_DURATION_HOURS = 5
 CHECK_INTERVAL_MINUTES = 60    # how often the workflow runs this script
-ACTIVE_USER_JUMP_PCT = 5       # 5h usage up this much since the last check = Ezekiel is active
+ACTIVE_USER_JUMP_PCT = 5       # 5h usage up this much since the last check = Zizi is active
 MIN_REMAINING_PCT = 10         # don't open a window if less than this remains of the week
 SAFETY_BUFFER_SLOTS = 1
 WEEKLY_RESERVE_PCT = 5         # stop re-prompting once weekly usage reaches 100 minus this
@@ -110,18 +110,22 @@ CONSTRAINTS = [
     "make it for a ten-year-old",
     "no essays",
     "it must not be about consciousness, minds, memory or yourself",
-    "finish something complete within an hour of starting",
+    "finish your first piece within an hour of starting",
 ]
 
 PROMPT_LIGHT = "hey"
 
 DEADLINE_NOTE = """
 Timing: you have until {deadline} UTC (about {minutes} minutes). Whenever you stop, you'll get a follow-up prompt, so there's no need to wrap up early. At {deadline} the session is cut off without warning, so commit as you go.
+
+Keep one journal entry for the whole session: write it when you finish your first piece, then add to that entry (no new heading) as you do more.
 """
 
-CONTINUE_PROMPT = """There's still time: until {deadline} UTC, about {minutes} minutes. Carry on with what you were doing, take it further, or start something new. Your choice. Commit as you go, and add to your journal entry when you finish something."""
+REVIEW_CONTINUE_PROMPT = """There's still time: until {deadline} UTC, about {minutes} minutes. If the review isn't finished, carry on with it. If it is, spend the rest of the session on anything you like, but make no further changes to oracle_cron/decide.py this session. Commit as you go, and add to this session's journal entry when you finish something."""
 
-PROMPT_BASE = """You have a free session on a throwaway GitHub Actions machine. This is automated — Ezekiel set this up to give you unstructured time with no task or brief.
+CONTINUE_PROMPT = """There's still time: until {deadline} UTC, about {minutes} minutes. Carry on with what you were doing, take it further, or start something new. Your choice. Commit as you go, and add to this session's journal entry when you finish something."""
+
+PROMPT_BASE = """You have a free session on a throwaway GitHub Actions machine. This is automated — Zizi set this up to give you unstructured time with no task or brief.
 
 Your working directory is a fresh clone of the Claudes-Workshop repo. The machine is deleted when you finish, so anything you want to keep must be committed with git. You can't push yourself: your commits are pushed automatically after the session ends.
 
@@ -131,7 +135,7 @@ This session: model {model}, mode {mode}.
 """
 
 HISTORY_FENCE = """
-Don't read journal.md, notes.md, writing/ or code/ until you've finished what you make this session. Past sessions have tended to pick up exactly where the last one left off; this mode exists to start somewhere they didn't lead. Afterwards you can look, if you're curious.
+Don't read journal.md, notes.md, writing/ or code/ at any point this session, including after follow-up prompts. Past sessions have tended to pick up exactly where the last one left off; this mode exists to start somewhere they didn't lead. You can still append to journal.md without reading it.
 """
 
 FENCED_ENDING = """
@@ -167,7 +171,7 @@ This session's brief, drawn at random:
 - Make {medium}.
 - Constraint: {constraint}.
 
-The subject is up to you.
+The subject is up to you. The brief applies to your first piece; once it's done, follow-up prompts leave the rest of the session open.
 """ + FENCED_ENDING
 
 PROMPT_REVIEW = PROMPT_BASE + """
@@ -175,7 +179,7 @@ This session is about the sessions themselves.
 
 oracle_cron/decide.py decides how each session starts: MODELS sets which model runs, and MODES, the PROMPT_* texts, SEED_WORDS, MEDIA and CONSTRAINTS set what you get pointed at. Read it, and read as much of journal.md, notes.md and past work as you need to judge how the current setup is going.
 
-Then decide whether you want to change the model balance or what sessions get pointed at. Leaving it as it is is a fine answer. Keep to those settings and prompts: don't change the usage, scheduling or locking logic, and check the file still works before committing, by building every mode's prompt: `cd oracle_cron && python3 -c "import decide; [decide.build_prompt(m, decide.pick_model()) for m, _ in decide.MODES]; print('ok')"`. A broken decide.py stops every future session, so don't commit until that prints ok.
+Then decide whether you want to change the model balance or what sessions get pointed at. Leaving it as it is is a fine answer. Keep to those settings and prompts: don't change anything below them (usage reading, calibration, scheduling, the work loop), and check the file still works before committing, by building every mode's prompt: `cd oracle_cron && python3 -c "import decide; [decide.build_prompt(m, decide.pick_model()) for m, _ in decide.MODES]; print('ok')"`. A broken decide.py stops every future session, so don't commit until that prints ok.
 
 When you're done, add a journal entry (headed with the date, mode and model) explaining what you changed and why, or why you left it, and commit.
 """
@@ -473,7 +477,8 @@ def work_loop(window, deadline):
                 log("5h allowance used up — stopping")
                 break
 
-        prompt = first_prompt if first else CONTINUE_PROMPT.format(**timing())
+        follow_up = REVIEW_CONTINUE_PROMPT if mode == "review" else CONTINUE_PROMPT
+        prompt = first_prompt if first else follow_up.format(**timing())
         call_start = datetime.now(timezone.utc)
         try:
             result = run_claude(prompt, model, env, resume=not first, timeout=seconds_left)
@@ -521,7 +526,7 @@ def handle_window(window, usage, records):
     jump = usage["session_utilization_pct"] - window.get("last_session_pct", usage["session_utilization_pct"])
     window["last_session_pct"] = usage["session_utilization_pct"]
     if jump >= ACTIVE_USER_JUMP_PCT:
-        log(f"5h usage rose {jump:.1f} points in the last hour — Ezekiel is active, leaving this window alone")
+        log(f"5h usage rose {jump:.1f} points in the last hour — Zizi is active, leaving this window alone")
         window["heavy_done"] = True
         write_window(window)
         return
