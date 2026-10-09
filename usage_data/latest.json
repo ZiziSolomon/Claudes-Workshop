@@ -1,13 +1,13 @@
 {
-  "scraped_at": "2026-10-09T07:59:09.001681+00:00",
+  "scraped_at": "2026-10-09T09:39:08.211940+00:00",
   "weekly_utilization_pct": 5.0,
-  "weekly_resets_at": "2026-10-15T14:59:59.776964+00:00",
-  "session_utilization_pct": 0.0,
-  "session_resets_at": null,
+  "weekly_resets_at": "2026-10-15T15:00:00.974844+00:00",
+  "session_utilization_pct": 4.0,
+  "session_resets_at": "2026-10-09T14:00:00.974816+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 0.0,
-      "resets_at": null,
+      "utilization": 4.0,
+      "resets_at": "2026-10-09T14:00:00.974816+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
@@ -15,7 +15,7 @@
     },
     "seven_day": {
       "utilization": 5.0,
-      "resets_at": "2026-10-15T14:59:59.776964+00:00",
+      "resets_at": "2026-10-15T15:00:00.974844+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
@@ -58,9 +58,9 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 0,
+        "percent": 4,
         "severity": "normal",
-        "resets_at": null,
+        "resets_at": "2026-10-09T14:00:00.974816+00:00",
         "scope": null,
         "is_active": false
       },
@@ -69,7 +69,7 @@
         "group": "weekly",
         "percent": 5,
         "severity": "normal",
-        "resets_at": "2026-10-15T14:59:59.776964+00:00",
+        "resets_at": "2026-10-15T15:00:00.974844+00:00",
         "scope": null,
         "is_active": true
       }
@@ -94,23 +94,23 @@
     },
     "member_dashboard_available": false,
     "seven_day_breakdown": {
-      "as_of": "2026-10-09T07:59:10.804467+00:00",
-      "window_started_at": "2026-10-08T14:59:59.776964+00:00",
+      "as_of": "2026-10-09T09:39:10.028561+00:00",
+      "window_started_at": "2026-10-08T15:00:00.974844+00:00",
       "rows": [
         {
           "key": "claude_code",
           "display_name": "Claude Code",
-          "percent": 98
+          "percent": 87
         },
         {
           "key": "chat",
           "display_name": "Chats",
-          "percent": 2
+          "percent": 9
         },
         {
           "key": "cowork",
           "display_name": "Cowork",
-          "percent": 0
+          "percent": 4
         },
         {
           "key": "other",
