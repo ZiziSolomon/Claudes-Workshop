@@ -1,13 +1,13 @@
 {
-  "scraped_at": "2026-10-08T22:59:03.142182+00:00",
+  "scraped_at": "2026-10-09T06:14:14.696848+00:00",
   "weekly_utilization_pct": 1.0,
-  "weekly_resets_at": "2026-10-15T15:00:00.391015+00:00",
-  "session_utilization_pct": 5.0,
-  "session_resets_at": "2026-10-08T23:40:00.390997+00:00",
+  "weekly_resets_at": "2026-10-15T15:00:00.350275+00:00",
+  "session_utilization_pct": 0.0,
+  "session_resets_at": "2026-10-09T07:00:00.350254+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 5.0,
-      "resets_at": "2026-10-08T23:40:00.390997+00:00",
+      "utilization": 0.0,
+      "resets_at": "2026-10-09T07:00:00.350254+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
@@ -15,7 +15,7 @@
     },
     "seven_day": {
       "utilization": 1.0,
-      "resets_at": "2026-10-15T15:00:00.391015+00:00",
+      "resets_at": "2026-10-15T15:00:00.350275+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
@@ -58,20 +58,20 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 5,
+        "percent": 0,
         "severity": "normal",
-        "resets_at": "2026-10-08T23:40:00.390997+00:00",
+        "resets_at": "2026-10-09T07:00:00.350254+00:00",
         "scope": null,
-        "is_active": true
+        "is_active": false
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
         "percent": 1,
         "severity": "normal",
-        "resets_at": "2026-10-15T15:00:00.391015+00:00",
+        "resets_at": "2026-10-15T15:00:00.350275+00:00",
         "scope": null,
-        "is_active": false
+        "is_active": true
       }
     ],
     "spend": {
@@ -94,8 +94,8 @@
     },
     "member_dashboard_available": false,
     "seven_day_breakdown": {
-      "as_of": "2026-10-08T22:59:04.414811+00:00",
-      "window_started_at": "2026-10-08T15:00:00.391015+00:00",
+      "as_of": "2026-10-09T06:14:16.387726+00:00",
+      "window_started_at": "2026-10-08T15:00:00.350275+00:00",
       "rows": [
         {
           "key": "claude_code",
