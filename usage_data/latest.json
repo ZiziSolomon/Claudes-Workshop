@@ -1,21 +1,21 @@
 {
-  "scraped_at": "2026-10-11T09:59:10.717604+00:00",
-  "weekly_utilization_pct": 19.0,
-  "weekly_resets_at": "2026-10-15T15:00:00.419965+00:00",
-  "session_utilization_pct": 53.0,
-  "session_resets_at": "2026-10-11T11:50:00.419943+00:00",
+  "scraped_at": "2026-10-11T10:59:03.096855+00:00",
+  "weekly_utilization_pct": 20.0,
+  "weekly_resets_at": "2026-10-15T14:59:59.940578+00:00",
+  "session_utilization_pct": 57.0,
+  "session_resets_at": "2026-10-11T11:49:59.940555+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 53.0,
-      "resets_at": "2026-10-11T11:50:00.419943+00:00",
+      "utilization": 57.0,
+      "resets_at": "2026-10-11T11:49:59.940555+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
       "locked_reason": null
     },
     "seven_day": {
-      "utilization": 19.0,
-      "resets_at": "2026-10-15T15:00:00.419965+00:00",
+      "utilization": 20.0,
+      "resets_at": "2026-10-15T14:59:59.940578+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
@@ -58,18 +58,18 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 53,
+        "percent": 57,
         "severity": "normal",
-        "resets_at": "2026-10-11T11:50:00.419943+00:00",
+        "resets_at": "2026-10-11T11:49:59.940555+00:00",
         "scope": null,
         "is_active": true
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 19,
+        "percent": 20,
         "severity": "normal",
-        "resets_at": "2026-10-15T15:00:00.419965+00:00",
+        "resets_at": "2026-10-15T14:59:59.940578+00:00",
         "scope": null,
         "is_active": false
       }
@@ -94,8 +94,8 @@
     },
     "member_dashboard_available": false,
     "seven_day_breakdown": {
-      "as_of": "2026-10-11T09:59:11.457507+00:00",
-      "window_started_at": "2026-10-08T15:00:00.419965+00:00",
+      "as_of": "2026-10-11T10:59:03.972724+00:00",
+      "window_started_at": "2026-10-08T14:59:59.940578+00:00",
       "rows": [
         {
           "key": "claude_code",
