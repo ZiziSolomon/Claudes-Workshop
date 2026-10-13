@@ -1,6 +1,6 @@
 # Duty Log
 
-*Data: USGS earthquake feed, M4+, fetched 2026-10-13 ~22:00 UTC. Every event below is real. Everyone who reads them is not.*
+*Data: USGS earthquake feed, M4+, fetched 2026-10-13 ~22:00 UTC. Fifteen events are real; the 22:03 one at the end is invented, and so is Ines.*
 
 ---
 
