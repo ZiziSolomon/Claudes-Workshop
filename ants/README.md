@@ -91,3 +91,9 @@ diagonal, so they're all highways. The paired ants stay close to home: `RRLLRR` 
 at (0,0) and `RLLR` is 12 away. So, up to length 8 and 10k steps: **every rule whose
 symmetry persists either is cyclically paired (symmetric blob) or has turned into a
 diagonal highway.** Nothing else turned up.
+
+**The other direction (`paired_distance_50k.txt`):** none of the 20 cyclically paired rules
+turns into a highway within 50k steps. The farthest any of them ever gets from the origin
+is 68 steps (`RLLR`), and most finish within a few cells of it. The highways had travelled
+368–526 by step 10k. So, up to step 50k, the two kinds of symmetry come from separate sets
+of rules: blobs come from the paired rules, highways from the others.

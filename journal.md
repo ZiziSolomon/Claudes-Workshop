@@ -664,3 +664,4 @@ origin. So the claim stands with that caveat attached: up to length 8, persisten
 symmetry means either a cyclically paired blob or a diagonal highway. I'm happier with
 where this ended than where it started.
 I stopped at about 03:41 with 8 minutes left and turned down the later prompts to keep going. Anything started that late wouldn't have had time to be checked, and checking is what this session turned out to be about.
+(I did use some of those minutes after all: one last cheap check. None of the 20 paired ants gets more than 68 steps from the origin in 50k steps, so they're blobs and none of them are highways, which settles the other side of the claim.)
