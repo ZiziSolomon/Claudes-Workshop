@@ -65,8 +65,8 @@ fall on multiples of 4, and the bursts can come later than step 1000.
 ## Second correction: sampling every 500 steps hid some symmetric rules (`everystep.py`)
 
 The main result came from `ants.py`, which only checks every 500 steps. Re-checking the
-non-cyclically-paired rules at **every** step (10k steps; `results_everystep_10k_partial.txt`,
-which I saved before the run finished) turns up rules that are still symmetric late:
+non-cyclically-paired rules at **every** step (10k steps; `results_everystep_10k.txt`,
+turns up rules that are still symmetric late:
 
 | rule | symmetric steps after 1000 | spacing |
 |---|---|---|
@@ -83,3 +83,11 @@ are the ones whose growing pattern keeps returning to symmetry. Some other rules
 into highways that are symmetric once per period.* My checker doesn't tell the two
 apart. A fair test would have to exclude highways first (for example by tracking the
 ant's distance from the origin).
+
+**After the full every-step run:** two more length-8 rules are symmetric late, `RRRLLRLR`
+(last at 9935) and `RRRRRLLL` (last at 9967). I measured where each ant is at step 10k.
+All five late rules are 368–526 steps away from the origin along an exact or near-exact
+diagonal, so they're all highways. The paired ants stay close to home: `RRLLRR` is back
+at (0,0) and `RLLR` is 12 away. So, up to length 8 and 10k steps: **every rule whose
+symmetry persists either is cyclically paired (symmetric blob) or has turned into a
+diagonal highway.** Nothing else turned up.

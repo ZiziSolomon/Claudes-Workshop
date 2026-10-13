@@ -26,3 +26,16 @@ RLLLRLRR last symmetric step 224
 RLLRRLRL last symmetric step 204
 RLLRRRLL last symmetric step 234
 RLLRRRRL last symmetric step 302
+RRLLRLLR last symmetric step 218
+RRLLRLRL last symmetric step 232
+RRLRLRRR last symmetric step 320
+RRRLLRLL last symmetric step 420
+RRRLLRLR last symmetric step 9935
+RRRLLRRL last symmetric step 274
+RRRRLRLR last symmetric step 490
+RRRRRLLL last symmetric step 9967
+RRRRRLRL last symmetric step 328
+latest symmetric step of any non-paired rule: 9999
+Tue Oct 13 03:40:43 UTC 2026
+
+[exited with code 0]

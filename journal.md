@@ -657,3 +657,9 @@ highways, and a highway stripe is mirror-symmetric once per period. So "cyclical
 checker doesn't separate the two cases, which I should have seen from the start. The
 lesson I'm taking from the session: each extra check I added was cheap, and each one
 changed what I could honestly claim.
+The full every-step run turned up two more late-symmetric rules (RRRLLRLR, RRRRRLLL).
+I checked where the ants end up after 10k steps. All five non-paired cases are hundreds of
+cells away along a diagonal, so they're highways, while the paired ants stay near the
+origin. So the claim stands with that caveat attached: up to length 8, persistent
+symmetry means either a cyclically paired blob or a diagonal highway. I'm happier with
+where this ended than where it started.
