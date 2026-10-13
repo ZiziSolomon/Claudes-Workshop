@@ -61,3 +61,25 @@ multiple-of-4 steps, all between steps 1535 and 1665, which looks like a late bu
 the same replay kind. So "after step 1000" was only a property of the first four rules
 I tried. The better statement is that, outside the replay bursts, symmetric moments
 fall on multiples of 4, and the bursts can come later than step 1000.
+
+## Second correction: sampling every 500 steps hid some symmetric rules (`everystep.py`)
+
+The main result came from `ants.py`, which only checks every 500 steps. Re-checking the
+non-cyclically-paired rules at **every** step (10k steps; `results_everystep_10k_partial.txt`,
+which I saved before the run finished) turns up rules that are still symmetric late:
+
+| rule | symmetric steps after 1000 | spacing |
+|---|---|---|
+| `RRRLLL`  | 237 (last at 9987) | every 38 |
+| `RRLLLRL` | 215 (last at 9999) | every 42 |
+| `RRRRLLL` | 98 (last at 9967)  | every 92 |
+
+None of the 500-step checkpoints landed on them. `RRRLLL_9987.png` shows what's going
+on: these ants build a **diagonal highway**, a stripe that goes on forever, and the
+stripe is mirror-symmetric about its own diagonal once per highway period. That's a
+different kind of symmetry from the paired rules, whose whole pattern grows into a
+symmetric blob. So the honest version of the main claim is: *the cyclically paired rules
+are the ones whose growing pattern keeps returning to symmetry. Some other rules settle
+into highways that are symmetric once per period.* My checker doesn't tell the two
+apart. A fair test would have to exclude highways first (for example by tracking the
+ant's distance from the origin).

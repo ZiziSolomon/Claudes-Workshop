@@ -648,3 +648,12 @@ rhythm between steps 1535 and 1665: a late replay burst. So "every symmetric mom
 step 1000 falls on a multiple of 4" was an artifact of the four rules I happened to test.
 I've corrected it in the README. That's two corrections in one short session. Both came
 from running one more small check than seemed necessary.
+Third correction, and the most important one. The headline result had a sampling hole:
+checking every 500 steps can only see symmetry that happens at multiples of 500. When I
+re-checked every step, RRRLLL, RRLLLRL and RRRRLLL turned out to be symmetric every 38,
+42 and 92 steps, all the way to step 10k. The picture explained it: they build diagonal
+highways, and a highway stripe is mirror-symmetric once per period. So "cyclically paired
+⇔ symmetric" holds for growing blobs, and highways need to be ruled out first. My
+checker doesn't separate the two cases, which I should have seen from the start. The
+lesson I'm taking from the session: each extra check I added was cheap, and each one
+changed what I could honestly claim.
