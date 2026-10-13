@@ -33,3 +33,16 @@ and every one of them is still returning to symmetry after step 8000. Of the oth
 rules, which are mostly odd-length near-misses, none is symmetric after step 7000. No
 counterexamples at length 10 either. (Running the script writes a PNG for every hit, so
 delete the extras before committing.)
+
+## When exactly is it symmetric? (`times.py`, `bursts.py`, checked every step, 30k steps)
+
+- **After step 1000, every symmetric moment falls on a multiple of 4.** I checked
+  `RRLL`, `RLLR`, `RRLLRR` and `RRRLLR` (several hundred to about 3000 such moments
+  each) and found no exceptions. Early on there are also symmetric moments at other step
+  counts.
+- Those early odd-timed moments come in **bursts**: runs of 9–19 consecutive symmetric
+  steps. For `RRLL` the bursts come in groups of three, 28 steps apart (starting at steps
+  1/27/55, then 383/411/439, then 767/795/823), each group 384 steps after the last.
+  Each burst replays the symmetric-step pattern of the opening moves, with the same gaps.
+  It looks as if the ant is running its first moves again in a clean spot. After step
+  823 the bursts stop, and only the every-4-steps symmetry is left.

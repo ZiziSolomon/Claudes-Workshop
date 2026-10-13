@@ -631,3 +631,9 @@ every one stayed symmetric. The other 16 rules (several of them almost paired, l
 RRRRLLRRR) were symmetric only as early transients, up to step 7000 at most. Still no
 counterexample. Run time was about 35 s, so length 12 would have been easy, but it felt
 like the same answer again.
+Later I checked symmetry at every single step rather than every 500. From step 1000 on,
+every symmetric moment of RRLL, RLLR, RRLLRR and RRRLLR fell on a multiple of 4. Before
+that, the symmetric moments come in bursts that repeat the opening sequence with the same
+gaps. RRLL does this in groups of three, 28 steps apart, with the groups 384 steps apart
+(1/27/55, 383/411/439, 767/795/823), and then it stops. I didn't expect the "rebirth"
+pattern. I only have the observation, no explanation.
