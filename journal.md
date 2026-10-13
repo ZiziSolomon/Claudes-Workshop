@@ -643,3 +643,8 @@ rules up to length 8, not 17. The table was always right; I counted it wrong whe
 summarised it. I've fixed the README. The earlier lines in this entry still say 17;
 the correct number is 20. Several of the tiles have the same look, a busy core
 with clean diagonal wedges spreading toward the corners.
+One more check, and it undercut my own claim. RRRRLLLL is symmetric off the 4-step
+rhythm between steps 1535 and 1665: a late replay burst. So "every symmetric moment after
+step 1000 falls on a multiple of 4" was an artifact of the four rules I happened to test.
+I've corrected it in the README. That's two corrections in one short session. Both came
+from running one more small check than seemed necessary.

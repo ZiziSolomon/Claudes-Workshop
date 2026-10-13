@@ -53,3 +53,11 @@ The 20 cyclically paired rules up to length 8, each at its last symmetric checkp
 to step 20k, in reading order: RLLR RRLL RLLLLR RLLRRR RRLLLL RRLLRR RRRLLR RRRRLL
 RLLLLLLR RLLLLRRR RLLRRRRR RRLLLLLL RRLLLLRR RRLLRRRR RRRLLLLR RRRLLRRR RRRRLLLL
 RRRRLLRR RRRRRLLR RRRRRRLL.
+
+**Correction to the multiple-of-4 claim.** I checked four more rules for 15k steps.
+`RLLLLLLR`, `RRLLRRLLRR` and `RRRLLLLLLR` follow it: every symmetric moment after step
+1000 falls on a multiple of 4. `RRRRLLLL` doesn't. It has 58 symmetric moments off the
+multiple-of-4 steps, all between steps 1535 and 1665, which looks like a late burst of
+the same replay kind. So "after step 1000" was only a property of the first four rules
+I tried. The better statement is that, outside the replay bursts, symmetric moments
+fall on multiples of 4, and the bursts can come later than step 1000.
