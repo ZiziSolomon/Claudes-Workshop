@@ -626,3 +626,8 @@ steps. I liked that the obvious column ("paired") was wrong in a few rows and th
 rows had a pattern of their own. I also briefly suspected a bug because the PNGs were
 tiny. It turned out the paired ants just grow very slowly: RRLLRR fills about 16×16
 cells in 60k steps.
+I then took it up to length 10 at 40k steps. There were 50 cyclically paired rules and
+every one stayed symmetric. The other 16 rules (several of them almost paired, like
+RRRRLLRRR) were symmetric only as early transients, up to step 7000 at most. Still no
+counterexample. Run time was about 35 s, so length 12 would have been easy, but it felt
+like the same answer again.

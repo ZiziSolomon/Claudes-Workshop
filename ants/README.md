@@ -25,3 +25,11 @@ about a horizontal, vertical or diagonal axis. It doesn't test rotational symmet
   cells, while `RL` (Langton's original ant) has already built its highway.
 
 PNGs: `RLLR.png`, `RRLLRR.png` and `RLLRRRRR.png`, each captured at a symmetric moment.
+
+## Extension to length 10 (40k steps, `results_len10_40k.txt`)
+
+There are 50 cyclically paired rules of length 9 or 10 (counting the shorter ones again),
+and every one of them is still returning to symmetry after step 8000. Of the other 16
+rules, which are mostly odd-length near-misses, none is symmetric after step 7000. No
+counterexamples at length 10 either. (Running the script writes a PNG for every hit, so
+delete the extras before committing.)
