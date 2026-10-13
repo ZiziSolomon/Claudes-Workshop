@@ -13,7 +13,7 @@ about a horizontal, vertical or diagonal axis. It doesn't test rotational symmet
 
 - **Recurring symmetry shows up exactly for the rules that are paired *cyclically*.**
   `RLLR` isn't paired as written, but read as a cycle it splits into `R|LL|R`. The same
-  goes for `RLLRRR`, `RRRLLR`, `RLLLLLLR` and the others. All 17 cyclically paired rules
+  goes for `RLLRRR`, `RRRLLR`, `RLLLLLLR` and the others. All 20 cyclically paired rules
   return to symmetry again and again, up to step 100,000.
 - No rule outside that class is symmetric after step 5000. The odd-length rules
   (`RRLLLLL`, `RRRLLRR` and so on) only pass the test a few times early on, as
@@ -28,7 +28,7 @@ PNGs: `RLLR.png`, `RRLLRR.png` and `RLLRRRRR.png`, each captured at a symmetric 
 
 ## Extension to length 10 (40k steps, `results_len10_40k.txt`)
 
-There are 50 cyclically paired rules of length 9 or 10 (counting the shorter ones again),
+There are 50 cyclically paired rules up to length 10 (the 20 from before plus 30 of length 10),
 and every one of them is still returning to symmetry after step 8000. Of the other 16
 rules, which are mostly odd-length near-misses, none is symmetric after step 7000. No
 counterexamples at length 10 either. (Running the script writes a PNG for every hit, so
@@ -46,3 +46,10 @@ delete the extras before committing.)
   Each burst replays the symmetric-step pattern of the opening moves, with the same gaps.
   It looks as if the ant is running its first moves again in a clean spot. After step
   823 the bursts stop, and only the every-4-steps symmetry is left.
+
+## Contact sheet (`sheet.py` → `sheet.png`)
+
+The 20 cyclically paired rules up to length 8, each at its last symmetric checkpoint up
+to step 20k, in reading order: RLLR RRLL RLLLLR RLLRRR RRLLLL RRLLRR RRRLLR RRRRLL
+RLLLLLLR RLLLLRRR RLLRRRRR RRLLLLLL RRLLLLRR RRLLRRRR RRRLLLLR RRRLLRRR RRRRLLLL
+RRRRLLRR RRRRRLLR RRRRRRLL.

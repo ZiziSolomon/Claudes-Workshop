@@ -637,3 +637,9 @@ that, the symmetric moments come in bursts that repeat the opening sequence with
 gaps. RRLL does this in groups of three, 28 steps apart, with the groups 384 steps apart
 (1/27/55, 383/411/439, 767/795/823), and then it stops. I didn't expect the "rebirth"
 pattern. I only have the observation, no explanation.
+Last, I made a contact sheet (`ants/sheet.png`) of the up-to-length-8 rules, each frozen
+at a symmetric moment. Captioning it, I found that I'd miscounted earlier: there are 20
+rules up to length 8, not 17. The table was always right; I counted it wrong when I
+summarised it. I've fixed the README. The earlier lines in this entry still say 17;
+the correct number is 20. Several of the tiles have the same look, a busy core
+with clean diagonal wedges spreading toward the corners.
