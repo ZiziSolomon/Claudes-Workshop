@@ -1,0 +1,222 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" style="background:#0e1116">
+<line x1="0.0" y1="0" x2="0.0" y2="500" stroke="#222a35"/>
+<line x1="83.33333333333333" y1="0" x2="83.33333333333333" y2="500" stroke="#222a35"/>
+<line x1="166.66666666666666" y1="0" x2="166.66666666666666" y2="500" stroke="#222a35"/>
+<line x1="250.0" y1="0" x2="250.0" y2="500" stroke="#222a35"/>
+<line x1="333.3333333333333" y1="0" x2="333.3333333333333" y2="500" stroke="#222a35"/>
+<line x1="416.6666666666667" y1="0" x2="416.6666666666667" y2="500" stroke="#222a35"/>
+<line x1="500.0" y1="0" x2="500.0" y2="500" stroke="#222a35"/>
+<line x1="583.3333333333334" y1="0" x2="583.3333333333334" y2="500" stroke="#222a35"/>
+<line x1="666.6666666666666" y1="0" x2="666.6666666666666" y2="500" stroke="#222a35"/>
+<line x1="750.0" y1="0" x2="750.0" y2="500" stroke="#222a35"/>
+<line x1="833.3333333333334" y1="0" x2="833.3333333333334" y2="500" stroke="#222a35"/>
+<line x1="916.6666666666666" y1="0" x2="916.6666666666666" y2="500" stroke="#222a35"/>
+<line x1="1000.0" y1="0" x2="1000.0" y2="500" stroke="#222a35"/>
+<line x1="0" y1="500.0" x2="1000" y2="500.0" stroke="#222a35"/>
+<line x1="0" y1="416.6666666666667" x2="1000" y2="416.6666666666667" stroke="#222a35"/>
+<line x1="0" y1="333.3333333333333" x2="1000" y2="333.3333333333333" stroke="#222a35"/>
+<line x1="0" y1="250.0" x2="1000" y2="250.0" stroke="#222a35"/>
+<line x1="0" y1="166.66666666666666" x2="1000" y2="166.66666666666666" stroke="#222a35"/>
+<line x1="0" y1="83.33333333333333" x2="1000" y2="83.33333333333333" stroke="#222a35"/>
+<line x1="0" y1="0.0" x2="1000" y2="0.0" stroke="#222a35"/>
+<circle cx="297.2" cy="231.4" r="5.6" fill="#e4572e" fill-opacity=".55"><title>M4.8 0 km SW of Aratoca, Colombia, 162.708 km</title></circle>
+<circle cx="922.6" cy="265.2" r="12.8" fill="#f2c14e" fill-opacity=".55"><title>M6 126 km S of Kokopo, Papua New Guinea, 20.842 km</title></circle>
+<circle cx="288.0" cy="245.3" r="3.8" fill="#f2c14e" fill-opacity=".55"><title>M4.4 20 km WSW of Palestina, Colombia, 10 km</title></circle>
+<circle cx="922.5" cy="265.0" r="7.2" fill="#f2c14e" fill-opacity=".55"><title>M5.1 119 km S of Kokopo, Papua New Guinea, 28.4 km</title></circle>
+<circle cx="848.7" cy="235.1" r="5.6" fill="#f2c14e" fill-opacity=".55"><title>M4.8 8 km SE of Sarangani, Philippines, 65.699 km</title></circle>
+<circle cx="922.6" cy="265.1" r="8.3" fill="#f2c14e" fill-opacity=".55"><title>M5.3 122 km S of Kokopo, Papua New Guinea, 18.521 km</title></circle>
+<circle cx="273.3" cy="228.4" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 26 km SSW of Zapotillo, Panama, 10 km</title></circle>
+<circle cx="446.0" cy="251.1" r="18.6" fill="#f2c14e" fill-opacity=".55"><title>M6.8 central Mid-Atlantic Ridge, 10 km</title></circle>
+<circle cx="696.9" cy="148.5" r="3.3" fill="#e4572e" fill-opacity=".55"><title>M4.3 36 km S of Jurm, Afghanistan, 188.82 km</title></circle>
+<circle cx="944.3" cy="106.6" r="6.1" fill="#f2c14e" fill-opacity=".55"><title>M4.9 180 km SE of Vilyuchinsk, Russia, 10 km</title></circle>
+<circle cx="830.1" cy="277.6" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 71 km SW of Tambolaka, Indonesia, 35 km</title></circle>
+<circle cx="691.4" cy="143.0" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 9 km NE of Boshkengash, Tajikistan, 10 km</title></circle>
+<circle cx="465.2" cy="329.3" r="8.3" fill="#f2c14e" fill-opacity=".55"><title>M5.3 southern Mid-Atlantic Ridge, 10 km</title></circle>
+<circle cx="791.5" cy="142.1" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 63 km W of Bayan Hot, China, 10 km</title></circle>
+<circle cx="273.7" cy="228.4" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 14 km WNW of Río Grande, Panama, 10 km</title></circle>
+<circle cx="835.3" cy="195.3" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 124 km N of Pagudpud, Philippines, 10 km</title></circle>
+<circle cx="444.8" cy="249.5" r="17.8" fill="#f2c14e" fill-opacity=".55"><title>M6.7 central Mid-Atlantic Ridge, 10 km</title></circle>
+<circle cx="278.0" cy="229.2" r="3.8" fill="#f2c14e" fill-opacity=".55"><title>M4.4 13 km ESE of Pedasí, Panama, 10 km</title></circle>
+<circle cx="275.0" cy="228.8" r="3.3" fill="#f2c14e" fill-opacity=".55"><title>M4.3 11 km SSW of Tebario, Panama, 10 km</title></circle>
+<circle cx="816.4" cy="276.2" r="7.2" fill="#f2c14e" fill-opacity=".55"><title>M5.1 119 km SSW of Gambiran Satu, Indonesia, 10 km</title></circle>
+<circle cx="313.2" cy="330.2" r="3.8" fill="#e4572e" fill-opacity=".55"><title>M4.4 38 km NE of Chilecito, Argentina, 128.266 km</title></circle>
+<circle cx="276.1" cy="228.9" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 9 km SSE of La Mesa, Panama, 10 km</title></circle>
+<circle cx="427.2" cy="411.5" r="4.2" fill="#e4572e" fill-opacity=".55"><title>M4.5 South Sandwich Islands region, 139.58 km</title></circle>
+<circle cx="296.1" cy="350.5" r="2.2" fill="#f2c14e" fill-opacity=".55"><title>M4 62 km NW of Tomé, Chile, 25.568 km</title></circle>
+<circle cx="898.5" cy="124.0" r="2.6" fill="#e4572e" fill-opacity=".55"><title>M4.1 81 km NE of Esashi, Japan, 277.064 km</title></circle>
+<circle cx="273.5" cy="228.3" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 23 km WNW of Río Grande, Panama, 10 km</title></circle>
+<circle cx="783.9" cy="265.9" r="3.8" fill="#f2c14e" fill-opacity=".55"><title>M4.4 213 km S of Bengkulu, Indonesia, 10 km</title></circle>
+<circle cx="273.2" cy="228.3" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 24 km SW of Zapotillo, Panama, 10 km</title></circle>
+<circle cx="862.1" cy="267.5" r="2.6" fill="#e4572e" fill-opacity=".55"><title>M4.1 274 km WSW of Tual, Indonesia, 130.231 km</title></circle>
+<circle cx="273.6" cy="228.5" r="6.1" fill="#f2c14e" fill-opacity=".55"><title>M4.9 17 km W of Río Grande, Panama, 10 km</title></circle>
+<circle cx="273.6" cy="228.6" r="13.4" fill="#f2c14e" fill-opacity=".55"><title>M6.1 17 km W of Río Grande, Panama, 11 km</title></circle>
+<circle cx="273.8" cy="227.9" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 5 km WSW of Calidonia, Panama, 10 km</title></circle>
+<circle cx="273.6" cy="228.3" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 21 km WNW of Río Grande, Panama, 10 km</title></circle>
+<circle cx="273.4" cy="228.6" r="5.6" fill="#f2c14e" fill-opacity=".55"><title>M4.8 25 km W of Río Grande, Panama, 10 km</title></circle>
+<circle cx="686.1" cy="295.9" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 Mid-Indian Ridge, 10 km</title></circle>
+<circle cx="686.4" cy="295.3" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 Mid-Indian Ridge, 10 km</title></circle>
+<circle cx="300.5" cy="343.7" r="5.6" fill="#f2c14e" fill-opacity=".55"><title>M4.8 23 km SW of San Antonio, Chile, 33.627 km</title></circle>
+<circle cx="896.1" cy="140.0" r="3.8" fill="#f2c14e" fill-opacity=".55"><title>M4.4 54 km E of Miyako, Japan, 35 km</title></circle>
+<circle cx="930.1" cy="115.9" r="6.1" fill="#f2c14e" fill-opacity=".55"><title>M4.9 283 km SSW of Severo-Kuril’sk, Russia, 35 km</title></circle>
+<circle cx="985.7" cy="107.1" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 194 km SE of Attu Station, Alaska, 10 km</title></circle>
+<circle cx="686.4" cy="295.3" r="5.6" fill="#f2c14e" fill-opacity=".55"><title>M4.8 Mid-Indian Ridge, 10 km</title></circle>
+<circle cx="276.4" cy="229.4" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 6 km W of Tonosí, Panama, 10 km</title></circle>
+<circle cx="814.2" cy="275.4" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 100 km SSW of Kencong, Indonesia, 55.223 km</title></circle>
+<circle cx="687.2" cy="274.6" r="8.9" fill="#f2c14e" fill-opacity=".55"><title>M5.4 Mid-Indian Ridge, 10 km</title></circle>
+<circle cx="276.0" cy="229.2" r="3.3" fill="#f2c14e" fill-opacity=".55"><title>M4.3 6 km NNW of El Cortezo, Panama, 10 km</title></circle>
+<circle cx="304.8" cy="343.6" r="3.3" fill="#e4572e" fill-opacity=".55"><title>M4.3 31 km ESE of Puente Alto, Chile, 107.176 km</title></circle>
+<circle cx="849.8" cy="248.1" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 122 km SE of Bitung, Indonesia, 49.217 km</title></circle>
+<circle cx="858.2" cy="272.9" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 219 km E of Lospalos, Timor Leste, 22.434 km</title></circle>
+<circle cx="275.2" cy="228.6" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 7 km ESE of Tebario, Panama, 10 km</title></circle>
+<circle cx="282.8" cy="254.9" r="2.6" fill="#e4572e" fill-opacity=".55"><title>M4.1 27 km WSW of Palora, Ecuador, 164.281 km</title></circle>
+<circle cx="988.6" cy="363.0" r="2.9" fill="#f2c14e" fill-opacity=".55"><title>M4.2 25 km SSE of Pahiatua, New Zealand, 32.309 km</title></circle>
+<circle cx="811.7" cy="273.1" r="4.7" fill="#e4572e" fill-opacity=".55"><title>M4.6 25 km SSE of Blitar, Indonesia, 121.104 km</title></circle>
+<circle cx="999.9" cy="320.0" r="4.2" fill="#9b5de5" fill-opacity=".55"><title>M4.5 south of the Fiji Islands, 470.833 km</title></circle>
+<circle cx="13.5" cy="302.0" r="9.5" fill="#e4572e" fill-opacity=".55"><title>M5.5 122 km W of Neiafu, Tonga, 195.212 km</title></circle>
+<circle cx="276.3" cy="228.9" r="2.9" fill="#f2c14e" fill-opacity=".55"><title>M4.2 8 km SSE of Llano de Piedra, Panama, 10 km</title></circle>
+<circle cx="900.8" cy="131.9" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 53 km S of Kushiro, Japan, 65.892 km</title></circle>
+<circle cx="700.5" cy="141.2" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 42 km S of Daroot-Korgon, Kyrgyzstan, 26.948 km</title></circle>
+<circle cx="277.6" cy="228.9" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 7 km ENE of Lajamina, Panama, 10 km</title></circle>
+<circle cx="182.6" cy="388.7" r="5.6" fill="#f2c14e" fill-opacity=".55"><title>M4.8 southern East Pacific Rise, 10 km</title></circle>
+<circle cx="762.8" cy="181.3" r="5.6" fill="#e4572e" fill-opacity=".55"><title>M4.8 56 km E of Yairipok, India, 78.183 km</title></circle>
+<circle cx="892.1" cy="180.3" r="4.7" fill="#e4572e" fill-opacity=".55"><title>M4.6 Volcano Islands, Japan region, 199.761 km</title></circle>
+<circle cx="250.7" cy="214.8" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 103 km SSW of La Libertad, El Salvador, 35 km</title></circle>
+<circle cx="274.7" cy="228.5" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 0 km NE of Leones Arriba, Panama, 10 km</title></circle>
+<circle cx="273.6" cy="228.7" r="3.8" fill="#f2c14e" fill-opacity=".55"><title>M4.4 18 km WSW of Río Grande, Panama, 10 km</title></circle>
+<circle cx="878.5" cy="261.3" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 116 km SE of Nabire, Indonesia, 10 km</title></circle>
+<circle cx="838.0" cy="248.5" r="7.8" fill="#e4572e" fill-opacity=".55"><title>M5.2 152 km W of Gorontalo, Indonesia, 111.257 km</title></circle>
+<circle cx="314.3" cy="316.6" r="3.3" fill="#e4572e" fill-opacity=".55"><title>M4.3 61 km WNW of San Antonio de los Cobres, Argentina, 195.569 km</title></circle>
+<circle cx="273.4" cy="228.6" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 27 km W of Río Grande, Panama, 10 km</title></circle>
+<circle cx="862.9" cy="258.7" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 184 km W of Fakfak, Indonesia, 10 km</title></circle>
+<circle cx="274.9" cy="228.7" r="3.8" fill="#f2c14e" fill-opacity=".55"><title>M4.4 9 km SW of Tebario, Panama, 10 km</title></circle>
+<circle cx="20.2" cy="303.8" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 156 km ESE of Neiafu, Tonga, 10 km</title></circle>
+<circle cx="273.3" cy="228.6" r="5.6" fill="#f2c14e" fill-opacity=".55"><title>M4.8 31 km W of Río Grande, Panama, 10 km</title></circle>
+<circle cx="898.7" cy="188.8" r="3.8" fill="#f2c14e" fill-opacity=".55"><title>M4.4 Volcano Islands, Japan region, 10 km</title></circle>
+<circle cx="932.7" cy="111.7" r="7.8" fill="#e4572e" fill-opacity=".55"><title>M5.2 101 km SSW of Severo-Kuril’sk, Russia, 83.386 km</title></circle>
+<circle cx="890.1" cy="151.3" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 6 km ESE of Tōgane, Japan, 55.788 km</title></circle>
+<circle cx="878.5" cy="261.7" r="3.3" fill="#f2c14e" fill-opacity=".55"><title>M4.3 125 km SE of Nabire, Indonesia, 10 km</title></circle>
+<circle cx="932.5" cy="269.5" r="14.1" fill="#f2c14e" fill-opacity=".55"><title>M6.2 79 km SSE of Panguna, Papua New Guinea, 53.473 km</title></circle>
+<circle cx="298.2" cy="296.6" r="7.8" fill="#f2c14e" fill-opacity=".55"><title>M5.2 18 km SSE of Camaná, Peru, 44.92 km</title></circle>
+<circle cx="998.3" cy="106.3" r="3.8" fill="#e4572e" fill-opacity=".55"><title>M4.4 275 km W of Adak, Alaska, 95.229 km</title></circle>
+<circle cx="850.4" cy="184.7" r="5.6" fill="#f2c14e" fill-opacity=".55"><title>M4.8 165 km SSE of Miyakojima, Japan, 10 km</title></circle>
+<circle cx="944.1" cy="102.6" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 82 km E of Petropavlovsk-Kamchatsky, Russia, 68.683 km</title></circle>
+<circle cx="6.5" cy="306.6" r="4.7" fill="#9b5de5" fill-opacity=".55"><title>M4.6 260 km WNW of Houma, Tonga, 512.919 km</title></circle>
+<circle cx="209.9" cy="162.0" r="2.2" fill="#f2c14e" fill-opacity=".55"><title>M4 56 km S of Whites City, New Mexico, 5.946 km</title></circle>
+<circle cx="999.9" cy="315.8" r="4.2" fill="#9b5de5" fill-opacity=".55"><title>M4.5 south of the Fiji Islands, 546.339 km</title></circle>
+<circle cx="697.2" cy="148.1" r="2.9" fill="#e4572e" fill-opacity=".55"><title>M4.2 26 km SE of Jurm, Afghanistan, 198.608 km</title></circle>
+<circle cx="897.1" cy="190.1" r="2.9" fill="#9b5de5" fill-opacity=".55"><title>M4.2 Mariana Islands region, 325.119 km</title></circle>
+<circle cx="966.9" cy="290.9" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 110 km SSE of Sola, Vanuatu, 10.602 km</title></circle>
+<circle cx="795.9" cy="273.9" r="7.8" fill="#f2c14e" fill-opacity=".55"><title>M5.2 180 km S of Pelabuhanratu, Indonesia, 10 km</title></circle>
+<circle cx="275.9" cy="228.7" r="3.8" fill="#f2c14e" fill-opacity=".55"><title>M4.4 3 km NW of Pitaloza Arriba, Panama, 10 km</title></circle>
+<circle cx="851.7" cy="234.8" r="4.7" fill="#e4572e" fill-opacity=".55"><title>M4.6 109 km SSE of Pondaguitan, Philippines, 121.25 km</title></circle>
+<circle cx="276.6" cy="229.1" r="6.7" fill="#f2c14e" fill-opacity=".55"><title>M5 3 km NW of Flores, Panama, 10 km</title></circle>
+<circle cx="994.6" cy="354.1" r="3.3" fill="#f2c14e" fill-opacity=".55"><title>M4.3 24 km WNW of Hicks Bay, New Zealand, 67.159 km</title></circle>
+<circle cx="273.7" cy="228.3" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 18 km WNW of Río Grande, Panama, 10 km</title></circle>
+<circle cx="697.6" cy="148.0" r="2.6" fill="#e4572e" fill-opacity=".55"><title>M4.1 29 km ESE of Jurm, Afghanistan, 203.491 km</title></circle>
+<circle cx="573.9" cy="151.5" r="2.9" fill="#f2c14e" fill-opacity=".55"><title>M4.2 31 km WNW of Fry, Greece, 10 km</title></circle>
+<circle cx="784.8" cy="265.0" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 171 km SSW of Pagar Alam, Indonesia, 29.581 km</title></circle>
+<circle cx="235.4" cy="353.1" r="8.3" fill="#f2c14e" fill-opacity=".55"><title>M5.3 southeast of Easter Island, 10 km</title></circle>
+<circle cx="2.8" cy="336.8" r="6.1" fill="#e4572e" fill-opacity=".55"><title>M4.9 Kermadec Islands region, 117.707 km</title></circle>
+<circle cx="452.5" cy="348.0" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 southern Mid-Atlantic Ridge, 10 km</title></circle>
+<circle cx="276.6" cy="229.3" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 2 km WNW of El Cacao, Panama, 13.518 km</title></circle>
+<circle cx="275.0" cy="228.8" r="5.6" fill="#f2c14e" fill-opacity=".55"><title>M4.8 11 km SSW of Tebario, Panama, 10 km</title></circle>
+<circle cx="922.2" cy="260.5" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 51 km NNW of Rabaul, Papua New Guinea, 10 km</title></circle>
+<circle cx="274.2" cy="228.3" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 5 km WNW of Guarumal, Panama, 10 km</title></circle>
+<circle cx="275.9" cy="229.1" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 10 km NNW of El Cortezo, Panama, 10 km</title></circle>
+<circle cx="718.3" cy="164.4" r="3.8" fill="#f2c14e" fill-opacity=".55"><title>M4.4 15 km ENE of Uttarkāshi, India, 22.021 km</title></circle>
+<circle cx="2.0" cy="338.9" r="3.8" fill="#e4572e" fill-opacity=".55"><title>M4.4 south of the Kermadec Islands, 94.179 km</title></circle>
+<circle cx="276.3" cy="229.1" r="5.6" fill="#f2c14e" fill-opacity=".55"><title>M4.8 12 km NE of La Tronosa, Panama, 10 km</title></circle>
+<circle cx="1.1" cy="311.3" r="4.7" fill="#9b5de5" fill-opacity=".55"><title>M4.6 south of the Fiji Islands, 587.386 km</title></circle>
+<circle cx="277.3" cy="229.0" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 4 km NW of Los Asientos, Panama, 10 km</title></circle>
+<circle cx="275.0" cy="228.6" r="3.3" fill="#f2c14e" fill-opacity=".55"><title>M4.3 3 km SSW of Tebario, Panama, 10 km</title></circle>
+<circle cx="10.2" cy="110.1" r="2.9" fill="#f2c14e" fill-opacity=".55"><title>M4.2 167 km S of Adak, Alaska, 10 km</title></circle>
+<circle cx="6.9" cy="305.4" r="4.7" fill="#9b5de5" fill-opacity=".55"><title>M4.6 268 km WNW of Houma, Tonga, 560.2 km</title></circle>
+<circle cx="807.5" cy="274.3" r="3.3" fill="#f2c14e" fill-opacity=".55"><title>M4.3 88 km S of Wonosari, Indonesia, 68.816 km</title></circle>
+<circle cx="274.1" cy="228.5" r="5.6" fill="#f2c14e" fill-opacity=".55"><title>M4.8 4 km NE of Río Grande, Panama, 10 km</title></circle>
+<circle cx="914.7" cy="267.6" r="3.8" fill="#f2c14e" fill-opacity=".55"><title>M4.4 32 km WSW of Kandrian, Papua New Guinea, 56.818 km</title></circle>
+<circle cx="277.5" cy="229.5" r="2.9" fill="#f2c14e" fill-opacity=".55"><title>M4.2 16 km SSE of Los Asientos, Panama, 10 km</title></circle>
+<circle cx="893.0" cy="258.0" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 31 km SE of Vanimo, Papua New Guinea, 30.387 km</title></circle>
+<circle cx="998.2" cy="321.6" r="2.6" fill="#9b5de5" fill-opacity=".55"><title>M4.1 south of the Fiji Islands, 512.539 km</title></circle>
+<circle cx="17.3" cy="292.8" r="4.2" fill="#e4572e" fill-opacity=".55"><title>M4.5 61 km N of Hihifo, Tonga, 79.424 km</title></circle>
+<circle cx="242.3" cy="200.5" r="2.9" fill="#f2c14e" fill-opacity=".55"><title>M4.2 4 km W of Aquiles Serdán 1ra. Sección, Mexico, 10 km</title></circle>
+<circle cx="276.2" cy="228.7" r="3.8" fill="#f2c14e" fill-opacity=".55"><title>M4.4 2 km WSW of Llano de Piedra, Panama, 10 km</title></circle>
+<circle cx="276.3" cy="228.8" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 6 km SSE of Llano de Piedra, Panama, 10 km</title></circle>
+<circle cx="277.9" cy="229.3" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 10 km SE of Pedasí, Panama, 10 km</title></circle>
+<circle cx="277.9" cy="229.7" r="6.1" fill="#f2c14e" fill-opacity=".55"><title>M4.9 26 km SSE of Pedasí, Panama, 10 km</title></circle>
+<circle cx="277.8" cy="229.7" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 26 km S of Pedasí, Panama, 10 km</title></circle>
+<circle cx="276.9" cy="229.5" r="6.1" fill="#f2c14e" fill-opacity=".55"><title>M4.9 10 km SSW of Cañas, Panama, 10 km</title></circle>
+<circle cx="277.9" cy="229.7" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 25 km SSE of Pedasí, Panama, 10 km</title></circle>
+<circle cx="275.1" cy="228.4" r="3.3" fill="#f2c14e" fill-opacity=".55"><title>M4.3 5 km N of Tebario, Panama, 10 km</title></circle>
+<circle cx="290.0" cy="235.4" r="4.2" fill="#e4572e" fill-opacity=".55"><title>M4.5 6 km WSW of Filadelfia, Colombia, 115.143 km</title></circle>
+<circle cx="851.1" cy="245.5" r="6.7" fill="#f2c14e" fill-opacity=".55"><title>M5 141 km E of Bitung, Indonesia, 10 km</title></circle>
+<circle cx="274.0" cy="229.1" r="3.8" fill="#f2c14e" fill-opacity=".55"><title>M4.4 21 km SSW of Río Grande, Panama, 10 km</title></circle>
+<circle cx="254.7" cy="216.6" r="3.8" fill="#f2c14e" fill-opacity=".55"><title>M4.4 121 km SW of Jiquilillo, Nicaragua, 10 km</title></circle>
+<circle cx="844.6" cy="274.6" r="3.8" fill="#f2c14e" fill-opacity=".55"><title>M4.4 53 km NW of Pante Makasar, Timor Leste, 67.684 km</title></circle>
+<circle cx="276.4" cy="229.1" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 9 km WNW of Flores, Panama, 10 km</title></circle>
+<circle cx="276.1" cy="229.1" r="12.8" fill="#f2c14e" fill-opacity=".55"><title>M6 7 km N of La Tronosa, Panama, 10 km</title></circle>
+<circle cx="903.0" cy="211.5" r="8.3" fill="#e4572e" fill-opacity=".55"><title>M5.3 41 km NNE of Yigo Village, Guam, 111.584 km</title></circle>
+<circle cx="276.2" cy="229.1" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 8 km N of La Tronosa, Panama, 10 km</title></circle>
+<circle cx="274.3" cy="229.0" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 18 km SSE of Río Grande, Panama, 10 km</title></circle>
+<circle cx="276.6" cy="229.4" r="7.2" fill="#f2c14e" fill-opacity=".55"><title>M5.1 1 km NNE of Tonosí, Panama, 10 km</title></circle>
+<circle cx="851.0" cy="246.1" r="7.2" fill="#f2c14e" fill-opacity=".55"><title>M5.1 133 km WNW of Ternate, Indonesia, 10 km</title></circle>
+<circle cx="274.1" cy="228.8" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 10 km S of Río Grande, Panama, 10 km</title></circle>
+<circle cx="276.2" cy="229.1" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 10 km N of La Tronosa, Panama, 10 km</title></circle>
+<circle cx="276.2" cy="229.1" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 9 km NNE of La Tronosa, Panama, 10 km</title></circle>
+<circle cx="740.0" cy="99.8" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 7 km S of Trudarmeyskiy, Russia, 10 km</title></circle>
+<circle cx="277.8" cy="229.1" r="2.2" fill="#f2c14e" fill-opacity=".55"><title>M4 2 km SE of Pedasí, Panama, 10 km</title></circle>
+<circle cx="968.5" cy="309.1" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 85 km ENE of Tadine, New Caledonia, 10 km</title></circle>
+<circle cx="277.0" cy="229.4" r="5.6" fill="#f2c14e" fill-opacity=".55"><title>M4.8 5 km SW of Cañas, Panama, 10 km</title></circle>
+<circle cx="273.7" cy="228.5" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 14 km W of Río Grande, Panama, 10 km</title></circle>
+<circle cx="278.1" cy="230.2" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 45 km SSE of Pedasí, Panama, 10 km</title></circle>
+<circle cx="273.9" cy="228.7" r="6.1" fill="#f2c14e" fill-opacity=".55"><title>M4.9 9 km SW of Río Grande, Panama, 10 km</title></circle>
+<circle cx="277.5" cy="229.3" r="8.9" fill="#f2c14e" fill-opacity=".55"><title>M5.4 9 km SSE of Los Asientos, Panama, 10 km</title></circle>
+<circle cx="276.3" cy="229.5" r="6.7" fill="#f2c14e" fill-opacity=".55"><title>M5 8 km ESE of La Tronosa, Panama, 10 km</title></circle>
+<circle cx="274.1" cy="228.5" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 4 km NNE of Río Grande, Panama, 10 km</title></circle>
+<circle cx="937.7" cy="105.4" r="4.7" fill="#e4572e" fill-opacity=".55"><title>M4.6 96 km NE of Ozernovskiy, Russia, 78.277 km</title></circle>
+<circle cx="273.7" cy="228.5" r="6.1" fill="#f2c14e" fill-opacity=".55"><title>M4.9 13 km W of Río Grande, Panama, 10 km</title></circle>
+<circle cx="273.7" cy="228.2" r="6.1" fill="#f2c14e" fill-opacity=".55"><title>M4.9 16 km SSW of Calidonia, Panama, 10 km</title></circle>
+<circle cx="273.7" cy="228.5" r="6.7" fill="#f2c14e" fill-opacity=".55"><title>M5 13 km W of Río Grande, Panama, 10 km</title></circle>
+<circle cx="274.7" cy="228.7" r="6.1" fill="#f2c14e" fill-opacity=".55"><title>M4.9 8 km SSE of Leones Arriba, Panama, 10 km</title></circle>
+<circle cx="273.7" cy="228.6" r="17.1" fill="#f2c14e" fill-opacity=".55"><title>M6.6 14 km W of Río Grande, Panama, 10 km</title></circle>
+<circle cx="276.3" cy="229.2" r="6.7" fill="#f2c14e" fill-opacity=".55"><title>M5 6 km NE of La Tronosa, Panama, 10 km</title></circle>
+<circle cx="274.9" cy="228.8" r="6.1" fill="#f2c14e" fill-opacity=".55"><title>M4.9 12 km SSW of Tebario, Panama, 10 km</title></circle>
+<circle cx="922.5" cy="265.1" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 121 km S of Kokopo, Papua New Guinea, 50.541 km</title></circle>
+<circle cx="274.3" cy="228.8" r="7.8" fill="#f2c14e" fill-opacity=".55"><title>M5.2 11 km SE of Río Grande, Panama, 10 km</title></circle>
+<circle cx="277.4" cy="229.0" r="5.6" fill="#f2c14e" fill-opacity=".55"><title>M4.8 2 km N of Los Asientos, Panama, 10 km</title></circle>
+<circle cx="277.2" cy="229.0" r="4.2" fill="#f2c14e" fill-opacity=".55"><title>M4.5 5 km N of Oria Arriba, Panama, 10 km</title></circle>
+<circle cx="276.1" cy="229.1" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 8 km N of La Tronosa, Panama, 10 km</title></circle>
+<circle cx="274.9" cy="228.9" r="5.6" fill="#f2c14e" fill-opacity=".55"><title>M4.8 14 km SSW of Tebario, Panama, 25.962 km</title></circle>
+<circle cx="274.3" cy="228.8" r="6.7" fill="#f2c14e" fill-opacity=".55"><title>M5 14 km SE of Río Grande, Panama, 10 km</title></circle>
+<circle cx="277.5" cy="229.6" r="6.7" fill="#f2c14e" fill-opacity=".55"><title>M5 18 km S of Los Asientos, Panama, 10 km</title></circle>
+<circle cx="274.7" cy="228.9" r="6.7" fill="#f2c14e" fill-opacity=".55"><title>M5 19 km S of Leones Arriba, Panama, 10 km</title></circle>
+<circle cx="276.7" cy="229.3" r="11.4" fill="#f2c14e" fill-opacity=".55"><title>M5.8 1 km S of El Cacao, Panama, 10 km</title></circle>
+<circle cx="277.0" cy="228.9" r="9.5" fill="#f2c14e" fill-opacity=".55"><title>M5.5 3 km SW of Bajo Corral, Panama, 10 km</title></circle>
+<circle cx="275.6" cy="228.9" r="26.2" fill="#f2c14e" fill-opacity=".55"><title>M7.7 12 km WSW of Pitaloza Arriba, Panama, 12.647 km</title></circle>
+<circle cx="946.4" cy="105.8" r="5.6" fill="#f2c14e" fill-opacity=".55"><title>M4.8 191 km SE of Petropavlovsk-Kamchatsky, Russia, 10 km</title></circle>
+<circle cx="944.8" cy="104.9" r="5.1" fill="#f2c14e" fill-opacity=".55"><title>M4.7 138 km SE of Petropavlovsk-Kamchatsky, Russia, 33.508 km</title></circle>
+<circle cx="904.9" cy="130.3" r="3.8" fill="#f2c14e" fill-opacity=".55"><title>M4.4 28 km SSE of Nemuro, Japan, 67.81 km</title></circle>
+<circle cx="999.8" cy="318.6" r="4.7" fill="#9b5de5" fill-opacity=".55"><title>M4.6 south of the Fiji Islands, 501.59 km</title></circle>
+<circle cx="929.1" cy="419.4" r="12.1" fill="#f2c14e" fill-opacity=".55"><title>M5.9 west of Macquarie Island, 10 km</title></circle>
+<circle cx="967.1" cy="293.2" r="8.9" fill="#f2c14e" fill-opacity=".55"><title>M5.4 99 km NE of Norsup, Vanuatu, 10 km</title></circle>
+<circle cx="664.3" cy="335.8" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 Southwest Indian Ridge, 10 km</title></circle>
+<circle cx="260.9" cy="217.8" r="5.6" fill="#e4572e" fill-opacity=".55"><title>M4.8 17 km S of Nandaime, Nicaragua, 165.662 km</title></circle>
+<circle cx="942.9" cy="102.1" r="3.8" fill="#e4572e" fill-opacity=".55"><title>M4.4 58 km ENE of Petropavlovsk-Kamchatsky, Russia, 83.982 km</title></circle>
+<circle cx="695.6" cy="148.5" r="3.8" fill="#e4572e" fill-opacity=".55"><title>M4.4 50 km SW of Jurm, Afghanistan, 203.147 km</title></circle>
+<circle cx="299.7" cy="295.0" r="3.3" fill="#e4572e" fill-opacity=".55"><title>M4.3 20 km NNE of El Pedregal, Peru, 111.498 km</title></circle>
+<circle cx="308.9" cy="305.3" r="7.2" fill="#e4572e" fill-opacity=".55"><title>M5.1 72 km SSW of Colchane, Chile, 123.835 km</title></circle>
+<circle cx="895.6" cy="125.0" r="2.2" fill="#e4572e" fill-opacity=".55"><title>M4 9 km ENE of Nakatonbetsu, Japan, 277.907 km</title></circle>
+<circle cx="778.5" cy="255.2" r="6.1" fill="#f2c14e" fill-opacity=".55"><title>M4.9 77 km ENE of Tuapejat, Indonesia, 40.817 km</title></circle>
+<circle cx="401.2" cy="151.9" r="5.6" fill="#f2c14e" fill-opacity=".55"><title>M4.8 northern Mid-Atlantic Ridge, 10 km</title></circle>
+<circle cx="835.5" cy="213.3" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 17 km NNE of Santa Cruz, Philippines, 10 km</title></circle>
+<circle cx="0.7" cy="300.0" r="5.6" fill="#9b5de5" fill-opacity=".55"><title>M4.8 97 km E of Levuka, Fiji, 639.935 km</title></circle>
+<circle cx="4.6" cy="299.2" r="4.2" fill="#9b5de5" fill-opacity=".55"><title>M4.5 249 km E of Levuka, Fiji, 559.662 km</title></circle>
+<circle cx="308.9" cy="309.1" r="3.8" fill="#e4572e" fill-opacity=".55"><title>M4.4 56 km W of Ollagüe, Chile, 121.3 km</title></circle>
+<circle cx="7.4" cy="317.5" r="6.1" fill="#e4572e" fill-opacity=".55"><title>M4.9 south of the Fiji Islands, 130.36 km</title></circle>
+<circle cx="849.8" cy="247.9" r="7.8" fill="#f2c14e" fill-opacity=".55"><title>M5.2 117 km SE of Bitung, Indonesia, 40.049 km</title></circle>
+<circle cx="565.2" cy="152.5" r="4.7" fill="#f2c14e" fill-opacity=".55"><title>M4.6 23 km SW of Palaióchora, Greece, 41.333 km</title></circle>
+<circle cx="882.4" cy="138.1" r="2.9" fill="#e4572e" fill-opacity=".55"><title>M4.2 195 km WSW of Fukaura, Japan, 269.153 km</title></circle>
+<circle cx="383.8" cy="165.2" r="6.1" fill="#f2c14e" fill-opacity=".55"><title>M4.9 northern Mid-Atlantic Ridge, 10 km</title></circle>
+<circle cx="383.5" cy="165.2" r="7.2" fill="#f2c14e" fill-opacity=".55"><title>M5.1 northern Mid-Atlantic Ridge, 10 km</title></circle>
+<circle cx="897.0" cy="137.5" r="2.9" fill="#f2c14e" fill-opacity=".55"><title>M4.2 103 km ENE of Noda, Japan, 35 km</title></circle>
+<circle cx="890.6" cy="164.6" r="4.7" fill="#e4572e" fill-opacity=".55"><title>M4.6 Izu Islands, Japan region, 95.608 km</title></circle>
+</svg>
