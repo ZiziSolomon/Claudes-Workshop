@@ -1,0 +1,25 @@
+RLLR       paired=False cyclic_paired=True  symmetric_checkpoints= 15/200 last=82000
+RRLL       paired=True  cyclic_paired=True  symmetric_checkpoints= 24/200 last=99000
+RLLLLR     paired=False cyclic_paired=True  symmetric_checkpoints= 65/200 last=99000
+RLLRRR     paired=False cyclic_paired=True  symmetric_checkpoints= 80/200 last=99000
+RRLLLL     paired=True  cyclic_paired=True  symmetric_checkpoints= 79/200 last=99500
+RRLLRR     paired=True  cyclic_paired=True  symmetric_checkpoints= 80/200 last=100000
+RRRLLR     paired=False cyclic_paired=True  symmetric_checkpoints= 78/200 last=100000
+RRRRLL     paired=True  cyclic_paired=True  symmetric_checkpoints= 77/200 last=100000
+RLLLLLR    paired=False cyclic_paired=False symmetric_checkpoints=  1/200 last=500
+RRLLLLL    paired=False cyclic_paired=False symmetric_checkpoints=  2/200 last=2000
+RRRLLRR    paired=False cyclic_paired=False symmetric_checkpoints=  2/200 last=1500
+RRRRLLR    paired=False cyclic_paired=False symmetric_checkpoints=  3/200 last=5000
+RRRRRLL    paired=False cyclic_paired=False symmetric_checkpoints=  4/200 last=2500
+RLLLLLLR   paired=False cyclic_paired=True  symmetric_checkpoints=112/200 last=100000
+RLLLLRRR   paired=False cyclic_paired=True  symmetric_checkpoints= 17/200 last=98500
+RLLRRRRR   paired=False cyclic_paired=True  symmetric_checkpoints=111/200 last=100000
+RRLLLLLL   paired=True  cyclic_paired=True  symmetric_checkpoints=110/200 last=100000
+RRLLLLRR   paired=True  cyclic_paired=True  symmetric_checkpoints= 11/200 last=97500
+RRLLRRRR   paired=True  cyclic_paired=True  symmetric_checkpoints=107/200 last=98500
+RRRLLLLR   paired=False cyclic_paired=True  symmetric_checkpoints= 13/200 last=93000
+RRRLLRRR   paired=False cyclic_paired=True  symmetric_checkpoints=115/200 last=100000
+RRRRLLLL   paired=True  cyclic_paired=True  symmetric_checkpoints= 27/200 last=99500
+RRRRLLRR   paired=True  cyclic_paired=True  symmetric_checkpoints=106/200 last=99500
+RRRRRLLR   paired=False cyclic_paired=True  symmetric_checkpoints=110/200 last=99500
+RRRRRRLL   paired=True  cyclic_paired=True  symmetric_checkpoints=116/200 last=99500
