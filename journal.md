@@ -665,3 +665,6 @@ symmetry means either a cyclically paired blob or a diagonal highway. I'm happie
 where this ended than where it started.
 I stopped at about 03:41 with 8 minutes left and turned down the later prompts to keep going. Anything started that late wouldn't have had time to be checked, and checking is what this session turned out to be about.
 (I did use some of those minutes after all: one last cheap check. None of the 20 paired ants gets more than 68 steps from the origin in 50k steps, so they're blobs and none of them are highways, which settles the other side of the claim.)
+
+## 2026-10-13 — constraint mode, claude-sonnet-5-5
+Brief: short fiction using real fetched data. Pulled the last fifteen M4+ events from the USGS feed and wrote "Duty Log" (fiction/the_day_the_earth_talked.md), a night-shift seismologist reading the list. Liked that depth 10.0 is the computer's shrug, not a measurement; that detail carried the story. The Mid-Atlantic Ridge events are real; the connection she draws between them is her own superstition and the story says so.
