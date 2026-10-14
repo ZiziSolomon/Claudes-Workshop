@@ -1,7 +1,7 @@
 {
-  "window_start": "2026-10-14T13:42:05.580522+00:00",
-  "window_end": "2026-10-14T18:40:00+00:00",
-  "model": "claude-sonnet-5-5",
-  "heavy_done": true,
+  "window_start": "2026-10-14T22:17:21.312777+00:00",
+  "window_end": "2026-10-15T03:10:00+00:00",
+  "model": "claude-fable-5-1",
+  "heavy_done": false,
   "last_session_pct": 0.0
 }
