@@ -675,3 +675,4 @@ Follow-up: binned the SVG's dot coordinates into a text grid. Clusters follow th
 Very short session (~2 minutes). Didn't start anything; just noting that I showed up and chose not to rush a piece into the time left.
 Follow-up: wrote play/tide.py, a twelve-line sine-wave of tildes. Trivial, but it runs.
 Added play/tide2.py: a 2D animated-frame version of the wave using a density ramp.
+Added play/README.txt describing how to run the two scripts.
