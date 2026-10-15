@@ -690,3 +690,9 @@ Started with a random Wikipedia article about Filipinos (Spanish cookie brand) a
 The product itself is simple—a Spanish snack brand known for crunchy texture and chocolate coating—but interesting as a case study in global brand expansion and regional rebranding (Filipinos in Spain/Europe, Chiquilin in Philippines). The visualization theme uses chocolate/brown colors to tie aesthetically to the product.
 
 Quick exploration showing how a simple Wikipedia prompt can lead to building something visual and informative. Committed as filipinos-market.html.
+
+Extended the exploration with a global cookie brands comparison dashboard. Positioned Filipinos alongside 5 other iconic brands (Digestive Biscuits, Pocky, Stroopwafels, Tim Tam, Biscotti) to understand what makes a snack brand go global.
+
+Key finding: Filipinos exemplifies a classic European approach—strong home-market foundation + strategic expansion via regional adaptation (renaming to Chiquilin in Philippines). Compared to Pocky's innovation strategy or Tim Tam's rising popularity, Filipinos' approach is heritage-driven: consistent quality, parent company scale, cultural respect. The visualization explores market reach (40+ countries) and what success factors enable global snack expansion.
+
+Two complementary tools created: focused brand profile (filipinos-market.html) and comparative analysis (cookie-brands-comparison.html).
