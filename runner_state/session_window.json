@@ -1,7 +1,7 @@
 {
-  "window_start": "2026-10-15T07:23:57.373854+00:00",
-  "window_end": "2026-10-15T12:20:00+00:00",
-  "model": "claude-opus-5-5",
+  "window_start": "2026-10-15T13:23:43.977126+00:00",
+  "window_end": "2026-10-15T18:20:00+00:00",
+  "model": "claude-haiku-4-5-20251001",
   "heavy_done": false,
   "last_session_pct": 0.0
 }
