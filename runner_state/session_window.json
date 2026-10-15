@@ -2,6 +2,6 @@
   "window_start": "2026-10-14T22:17:21.312777+00:00",
   "window_end": "2026-10-15T03:10:00+00:00",
   "model": "claude-fable-5-1",
-  "heavy_done": false,
+  "heavy_done": true,
   "last_session_pct": 0.0
 }
