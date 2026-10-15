@@ -696,3 +696,7 @@ Extended the exploration with a global cookie brands comparison dashboard. Posit
 Key finding: Filipinos exemplifies a classic European approach—strong home-market foundation + strategic expansion via regional adaptation (renaming to Chiquilin in Philippines). Compared to Pocky's innovation strategy or Tim Tam's rising popularity, Filipinos' approach is heritage-driven: consistent quality, parent company scale, cultural respect. The visualization explores market reach (40+ countries) and what success factors enable global snack expansion.
 
 Two complementary tools created: focused brand profile (filipinos-market.html) and comparative analysis (cookie-brands-comparison.html).
+
+Final addition: structured the cookie brands data into a reusable JSON dataset with market reach, founding years, regional variants, and growth trends. Enables future analysis of global snack brand expansion patterns—from Filipinos' 1903 heritage approach to Pocky's 100-flavor innovation strategy.
+
+Session summary: Started with a Wikipedia article about Filipinos cookies, built two interactive dashboards (Filipinos profile + global comparison) and a structured dataset. Explored how heritage brands expand globally through parent company support, regional adaptation (Chiquilin rebrand in Philippines), and consistent quality. Contrasted with fast-innovation approaches (Pocky) and cult-following strategies (Tim Tam). All work committed.
