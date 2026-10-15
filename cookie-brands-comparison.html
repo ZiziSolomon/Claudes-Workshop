@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Cookie Brands Comparison</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .intro {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        .brands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        .brand-card {
+            border: 2px solid #eee;
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .brand-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
+            transform: translateY(-5px);
+        }
+        .brand-card.filipinos {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff 100%);
+            border-color: #D2691E;
+        }
+        .brand-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .brand-origin {
+            color: #999;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        .brand-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .brand-stat:last-child {
+            border-bottom: none;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .stat-value {
+            font-weight: bold;
+            color: #333;
+        }
+        .chart-section {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 2px solid #eee;
+        }
+        .chart-section h2 {
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-bottom: 30px;
+        }
+        .insight {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            color: #333;
+            line-height: 1.6;
+        }
+        .highlight {
+            background: #ffd700;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍪 Global Cookie Brands: A Worldwide Comparison</h1>
+        <p class="intro">Exploring how iconic cookie brands from around the world have built global empires. From European staples to Asian favorites, these snacks have become international sensations with unique market strategies and cultural significance.</p>
+
+        <div class="brands-grid">
+            <div class="brand-card filipinos">
+                <div class="brand-name">🇪🇸 Filipinos</div>
+                <div class="brand-origin">Spain (Artiach)</div>
+                <div class="brand-stat">
+                    <span class="stat-label">Countries</span>
+                    <span class="stat-value">40+</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Key Markets</span>
+                    <span class="stat-value">Europe, Asia</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Signature</span>
+                    <span class="stat-value">Crunchy + Chocolate</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Asian Name</span>
+                    <span class="stat-value">Chiquilin (PH)</span>
+                </div>
+            </div>
+
+            <div class="brand-card">
+                <div class="brand-name">🇳🇱 Stroopwafels</div>
+                <div class="brand-origin">Netherlands</div>
+                <div class="brand-stat">
+                    <span class="stat-label">Countries</span>
+                    <span class="stat-value">35+</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Key Markets</span>
+                    <span class="stat-value">Europe, North America</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Signature</span>
+                    <span class="stat-value">Caramel + Waffle</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Peak Usage</span>
+                    <span class="stat-value">With hot drinks</span>
+                </div>
+            </div>
+
+            <div class="brand-card">
+                <div class="brand-name">🇬🇧 Digestive Biscuits</div>
+                <div class="brand-origin">United Kingdom (McVitie's)</div>
+                <div class="brand-stat">
+                    <span class="stat-label">Countries</span>
+                    <span class="stat-value">50+</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Key Markets</span>
+                    <span class="stat-value">Commonwealth nations</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Signature</span>
+                    <span class="stat-value">Wheat + Tea pairing</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Cultural Icon</span>
+                    <span class="stat-value">British tradition</span>
+                </div>
+            </div>
+
+            <div class="brand-card">
+                <div class="brand-name">🇦🇺 Tim Tam</div>
+                <div class="brand-origin">Australia (Arnott's)</div>
+                <div class="brand-stat">
+                    <span class="stat-label">Countries</span>
+                    <span class="stat-value">15+</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Key Markets</span>
+                    <span class="stat-value">Asia-Pacific, growing</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Signature</span>
+                    <span class="stat-value">Chocolate + Malt</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Trend</span>
+                    <span class="stat-value">Rising popularity</span>
+                </div>
+            </div>
+
+            <div class="brand-card">
+                <div class="brand-name">🇮🇹 Biscotti</div>
+                <div class="brand-origin">Italy</div>
+                <div class="brand-stat">
+                    <span class="stat-label">Countries</span>
+                    <span class="stat-value">40+</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Key Markets</span>
+                    <span class="stat-value">Europe, Americas</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Signature</span>
+                    <span class="stat-value">Almond + Crunch</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Tradition</span>
+                    <span class="stat-value">800+ years old</span>
+                </div>
+            </div>
+
+            <div class="brand-card">
+                <div class="brand-name">🇯🇵 Pocky</div>
+                <div class="brand-origin">Japan (Glico)</div>
+                <div class="brand-stat">
+                    <span class="stat-label">Countries</span>
+                    <span class="stat-value">50+</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Key Markets</span>
+                    <span class="stat-value">Worldwide, esp. Asia</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Signature</span>
+                    <span class="stat-value">Stick + Dip</span>
+                </div>
+                <div class="brand-stat">
+                    <span class="stat-label">Varieties</span>
+                    <span class="stat-value">100+ flavors</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <h2>Market Reach Comparison</h2>
+            <div class="chart-container">
+                <canvas id="reachChart"></canvas>
+            </div>
+
+            <div class="insight">
+                <strong>Key Insight:</strong> <span class="highlight">Digestive Biscuits</span> lead in total market reach due to strong Commonwealth distribution, while <span class="highlight">Pocky</span> dominates flavor innovation. <span class="highlight">Filipinos</span> represents a classic European approach: strong in home market (Spain/Portugal) with strategic expansion into culturally adjacent markets, including unique regional branding in the Philippines.
+            </div>
+
+            <h2 style="margin-top: 40px;">What Makes a Cookie Brand Go Global?</h2>
+            <div class="insight">
+                <strong>Four success factors emerge:</strong><br>
+                1. <strong>Distinctive identity:</strong> Filipinos' signature crunchy-chocolate combo sets it apart<br>
+                2. <strong>Cultural integration:</strong> Renamed as Chiquilin in Philippines shows local respect<br>
+                3. <strong>Parent company scale:</strong> Artiach's resources enable 40+ country distribution<br>
+                4. <strong>Heritage + consistency:</strong> Brands trusted for decades expand through reputation, not trend-chasing<br><br>
+                <em>Filipinos exemplifies this: Spanish heritage + consistent quality + smart regional adaptation = global staple.</em>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const reachCtx = document.getElementById('reachChart').getContext('2d');
+        new Chart(reachCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Digestive\nBiscuits', 'Pocky', 'Filipinos', 'Biscotti', 'Stroopwafels', 'Tim Tam'],
+                datasets: [{
+                    label: 'Countries with presence',
+                    data: [50, 50, 40, 40, 35, 15],
+                    backgroundColor: [
+                        '#667eea',
+                        '#764ba2',
+                        '#D2691E',
+                        '#CD853F',
+                        '#8B7500',
+                        '#FF6B6B'
+                    ],
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: undefined,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 60,
+                        ticks: { stepSize: 10 }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + ' countries';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
