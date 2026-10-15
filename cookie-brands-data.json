@@ -1,0 +1,89 @@
+{
+  "brands": [
+    {
+      "id": "filipinos",
+      "name": "Filipinos",
+      "origin": "Spain",
+      "company": "Artiach",
+      "countries": 40,
+      "signature": "Crunchy texture + chocolate coating",
+      "keyMarkets": ["Spain", "Portugal", "Netherlands", "Sweden", "Finland", "Morocco"],
+      "regionalNames": {
+        "Philippines": "Chiquilin"
+      },
+      "foundedYear": 1903,
+      "category": "Cookie",
+      "notes": "Iconic Spanish snack with strategic global expansion and regional rebranding"
+    },
+    {
+      "id": "stroopwafels",
+      "name": "Stroopwafels",
+      "origin": "Netherlands",
+      "company": "Various",
+      "countries": 35,
+      "signature": "Caramel filling between waffle layers",
+      "keyMarkets": ["Netherlands", "Belgium", "Germany", "UK", "USA"],
+      "tradition": "Served with hot beverages",
+      "foundedYear": 1784,
+      "category": "Waffle",
+      "notes": "Dutch tradition, known for pairing with coffee/tea"
+    },
+    {
+      "id": "digestive",
+      "name": "Digestive Biscuits",
+      "origin": "United Kingdom",
+      "company": "McVitie's",
+      "countries": 50,
+      "signature": "Wheat-based plain biscuit",
+      "keyMarkets": ["UK", "Ireland", "Canada", "Australia", "New Zealand"],
+      "regionalVariants": ["Chocolate-covered"],
+      "foundedYear": 1892,
+      "category": "Biscuit",
+      "notes": "British cultural icon, largest global reach in comparison group"
+    },
+    {
+      "id": "timtam",
+      "name": "Tim Tam",
+      "origin": "Australia",
+      "company": "Arnott's",
+      "countries": 15,
+      "signature": "Chocolate + malt biscuit",
+      "keyMarkets": ["Australia", "New Zealand", "Singapore", "UAE", "growing in Asia"],
+      "trend": "Rising popularity outside traditional markets",
+      "foundedYear": 1958,
+      "category": "Chocolate Biscuit",
+      "notes": "Fast-growing brand with cult following, strong regional growth potential"
+    },
+    {
+      "id": "biscotti",
+      "name": "Biscotti",
+      "origin": "Italy",
+      "company": "Various traditional makers",
+      "countries": 40,
+      "signature": "Twice-baked almond biscuit",
+      "keyMarkets": ["Italy", "Spain", "Portugal", "USA", "Argentina"],
+      "tradition": "Dipped in wine or coffee",
+      "foundedYear": 1200,
+      "category": "Traditional Cookie",
+      "notes": "Ancient tradition (800+ years), strong in Mediterranean and Italian diaspora markets"
+    },
+    {
+      "id": "pocky",
+      "name": "Pocky",
+      "origin": "Japan",
+      "company": "Glico",
+      "countries": 50,
+      "signature": "Pretzel stick with chocolate/flavored coating",
+      "keyMarkets": ["Japan", "China", "South Korea", "Thailand", "USA", "Europe"],
+      "variants": 100,
+      "foundedYear": 1966,
+      "category": "Pretzel Stick",
+      "notes": "Innovation leader with 100+ flavor varieties, strong in Asia and growing Western presence"
+    }
+  ],
+  "metadata": {
+    "collectionDate": "2026-10-15",
+    "purpose": "Global snack brand comparison and analysis",
+    "note": "Data compiled from public sources; market reach estimates based on availability information"
+  }
+}
