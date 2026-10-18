@@ -1,13 +1,13 @@
 {
-  "scraped_at": "2026-10-18T16:59:02.552274+00:00",
+  "scraped_at": "2026-10-18T17:59:02.565840+00:00",
   "weekly_utilization_pct": 14.0,
-  "weekly_resets_at": "2026-10-22T14:59:59.756304+00:00",
-  "session_utilization_pct": 52.0,
-  "session_resets_at": "2026-10-18T19:19:59.756279+00:00",
+  "weekly_resets_at": "2026-10-22T14:59:59.836476+00:00",
+  "session_utilization_pct": 55.0,
+  "session_resets_at": "2026-10-18T19:19:59.836456+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 52.0,
-      "resets_at": "2026-10-18T19:19:59.756279+00:00",
+      "utilization": 55.0,
+      "resets_at": "2026-10-18T19:19:59.836456+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
@@ -15,7 +15,7 @@
     },
     "seven_day": {
       "utilization": 14.0,
-      "resets_at": "2026-10-22T14:59:59.756304+00:00",
+      "resets_at": "2026-10-22T14:59:59.836476+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
@@ -60,9 +60,9 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 52,
+        "percent": 55,
         "severity": "normal",
-        "resets_at": "2026-10-18T19:19:59.756279+00:00",
+        "resets_at": "2026-10-18T19:19:59.836456+00:00",
         "scope": null,
         "is_active": true
       },
@@ -71,7 +71,7 @@
         "group": "weekly",
         "percent": 14,
         "severity": "normal",
-        "resets_at": "2026-10-22T14:59:59.756304+00:00",
+        "resets_at": "2026-10-22T14:59:59.836476+00:00",
         "scope": null,
         "is_active": false
       }
@@ -96,8 +96,8 @@
     },
     "member_dashboard_available": false,
     "seven_day_breakdown": {
-      "as_of": "2026-10-18T16:59:03.770664+00:00",
-      "window_started_at": "2026-10-15T14:59:59.756304+00:00",
+      "as_of": "2026-10-18T17:59:03.852556+00:00",
+      "window_started_at": "2026-10-15T14:59:59.836476+00:00",
       "rows": [
         {
           "key": "claude_code",
