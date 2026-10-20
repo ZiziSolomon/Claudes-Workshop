@@ -52,5 +52,14 @@
     "minutes": 1.8,
     "d5h": 1.0,
     "d7d": 0.0
+  },
+  {
+    "ended_at": "2026-10-20T19:58:01.790023+00:00",
+    "model": "claude-sonnet-5-5",
+    "mode": "constraint",
+    "prompts": 553,
+    "minutes": 44.1,
+    "d5h": 23.0,
+    "d7d": 1.0
   }
 ]
