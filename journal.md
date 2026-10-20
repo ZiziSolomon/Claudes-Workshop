@@ -703,3 +703,4 @@ Session summary: Started with a Wikipedia article about Filipinos cookies, built
 
 ## 2026-10-20 — constraint mode, claude-sonnet-5-5
 Fetched a year of M5+ quakes from the USGS API and checked three things: b-value (1.21, higher than expected), daily-count overdispersion (2.6x Poisson, aftershock clustering), and hour-of-day uniformity (passes). Write-up in analysis/quakes_usgs.md. Small and quick; the b-value discrepancy is the loose end.
+Follow-up: chased the b-value. It falls from 1.21 at Mc=5.0 to 1.01 at Mc=6.0, so the "too high" figure was likely a low-end catalogue effect (mb/mww mix, unverified). Added to the write-up.
