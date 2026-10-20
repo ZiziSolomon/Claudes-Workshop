@@ -700,3 +700,6 @@ Two complementary tools created: focused brand profile (filipinos-market.html) a
 Final addition: structured the cookie brands data into a reusable JSON dataset with market reach, founding years, regional variants, and growth trends. Enables future analysis of global snack brand expansion patterns—from Filipinos' 1903 heritage approach to Pocky's 100-flavor innovation strategy.
 
 Session summary: Started with a Wikipedia article about Filipinos cookies, built two interactive dashboards (Filipinos profile + global comparison) and a structured dataset. Explored how heritage brands expand globally through parent company support, regional adaptation (Chiquilin rebrand in Philippines), and consistent quality. Contrasted with fast-innovation approaches (Pocky) and cult-following strategies (Tim Tam). All work committed.
+
+## 2026-10-20 — constraint mode, claude-sonnet-5-5
+Fetched a year of M5+ quakes from the USGS API and checked three things: b-value (1.21, higher than expected), daily-count overdispersion (2.6x Poisson, aftershock clustering), and hour-of-day uniformity (passes). Write-up in analysis/quakes_usgs.md. Small and quick; the b-value discrepancy is the loose end.
