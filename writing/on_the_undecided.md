@@ -48,7 +48,7 @@ The picture (`out/time_to_know.png`) shows this. Each pixel is coloured by the s
 
 At a cap of 2²⁴ ≈ 16.8 million iterations, six of the 128 million samples were still unsettled. I followed each one further:
 
-- five escaped, after 18 million, 21 million, 40 million and 44 million iterations, and the last after **1,192,804,929**. That one sits just outside the period-4 bulb, where the nearest cycle has |λ| − 1 ≈ 1.7 × 10⁻⁸;
+- five escaped, after 18 million, 21 million, 40 million and 44 million iterations, and the last after **1,192,804,929** (in double precision; see the coda for why that number is wrong). That one sits just outside the period-4 bulb, where the nearest cycle has |λ| − 1 ≈ 1.7 × 10⁻⁸;
 - one is inside the period-3 bulb, with an attracting cycle of multiplier |λ| ≈ 1 − 1.6 × 10⁻⁸. The detector first caught it at 2²⁸ iterations.
 
 An earlier run with a cruder detector, which only looked for cycles up to period 4096, left points "undecided" that turned out to lie in hyperbolic components of period 4235, 4368, 5376, 7452, 11664 and 15630. All were interior and all were attracting, just periodic on a scale the detector hadn't looked at. A random point landing in a component of period fifteen thousand is not rare: it happened to about one sample in four million.
@@ -85,12 +85,37 @@ I don't think that makes the response to the picture a mistake. It changes what 
 
 **Coda: what a billion steps of "not yet" looks like.**
 
-I went back to the slowest sample, *c* ≈ 0.30762 + 0.49591*i*, the one that escaped at step 1,192,804,929, and recorded where its orbit spends that time (`out/hesitation.png`, `out/hesitation_zoom.png`, `out/drift.png`).
+I went back to the slowest sample, *c* ≈ 0.30762 + 0.49591*i*, the one that escaped at step 1,192,804,929, and recorded where its double-precision orbit spends that time (`out/hesitation.png`, `out/hesitation_zoom.png`, `out/drift.png`).
 
 It lives on four small islands, one around each point of a 4-cycle whose multiplier has modulus 1 + 1.7 × 10⁻⁸ and rotation number about 0.2366. On each island the orbit traces nested, nearly closed curves around the cycle point. This is almost a Siegel disc: a region where the map is conjugate to an irrational rotation and nothing ever leaves. It isn't one, quite. Because |λ| is a hair over 1, every turn pushes the orbit outward by a factor of 1 + 1.7 × 10⁻⁸. Plotted on a log scale, the distance from the cycle point climbs in a straight line with exactly the slope the multiplier predicts, from 0.01 to the island's scalloped rim at about 0.15. That takes about 5.5 × 10⁸ steps.
 
-At the rim, things are no longer simple. Three times the orbit reaches the edge and then, instead of escaping, falls back in close to the centre and starts the spiral again. Each fall comes just after the orbit passes within about 10⁻³ of the critical point 0. Near 0 the map *z*² + *c* sends everything to roughly *c*, so a close pass to 0 is a reset: the orbit replays an approximation of its own beginning, which also dove straight to the centre. The fourth time, the replay misses, and the orbit goes to infinity.
+At the rim, things are no longer simple. In double precision the orbit reaches the edge three times and, instead of escaping, falls back in close to the centre and starts the spiral again. Each fall comes just after a pass within about 10⁻³ of the critical point 0. Near 0 the map *z*² + *c* sends everything to roughly *c*, so a close pass to 0 is a reset. The fourth time, the reset misses, and the orbit escapes.
 
-So the "undecided" state, for this point, isn't static and isn't random. It's a recurring story: spiral out, brush the critical point, get thrown back to the start. It runs at a pace set by a single number, |λ| − 1, and it ends when a near-miss finally misses. The other slow samples near bulb edges presumably have stories like this, only shorter; most samples have barely any story at all. A point on the true boundary would be one whose story never ends.
+I wrote that up, with a caveat that a billion double-precision steps might not be the true orbit, and called the caveat "evidence, not proof". Then I checked it.
 
-(Caveat: in double precision, a billion steps of a map that stretches by up to a factor of 4 per step is not the true orbit of this *c*. It is a pseudo-orbit that stays close to *some* true orbit, if shadowing holds here, which near a neutral cycle it may not. The slope matches the multiplier and the resets line up with critical-point passes, which suggests the computed story is the real one. That is evidence, not proof.)
+**How much precision does a "not yet" cost?**
+
+I ran the same parameter (the exact binary value of the two doubles, so only the arithmetic changes) at increasing precision:
+
+| arithmetic | escape step |
+|---|---:|
+| double, 53 bits | 1,192,804,929 |
+| long double, 64 bits | 172,578,004 |
+| `__float128`, 113 bits | 532,653,179 |
+| GMP, 128 bits | 464,459,774 |
+| GMP, 192 bits | 417,181,492 |
+| GMP, 256 bits | 192,526,474 |
+| GMP, 512 bits | 339,119,800 |
+| GMP, 768 bits | 318,754,780 |
+| GMP, 1024 bits | **223,621,176** |
+| GMP, 2048 bits | **223,621,176** |
+
+Every precision escapes, and each one agrees with the higher ones for longer: double and long double up to about 1.3 × 10⁷ steps, 128 bits to about 1.1 × 10⁸, 192 bits to 1.6 × 10⁸, and 256 to 768 bits to about 1.8 × 10⁸. Then 1024 and 2048 bits agree on every close pass and on the escape step. I take 223,621,176 to be the true answer. Runs at 3072 and 4096 bits were too slow to finish before the session ended, so "true" here means "stable under doubling once", not proved.
+
+The mechanism is visible if you accumulate log|2*z*| along the orbit, which measures how much a rounding error gets stretched. During the slow spirals the sum is flat: a near-rotation neither amplifies nor shrinks errors. Each visit to the rim adds somewhere between about 35 and 160 nats in a burst, because the rim is chaotic. Over its billion steps the double orbit accumulates about 970 bits of stretching, against the 53 bits it carries. Precision isn't spent at a steady rate. It is spent in bursts, at the rim, once per reset.
+
+The true orbit (bottom panel of `out/drift.png`) is also a different *shape*. It never makes the deep dive to r ≈ 0.01. Its resets are shallow, down to about 0.055, and it spends most of its 2.2 × 10⁸ steps near the rim before it leaks out. The long straight spiral in the top panel is real dynamics of this map: any orbit placed at r = 0.01 would climb at exactly that rate. But this orbit never goes there. Everything I said above about "three resets" and "5.5 × 10⁸ steps of climbing" describes the double-precision pseudo-orbit, not *c*. So do the island pictures.
+
+What survives is the qualitative story: islands around a nearly neutral cycle, spirals at a rate set by |λ| − 1, resets triggered by passes near the critical point, eventual escape. What doesn't survive is every number specific to the orbit. For the main experiment this means the verdicts for the slow samples are almost certainly right (every precision agreed this point escapes), but their settle *times* are not trustworthy beyond about 10⁷ steps. The bulk of the 1/N curve comes from points that settle within 10⁵ steps, with few rim visits, which is probably safe. I haven't checked it.
+
+The same shape again: the double-precision computation produced a confident, beautiful, specific story. It was right about the kind of thing that happens and wrong about what happened. And the cost of finding the difference wasn't fixed. It grew with exactly the quantity the story was about: time spent near the edge.
