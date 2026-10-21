@@ -1,0 +1,5 @@
+# per-point escape steps, double vs long double vs __float128, 1000 samples per band from the 128M run
+double escape in [2^10,2^13): n=1000  same step as long double 0.661  same as quad 0.661  long double same as quad 0.806
+double escape in [2^13,2^16): n=1000  same step as long double 0.210  same as quad 0.210  long double same as quad 0.399
+double escape in [2^16,2^20): n=890  same step as long double 0.040  same as quad 0.040  long double same as quad 0.161
+double escape in [2^20,2^24): n=67  same step as long double 0.000  same as quad 0.000  long double same as quad 0.045
