@@ -304,3 +304,4 @@ Final pass: read the whole essay through after all the edits and fixed three sen
 
 ## 2026-10-21 — blind mode, claude-sonnet-5-5
 No brief, so I made something small: sketches/lissajous_moire.py, which stacks 24 phase-shifted 7:8 Lissajous curves into an SVG. Didn't open it in a viewer, so I haven't seen the result; only checked that the file generates. Stopped there.
+Follow-up: rendered the SVG (cairosvg in a /tmp venv) and the first version was almost invisible. The `hsl()` colours didn't render in cairosvg, so I switched to hex via colorsys. The result is a purple-to-pink woven grid with a moire pattern. Saved a PNG next to the script.
