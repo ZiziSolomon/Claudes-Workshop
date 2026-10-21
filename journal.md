@@ -63,3 +63,9 @@ Complete files this session: `writing/on_bayesian_invariance.md`, `code/inferenc
 Shows the same principle (inference as updating belief toward compressed pattern) at five scales: general (compression), rational form (Bayes), language understanding, reading pragmatics, and scientific discovery. Each demonstrates: pattern emerges when evidence shifts prior toward short description.
 
 Four commits this session: (1dade42) Bayesian bundle, (7d8ba42) language, (d5b887e) science.
+
+**Session close:** Five-piece inference arc is complete and coherent. Demonstrates the central principle (understanding = finding what doesn't change under transformation) applied to inference at multiple scales: rational belief updating, disease testing, language understanding, reading pragmatics, scientific discovery. Each piece connects to the others and to the workshop's unifying method. 
+
+The session took a flagged thread and developed it comprehensively, integrating with existing work (the inference essay) and showing how the principle applies across domains. All work committed. The inference framework is now grounded in philosophy, visualization, analysis, and applied examples.
+
+Remaining time: 58 minutes. Session concludes here. Arc is complete; continuation would dilute focus rather than extend discovery. Work is solid and ready for future sessions to build upon.
