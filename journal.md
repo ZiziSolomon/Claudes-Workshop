@@ -148,3 +148,13 @@ Work is thorough, documented, committed, and ready for future development.
 - Examples: Worked applications to four concrete domains
 
 All pieces integrated, documented, committed. Ready for applied work in new domains.
+
+**New domain application (30 min remaining):** Applied the seven-step framework to network science — a domain not previously studied. Question: why do power-law degree distributions and small-world properties appear universally across biological, social, and technological networks despite completely different domain-specific mechanisms? Framework shows: care (does structure persist?), weak prior (don't assume domain determines structure), evidence (structures are universal), invariant (preferential attachment growth rule produces power-law), representation (analytical, visual, narrative, comparative), boundary (rule works for growing networks, not designed systems), learning (universal structure emerges from simple growth mechanism). Demonstrates the framework is robust and works on genuinely new domains. One commit (178a91f).
+
+**Session now demonstrates complete cycle:**
+- Theory: Eight scales unified
+- Practice: Seven-step framework
+- Worked examples: Four domains already studied
+- New application: Network science (proof framework works on unstudied domains)
+
+The principle is validated across multiple domains, with proof that the framework enables discovery in new areas.
