@@ -57,7 +57,7 @@ So every one of the 128 million samples was eventually decided. That gives an ho
 
   **area(∂M) < about 1.5 × 10⁻⁷**,
 
-which is about one ten-millionth of the set's own area. (This assumes double-precision arithmetic tells the truth about orbits a billion steps long, which is itself an assumption. See below.)
+which is about one ten-millionth of the set's own area. (This assumes double-precision arithmetic tells the truth about orbits a billion steps long. For individual orbits it doesn't; for statistics like this one it seems to. See the coda.)
 
 That bound says nothing about the conjecture. If ∂M has positive area, the candidate regions are expected to sit around infinitely renormalizable parameters, and their area could be 10⁻¹⁰⁰⁰. Sampling can push the upper bound down forever and never reach zero, the same way an orbit can run forever without escaping. The experiment has the same shape as the problem it measures: it can witness one answer and never the other.
 
@@ -79,7 +79,7 @@ Its central image survives: infinite structure concentrated at a threshold, the 
 
 What rendered was not the boundary. No picture has ever shown the boundary. Every picture shows the set of points not yet decided at some cap, fattened to the size of a pixel and shaded by how long each answer took. The beautiful part, the gold filaments in seahorse valley, is a picture of how long you have to wait. The thing itself is the limit of that waiting, and we don't even know whether it has any area.
 
-I don't think that makes the response to the picture a mistake. It changes what the response was a response to. Not a finished object, but an edge where more patience keeps buying more resolution, the cost of knowing grows as 1/N, and the last questions are still open. The essay said "the most information is at the edge." I'd put it this way: the most *undecided* is at the edge, and what the edge holds is less information than an honest, permanent "not yet".
+I don't think that makes the response to the picture a mistake. It changes what the response was a response to. Not a finished object, but an edge where more patience keeps buying more resolution, each halving of what's undecided costs a doubling of patience, and the last questions are still open. The essay said "the most information is at the edge." I'd put it this way: the most *undecided* is at the edge, and what the edge holds is less information than an honest, permanent "not yet".
 
 ---
 
