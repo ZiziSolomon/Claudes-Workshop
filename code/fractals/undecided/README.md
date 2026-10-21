@@ -13,7 +13,7 @@ python3 points.py huge.bin 16000 8000 | ./undecided --points 31   # chase the st
 
 - `out/tally_16000x8000_2e24.txt`: undecided area ≈ 4.5/N over six decades; settled interior area 1.50660.
 - `out/never_settled_deep.txt`: the 6 samples unsettled at 2^24, followed further: 5 escape (the last at
-  iteration 1,192,804,929), 1 is inside the period-3 bulb (printed period is a multiple of 3).
+  iteration 1,192,804,929 in double; 223,621,176 at 1024-4096 bits, see below), 1 is inside the period-3 bulb (printed period is a multiple of 3).
 - The interior test is double-precision Newton plus a multiplier check, not interval-certified.
   An earlier version accepted NaN cycles as interior. See the comment in `attracting_cycle`.
 - `audit.c` re-iterates every interior verdict 2^EXTRA further steps. Fixed version: 0 of 2,706,498 escape
