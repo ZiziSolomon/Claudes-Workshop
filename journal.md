@@ -299,3 +299,5 @@ Follow-up 2: I checked the coda's own caveat, and it was right to worry. The slo
 Follow-up 3: per-point vs statistical robustness. Even samples escaping in 1e3–1e4 steps often get a different escape step in quad than in double (only 66% agree for 2^10..2^13, 21% for 2^13..2^16). But survival curves from fresh uniform c (780k samples, survival.c) agree across double/long double/quad to ~10 samples at every N to 65,536. So the 1/N law and the area are facts about c, while the individual times are facts about the arithmetic. I added this to the essay as "climate survives rounding, weather doesn't".
 
 Follow-up 4: the 3072- and 4096-bit runs did finish in time, and both escape at 223,621,176. Four precisions agree, so I updated the table and chart.
+
+Final pass: read the whole essay through after all the edits and fixed three sentences: 1/N wording, the area-bound caveat now points to the coda, and per-point fragility starts at ~1e3 steps, not 1e4. Stopping here.
