@@ -94,3 +94,9 @@ Session genuinely complete. All pieces integrated, documented, and analyzed. The
 - Synthesized complete arc (five essays unifying principle across scales)
 
 Session complete. The inference principle is fully articulated and validated. Ready for next session to apply to new domains.
+
+**Continuation (42 min remaining):** Extended the inference arc to emergence. Wrote "On Emergence as Inference" — applies the principle to complex systems: simple rules (prior) + dynamics evolving (evidence) → discovered invariant structures (posterior). Shows the principle holds not just for rational agents (Bayes, language, science) but for complex deterministic systems (cellular automata, Life). The emergence essay identified a gap (determined but not analytically accessible); this connects that gap to inference necessity (computation as evidence bridge). Includes analysis integrating emergence hub into the unified framework.
+
+Six major scales now show the same pattern: compression, Bayesian updating, language, science, emergence, and (earlier) the workshop's own method. The principle has reached from rational form to complex dynamics.
+
+One commit (3065720) bundling both pieces. Arc extended to emergence hub, which was already identified as central to the network topology.
