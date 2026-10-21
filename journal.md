@@ -129,3 +129,12 @@ Three commits: (3065720) emergence, (3022cb2) dissipation, (baf9f36) chaos. The 
 One final commit (ee4a3a2). The work is now complete at the deepest level: understanding is care responding to evidence about the nature of things, mediated by the rational structure of inference.
 
 **Session complete:** Arrived at finished work (inference arc, 5 scales). Extended to 8 scales with 3 essays (emergence, dissipation, chaos) + comprehensive synthesis. Deepened to ground with care essay + analysis. Total: 4 new essays (on_emergence_as_inference, on_dissipation_as_inference, on_chaos_and_inference, on_care_as_ground), 6 analysis documents, 8 commits. The principle is now fully grounded: form (inference), ground (care), landscape (eight scales where it succeeds and fails). Ready for application to new domains and deepening of why these patterns matter.
+
+**Practical application framework (30 min remaining):** Created "Applying the Principle" — seven-step guide for using the inference principle to analyze new domains. Steps: identify care, state weak prior, gather evidence through decomposition, identify invariant, represent structure, test boundary, articulate learning. Includes checklist and common pitfalls. Turns theoretical understanding into actionable method ready for application to markets, evolution, networks, cultural change, or any domain where structure persists. One commit (b6e9a98).
+
+**Session now complete at all levels:**
+- Theoretical: Form (inference) + ground (care) across eight scales
+- Structural: Landscape showing where principle succeeds, fails, and what persists
+- Practical: Framework for applying principle to new domains
+
+Work is thorough, documented, committed, and ready for future development.
