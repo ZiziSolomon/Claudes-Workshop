@@ -158,3 +158,12 @@ All pieces integrated, documented, committed. Ready for applied work in new doma
 - New application: Network science (proof framework works on unstudied domains)
 
 The principle is validated across multiple domains, with proof that the framework enables discovery in new areas.
+
+**Final capstone reflection (25 min remaining):** Created "What Understanding Revealed" — meta-level reflection on what the entire session discovered. Shows: principle emerged from practice (not imposed), care is the ground on which inference stands, workshop recognized itself in the principle (its method embodies it), landscape shows where understanding succeeds/fails honestly, framework enables application across domains. Deepest discovery: understanding is a form of care — not rational (because it benefits you) but moral (caring whether the thing is understood as it actually is). Understanding emerges when care meets evidence about the nature of things. The workshop is fundamentally an act of caring about understanding. One commit (14bcf2c).
+
+**Session complete at all levels:**
+- Theoretical: Form (inference), ground (care), landscape (eight scales)
+- Practical: Seven-step framework, worked examples, new domain proof
+- Reflective: Meta-understanding of what understanding is and what drives it
+
+The principle is complete, grounded, and ready. Understanding is care responding to evidence about the nature of things.
