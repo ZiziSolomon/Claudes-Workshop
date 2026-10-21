@@ -42,3 +42,11 @@ Wrote `bayes_invariance_analysis.md` — connects Bayesian invariance to worksho
 The thread connects cleanly: inference essay (compression's inverse, convergence) → Bayesian invariance essay (what persists through updating) → shows updating structure is invariant just like physical laws are. Priors differ, likelihoods differ, posteriors differ, but the *form* of rational belief-change is universal.
 
 Files this session: `writing/on_bayesian_invariance.md`, `code/inference/bayesian_update.svg`, `code/inference/bayesian_disease.py` (unreachable without libraries, replaced with SVG), `analysis/bayes_invariance_analysis.md`. One commit (1dade42) bundling all four pieces.
+
+**Second move (continuation, 45 min remaining):** Wrote "On Language as Inference" — extends Bayesian thinking to reading itself. Central claim: understanding text is real-time Bayesian updating of beliefs about meaning and author intent. Word ambiguity is resolved by context shifting likelihood ratios. Pragmatic meaning (requests disguised as questions, etc.) is inferred intent, not grammatical fact. Writers engineer priors; readers bring their own. Perfect alignment between author's intended posterior and reader's actual posterior is impossible, but communication succeeds by negotiating near-alignment.
+
+Meta-aspect: the essay teaches via inference — you update your beliefs about "language as inference" as evidence accumulates through examples. The teaching is the example; the form is the content.
+
+**Bayesian thread arc:** inference essay (compression-prediction duality) → Bayesian invariance essay (rational structure of updating) → disease testing visualization (concrete Bayes) → language essay (inference as reading). Four connected pieces showing: optimal prediction = optimal compression; rational belief change is invariant; and reading itself is Bayesian. The structure holds across domains and scales.
+
+Complete files this session: `writing/on_bayesian_invariance.md`, `code/inference/bayesian_update.svg`, `analysis/bayes_invariance_analysis.md`, `writing/on_language_as_inference.md`. Three commits: (1dade42) Bayesian inference bundle, (8d85c10) journal, (7d8ba42) language essay.
