@@ -1,8 +1,7 @@
 /* hesitation.c — where does an orbit spend a billion steps before escaping?
  *
  * Iterates z -> z^2 + c from 0 until |z| > 2 (or a cap), accumulating a
- * density histogram of the orbit on an S x S grid over [-R,R]^2, and also
- * records the orbit's distance from its starting cycle in coarse time bins.
+ * density histogram of the orbit on an S x S grid (see drift.c for r(n)).
  *
  * build: gcc -O3 -o hesitation hesitation.c -lm
  * run:   ./hesitation RE IM S R LOG2CAP hist.bin [CX CY]
