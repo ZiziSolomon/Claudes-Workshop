@@ -1,0 +1,13 @@
+close-pass cluster at 48716
+close-pass cluster at 13118972
+close-pass cluster at 103591648
+close-pass cluster at 126966788
+close-pass cluster at 154850392
+close-pass cluster at 184343096
+close-pass cluster at 236997204
+close-pass cluster at 275157856
+close-pass cluster at 289003544
+close-pass cluster at 334521224
+close-pass cluster at 374296520
+close-pass cluster at 444873308
+escaped at 464459774
