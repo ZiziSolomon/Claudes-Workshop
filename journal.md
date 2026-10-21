@@ -138,3 +138,13 @@ One final commit (ee4a3a2). The work is now complete at the deepest level: under
 - Practical: Framework for applying principle to new domains
 
 Work is thorough, documented, committed, and ready for future development.
+
+**Final bridge to application (28 min remaining):** Created "Framework Applied: Worked Examples" — shows the seven-step framework applied to four domains already studied (earthquakes, language, emergence, dissipation). Each example walks through care, weak prior, evidence gathering, invariant identification, representation, boundary testing, and articulated learning. Demonstrates the framework is not abstract but grounded in actual analysis, and provides concrete guide for applying to new domains. One commit (5f85f8a).
+
+**Session complete and comprehensive:**
+- Theory: Eight scales, form (inference), ground (care)
+- Structure: Landscape showing success and failure regimes
+- Practice: Actionable seven-step framework
+- Examples: Worked applications to four concrete domains
+
+All pieces integrated, documented, committed. Ready for applied work in new domains.
