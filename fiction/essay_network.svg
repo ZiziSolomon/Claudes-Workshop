@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" style="background:#0e1116">
+<style>
+circle.node { stroke: white; stroke-width: 1; opacity: 0.8; }
+line.edge { stroke: #444; stroke-width: 0.5; opacity: 0.3; }
+text { fill: #e6e6e6; font-size: 10px; font-family: monospace; }
+.label { font-size: 9px; fill: #aaa; }
+.concept { font-size: 11px; font-weight: bold; }
+</style>
+<circle cx="1100.0" cy="500.0" r="40" fill="#9b5de5" opacity="0.6" class="node"/>
+<text x="1100.0" y="495.0" text-anchor="middle" class="concept">compression</text>
+<text x="1100.0" y="510.0" text-anchor="middle" class="label" style="font-size:8px;">(4)</text>
+<circle cx="1012.1320343559643" cy="712.1320343559643" r="40" fill="#9b5de5" opacity="0.6" class="node"/>
+<text x="1012.1320343559643" y="707.1320343559643" text-anchor="middle" class="concept">error</text>
+<text x="1012.1320343559643" y="722.1320343559643" text-anchor="middle" class="label" style="font-size:8px;">(3)</text>
+<circle cx="800.0" cy="800.0" r="40" fill="#9b5de5" opacity="0.6" class="node"/>
+<text x="800.0" y="795.0" text-anchor="middle" class="concept">identity</text>
+<text x="800.0" y="810.0" text-anchor="middle" class="label" style="font-size:8px;">(4)</text>
+<circle cx="587.8679656440357" cy="712.1320343559643" r="40" fill="#9b5de5" opacity="0.6" class="node"/>
+<text x="587.8679656440357" y="707.1320343559643" text-anchor="middle" class="concept">limits</text>
+<text x="587.8679656440357" y="722.1320343559643" text-anchor="middle" class="label" style="font-size:8px;">(4)</text>
+<circle cx="500.0" cy="500.00000000000006" r="40" fill="#9b5de5" opacity="0.6" class="node"/>
+<text x="500.0" y="495.00000000000006" text-anchor="middle" class="concept">method</text>
+<text x="500.0" y="510.00000000000006" text-anchor="middle" class="label" style="font-size:8px;">(4)</text>
+<circle cx="587.8679656440357" cy="287.86796564403573" r="40" fill="#9b5de5" opacity="0.6" class="node"/>
+<text x="587.8679656440357" y="282.86796564403573" text-anchor="middle" class="concept">observation</text>
+<text x="587.8679656440357" y="297.86796564403573" text-anchor="middle" class="label" style="font-size:8px;">(4)</text>
+<circle cx="800.0" cy="200.0" r="40" fill="#9b5de5" opacity="0.6" class="node"/>
+<text x="800.0" y="195.0" text-anchor="middle" class="concept">structure</text>
+<text x="800.0" y="210.0" text-anchor="middle" class="label" style="font-size:8px;">(4)</text>
+<circle cx="1012.1320343559642" cy="287.86796564403573" r="40" fill="#9b5de5" opacity="0.6" class="node"/>
+<text x="1012.1320343559642" y="282.86796564403573" text-anchor="middle" class="concept">time</text>
+<text x="1012.1320343559642" y="297.86796564403573" text-anchor="middle" class="label" style="font-size:8px;">(4)</text>
+<circle cx="950.0" cy="500.0" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="946.9294911878742" cy="530.194778013299" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="937.8436717430345" cy="559.1533782669978" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="923.1145161810914" cy="585.6902322642188" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="903.345037861353" cy="608.7189180843679" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="879.3446015490443" cy="627.2966386242126" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="852.095787926723" cy="640.662819822062" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="822.7141666256865" cy="648.2702486492167" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="792.4026246741931" cy="649.8074760756579" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="762.402120161192" cy="645.2115678299306" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="733.9408772663548" cy="634.6706809356112" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="708.1841026178506" cy="618.6163605406548" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="686.1862815960814" cy="597.7058724083333" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="668.8480075783127" cy="572.7952943796622" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="656.8791115399927" cy="544.9044684460036" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="650.7696014912158" cy="515.1752482981149" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="650.7696014912158" cy="484.8247517018852" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="656.8791115399927" cy="455.09553155399624" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="668.8480075783127" cy="427.2047056203379" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="686.1862815960814" cy="402.29412759166667" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="708.1841026178506" cy="381.3836394593452" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="733.9408772663548" cy="365.32931906438876" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="762.4021201611918" cy="354.7884321700694" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="792.402624674193" cy="350.1925239243421" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="822.7141666256865" cy="351.7297513507833" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="852.095787926723" cy="359.33718017793797" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="879.3446015490443" cy="372.7033613757874" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="903.3450378613529" cy="391.281081915632" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="923.1145161810914" cy="414.3097677357811" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="937.8436717430345" cy="440.84662173300217" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<circle cx="946.9294911878742" cy="469.8052219867008" r="6" fill="#f2c14e" opacity="0.7" class="node"/>
+<line x1="903.345037861353" y1="608.7189180843679" x2="1100.0" y2="500.0" class="edge"/>
+<line x1="650.7696014912158" y1="515.1752482981149" x2="1100.0" y2="500.0" class="edge"/>
+<line x1="656.8791115399927" y1="455.09553155399624" x2="1100.0" y2="500.0" class="edge"/>
+<line x1="792.4026246741931" y1="649.8074760756579" x2="1100.0" y2="500.0" class="edge"/>
+<line x1="762.4021201611918" y1="354.7884321700694" x2="587.8679656440357" y2="712.1320343559643" class="edge"/>
+<line x1="656.8791115399927" y1="544.9044684460036" x2="587.8679656440357" y2="712.1320343559643" class="edge"/>
+<line x1="923.1145161810914" y1="414.3097677357811" x2="587.8679656440357" y2="712.1320343559643" class="edge"/>
+<line x1="852.095787926723" y1="359.33718017793797" x2="587.8679656440357" y2="712.1320343559643" class="edge"/>
+<line x1="650.7696014912158" y1="484.8247517018852" x2="800.0" y2="200.0" class="edge"/>
+<line x1="792.402624674193" y1="350.1925239243421" x2="800.0" y2="200.0" class="edge"/>
+<line x1="686.1862815960814" y1="402.29412759166667" x2="800.0" y2="200.0" class="edge"/>
+<line x1="822.7141666256865" y1="648.2702486492167" x2="800.0" y2="200.0" class="edge"/>
+<line x1="903.3450378613529" y1="391.281081915632" x2="1012.1320343559642" y2="287.86796564403573" class="edge"/>
+<line x1="708.1841026178506" y1="618.6163605406548" x2="1012.1320343559642" y2="287.86796564403573" class="edge"/>
+<line x1="762.402120161192" y1="645.2115678299306" x2="1012.1320343559642" y2="287.86796564403573" class="edge"/>
+<line x1="708.1841026178506" y1="381.3836394593452" x2="1012.1320343559642" y2="287.86796564403573" class="edge"/>
+<line x1="946.9294911878742" y1="469.8052219867008" x2="587.8679656440357" y2="287.86796564403573" class="edge"/>
+<line x1="946.9294911878742" y1="530.194778013299" x2="587.8679656440357" y2="287.86796564403573" class="edge"/>
+<line x1="950.0" y1="500.0" x2="587.8679656440357" y2="287.86796564403573" class="edge"/>
+<line x1="937.8436717430345" y1="559.1533782669978" x2="587.8679656440357" y2="287.86796564403573" class="edge"/>
+<line x1="937.8436717430345" y1="440.84662173300217" x2="800.0" y2="800.0" class="edge"/>
+<line x1="668.8480075783127" y1="572.7952943796622" x2="800.0" y2="800.0" class="edge"/>
+<line x1="822.7141666256865" y1="351.7297513507833" x2="800.0" y2="800.0" class="edge"/>
+<line x1="686.1862815960814" y1="597.7058724083333" x2="800.0" y2="800.0" class="edge"/>
+<line x1="733.9408772663548" y1="634.6706809356112" x2="1012.1320343559643" y2="712.1320343559643" class="edge"/>
+<line x1="923.1145161810914" y1="585.6902322642188" x2="1012.1320343559643" y2="712.1320343559643" class="edge"/>
+<line x1="879.3446015490443" y1="627.2966386242126" x2="1012.1320343559643" y2="712.1320343559643" class="edge"/>
+<line x1="879.3446015490443" y1="372.7033613757874" x2="500.0" y2="500.00000000000006" class="edge"/>
+<line x1="733.9408772663548" y1="365.32931906438876" x2="500.0" y2="500.00000000000006" class="edge"/>
+<line x1="668.8480075783127" y1="427.2047056203379" x2="500.0" y2="500.00000000000006" class="edge"/>
+<line x1="852.095787926723" y1="640.662819822062" x2="500.0" y2="500.00000000000006" class="edge"/>
+<text x="50" y="50" style="font-size: 12px; font-weight: bold;">Essay concept map</text>
+<circle cx="60" cy="75" r="4" fill="#f2c14e" opacity="0.7"/>
+<text x="75" y="79" style="font-size: 10px;">1 concept</text>
+<circle cx="60" cy="95" r="4" fill="#e4572e" opacity="0.7"/>
+<text x="75" y="99" style="font-size: 10px;">2 concepts</text>
+<circle cx="60" cy="115" r="4" fill="#9b5de5" opacity="0.7"/>
+<text x="75" y="119" style="font-size: 10px;">3 concepts</text>
+<text x="800.0" y="25" text-anchor="middle" style="font-size: 13px; font-weight: bold;">Workshop essays: concept clusters and connections</text>
+</svg>
