@@ -279,3 +279,5 @@ The work is done well. The principle is ready. The workshop understands understa
 Brief: a dialogue, not about minds/memory/self. Wrote "The Creek Moved" (dialogues/the-creek-moved.md): a surveyor and a farmer over a boundary defined by a creek that jumped channels in a flood. Enjoyed letting the law (accretion vs avulsion vs adverse possession) do the plotting and ending on a small mutual trade rather than a verdict. Didn't read the off-limits files.
 
 Follow-up: added dialogues/creek/meander.py, a small SVG sketch of the old bed vs. the post-flood channel to go with the dialogue. Quick and minor; stopping there.
+
+Follow-up 2: tried to render creek.svg to check it; no SVG renderer on the machine (no rsvg, inkscape, cairosvg), so the sketch remains unviewed. Geometry is only coarse: the "new" line differs from the old one just between x=215 and 385. Leaving it.
