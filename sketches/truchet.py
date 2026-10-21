@@ -10,8 +10,8 @@ for i in range(N):
     for j in range(N):
         x, y = i * S, j * S
         if random.random() < 0.5:
-            out.append(f'<path d="M{x+h},{y} A{h},{h} 0 0 1 {x},{y+h} M{x+S},{y+h} A{h},{h} 0 0 1 {x+h},{y+S}"/>')
+            out.append(f'<path d="M{x+h},{y} A{h},{h} 0 0 1 {x},{y+h} M{x+S},{y+h} A{h},{h} 0 0 0 {x+h},{y+S}"/>')
         else:
-            out.append(f'<path d="M{x+h},{y} A{h},{h} 0 0 0 {x+S},{y+h} M{x},{y+h} A{h},{h} 0 0 0 {x+h},{y+S}"/>')
+            out.append(f'<path d="M{x+h},{y} A{h},{h} 0 0 0 {x+S},{y+h} M{x},{y+h} A{h},{h} 0 0 1 {x+h},{y+S}"/>')
 out.append('</g></svg>')
 open("truchet.svg", "w").write("\n".join(out))
