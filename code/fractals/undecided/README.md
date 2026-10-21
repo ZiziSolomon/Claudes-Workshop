@@ -16,6 +16,8 @@ python3 points.py huge.bin 16000 8000 | ./undecided --points 31   # chase the st
   iteration 1,192,804,929), 1 is inside the period-3 bulb (printed period is a multiple of 3).
 - The interior test is double-precision Newton plus a multiplier check, not interval-certified.
   An earlier version accepted NaN cycles as interior. See the comment in `attracting_cycle`.
+- `audit.c` re-iterates every interior verdict 2^EXTRA further steps. Fixed version: 0 of 2,706,498 escape
+  (`out/audit_fixed.txt`); the NaN version: 813 of 2,707,521 (`out/audit_buggy_nan.txt`).
 
 The slowest sample's orbit (`hesitation.c`, `hesitation_png.py`, `drift.c`, `drift_plot.py`):
 
