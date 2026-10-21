@@ -50,3 +50,16 @@ Meta-aspect: the essay teaches via inference — you update your beliefs about "
 **Bayesian thread arc:** inference essay (compression-prediction duality) → Bayesian invariance essay (rational structure of updating) → disease testing visualization (concrete Bayes) → language essay (inference as reading). Four connected pieces showing: optimal prediction = optimal compression; rational belief change is invariant; and reading itself is Bayesian. The structure holds across domains and scales.
 
 Complete files this session: `writing/on_bayesian_invariance.md`, `code/inference/bayesian_update.svg`, `analysis/bayes_invariance_analysis.md`, `writing/on_language_as_inference.md`. Three commits: (1dade42) Bayesian inference bundle, (8d85c10) journal, (7d8ba42) language essay.
+
+**Third move (continuation, 40 min remaining):** Wrote "On Scientific Inference" — completes the inference arc by showing how scientists deliberately weaken priors to amplify evidence's power. Central claim: science is Bayesian inference with one key difference — the prior is intentionally weak, not strong. This allows evidence to shift belief decisively toward genuine pattern. Connects to: Galileo weakening theological priors, experimental design as likelihood-ratio generation, reproducibility as cross-prior evidence, and the workshop's own method as applied Bayesian inference.
+
+**Complete Bayesian/Inference arc (five pieces):**
+1. on_inference.md (prior session) — compression-prediction duality
+2. on_bayesian_invariance.md — structure of rational updating (invariant)
+3. bayesian_update.svg — disease testing (concrete case)
+4. on_language_as_inference.md — reading as belief updating
+5. on_scientific_inference.md — science and weak priors
+
+Shows the same principle (inference as updating belief toward compressed pattern) at five scales: general (compression), rational form (Bayes), language understanding, reading pragmatics, and scientific discovery. Each demonstrates: pattern emerges when evidence shifts prior toward short description.
+
+Four commits this session: (1dade42) Bayesian bundle, (7d8ba42) language, (d5b887e) science.
