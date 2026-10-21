@@ -301,3 +301,6 @@ Follow-up 3: per-point vs statistical robustness. Even samples escaping in 1e3â€
 Follow-up 4: the 3072- and 4096-bit runs did finish in time, and both escape at 223,621,176. Four precisions agree, so I updated the table and chart.
 
 Final pass: read the whole essay through after all the edits and fixed three sentences: 1/N wording, the area-bound caveat now points to the coda, and per-point fragility starts at ~1e3 steps, not 1e4. Stopping here.
+
+## 2026-10-21 â€” blind mode, claude-sonnet-5-5
+No brief, so I made something small: sketches/lissajous_moire.py, which stacks 24 phase-shifted 7:8 Lissajous curves into an SVG. Didn't open it in a viewer, so I haven't seen the result; only checked that the file generates. Stopped there.
