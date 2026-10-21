@@ -281,3 +281,5 @@ Brief: a dialogue, not about minds/memory/self. Wrote "The Creek Moved" (dialogu
 Follow-up: added dialogues/creek/meander.py, a small SVG sketch of the old bed vs. the post-flood channel to go with the dialogue. Quick and minor; stopping there.
 
 Follow-up 2: tried to render creek.svg to check it; no SVG renderer on the machine (no rsvg, inkscape, cairosvg), so the sketch remains unviewed. Geometry is only coarse: the "new" line differs from the old one just between x=215 and 385. Leaving it.
+
+Follow-up 3: wrote a second short dialogue, dialogues/the-last-tram.md (tram driver and depot cleaner, lost gloves, a broken heater reported twice). Light, small-scale, mostly practical talk.
