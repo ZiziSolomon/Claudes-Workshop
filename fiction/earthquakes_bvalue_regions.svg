@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" style="background:#0e1116">
+<style>
+text { fill: #e6e6e6; font-size: 12px; font-family: monospace; }
+line.grid { stroke: #222a35; stroke-width: 0.5; }
+.label { font-size: 11px; fill: #aaa; }
+.region { font-size: 10px; font-weight: bold; }
+</style>
+<line x1="0.0" y1="0" x2="0.0" y2="900" class="grid"/>
+<line x1="133.33333333333331" y1="0" x2="133.33333333333331" y2="900" class="grid"/>
+<line x1="266.66666666666663" y1="0" x2="266.66666666666663" y2="900" class="grid"/>
+<line x1="400.0" y1="0" x2="400.0" y2="900" class="grid"/>
+<line x1="533.3333333333333" y1="0" x2="533.3333333333333" y2="900" class="grid"/>
+<line x1="666.6666666666667" y1="0" x2="666.6666666666667" y2="900" class="grid"/>
+<line x1="800.0" y1="0" x2="800.0" y2="900" class="grid"/>
+<line x1="933.3333333333334" y1="0" x2="933.3333333333334" y2="900" class="grid"/>
+<line x1="1066.6666666666665" y1="0" x2="1066.6666666666665" y2="900" class="grid"/>
+<line x1="1200.0" y1="0" x2="1200.0" y2="900" class="grid"/>
+<line x1="1333.3333333333335" y1="0" x2="1333.3333333333335" y2="900" class="grid"/>
+<line x1="1466.6666666666665" y1="0" x2="1466.6666666666665" y2="900" class="grid"/>
+<line x1="1600.0" y1="0" x2="1600.0" y2="900" class="grid"/>
+<line x1="0" y1="900.0" x2="1600" y2="900.0" class="grid"/>
+<line x1="0" y1="750.0" x2="1600" y2="750.0" class="grid"/>
+<line x1="0" y1="600.0" x2="1600" y2="600.0" class="grid"/>
+<line x1="0" y1="450.0" x2="1600" y2="450.0" class="grid"/>
+<line x1="0" y1="300.0" x2="1600" y2="300.0" class="grid"/>
+<line x1="0" y1="150.0" x2="1600" y2="150.0" class="grid"/>
+<line x1="0" y1="0.0" x2="1600" y2="0.0" class="grid"/>
+<circle cx="460.9" cy="179.4" r="3.7" fill="#e2af68" opacity="0.7" stroke="white" stroke-width="0.5"/>
+<text x="460.9" y="167.7" text-anchor="middle" class="region" style="font-size: 9px;">Alaska</text>
+<text x="460.9" y="197.0" text-anchor="middle" class="label" style="font-size: 8px;">b=1.11</text>
+<circle cx="1342.1" cy="465.4" r="7.1" fill="#ca9491" opacity="0.7" stroke="white" stroke-width="0.5"/>
+<text x="1342.1" y="450.3" text-anchor="middle" class="region" style="font-size: 9px;">Indonesi</text>
+<text x="1342.1" y="486.4" text-anchor="middle" class="label" style="font-size: 8px;">b=1.27</text>
+<circle cx="682.4" cy="738.3" r="3.6" fill="#a76bcf" opacity="0.7" stroke="white" stroke-width="0.5"/>
+<text x="682.4" y="726.7" text-anchor="middle" class="region" style="font-size: 9px;">South Sa</text>
+<text x="682.4" y="756.0" text-anchor="middle" class="label" style="font-size: 8px;">b=1.51</text>
+<circle cx="1500.8" cy="196.5" r="5.6" fill="#c68e99" opacity="0.7" stroke="white" stroke-width="0.5"/>
+<text x="1500.8" y="182.9" text-anchor="middle" class="region" style="font-size: 9px;">Russia</text>
+<text x="1500.8" y="216.2" text-anchor="middle" class="label" style="font-size: 8px;">b=1.30</text>
+<circle cx="1466.7" cy="476.6" r="4.0" fill="#ca9392" opacity="0.7" stroke="white" stroke-width="0.5"/>
+<text x="1466.7" y="464.6" text-anchor="middle" class="region" style="font-size: 9px;">Papua Ne</text>
+<text x="1466.7" y="494.6" text-anchor="middle" class="label" style="font-size: 8px;">b=1.27</text>
+<circle cx="1356.3" cy="413.6" r="5.9" fill="#d8a479" opacity="0.7" stroke="white" stroke-width="0.5"/>
+<text x="1356.3" y="399.7" text-anchor="middle" class="region" style="font-size: 9px;">Philippi</text>
+<text x="1356.3" y="433.5" text-anchor="middle" class="label" style="font-size: 8px;">b=1.17</text>
+<circle cx="1421.1" cy="263.7" r="5.4" fill="#fea45c" opacity="0.7" stroke="white" stroke-width="0.5"/>
+<text x="1421.1" y="250.3" text-anchor="middle" class="region" style="font-size: 9px;">Japan</text>
+<text x="1421.1" y="283.1" text-anchor="middle" class="label" style="font-size: 8px;">b=1.00</text>
+<circle cx="1234.3" cy="277.7" r="3.0" fill="#af74c1" opacity="0.7" stroke="white" stroke-width="0.5"/>
+<text x="1234.3" y="266.7" text-anchor="middle" class="region" style="font-size: 9px;">China</text>
+<text x="1234.3" y="294.7" text-anchor="middle" class="label" style="font-size: 8px;">b=1.46</text>
+<circle cx="1547.7" cy="535.8" r="3.2" fill="#f99553" opacity="0.7" stroke="white" stroke-width="0.5"/>
+<text x="1547.7" y="524.6" text-anchor="middle" class="region" style="font-size: 9px;">Vanuatu</text>
+<text x="1547.7" y="552.9" text-anchor="middle" class="label" style="font-size: 8px;">b=0.96</text>
+<circle cx="25.9" cy="540.4" r="3.7" fill="#ebb959" opacity="0.7" stroke="white" stroke-width="0.5"/>
+<text x="25.9" y="528.7" text-anchor="middle" class="region" style="font-size: 9px;">Tonga</text>
+<text x="25.9" y="558.1" text-anchor="middle" class="label" style="font-size: 8px;">b=1.04</text>
+<circle cx="374.6" cy="371.0" r="3.1" fill="#e3af67" opacity="0.7" stroke="white" stroke-width="0.5"/>
+<text x="374.6" y="359.9" text-anchor="middle" class="region" style="font-size: 9px;">Mexico</text>
+<text x="374.6" y="388.2" text-anchor="middle" class="label" style="font-size: 8px;">b=1.10</text>
+<text x="1420" y="40" style="font-size: 12px; font-weight: bold;">B-value by region</text>
+<rect x="1420" y="60" width="160" height="120" fill="none" stroke="#444" stroke-width="1"/>
+<rect x="1430" y="75" width="20" height="15" fill="#e4572e" opacity="0.7"/>
+<text x="1455" y="87" style="font-size: 10px;">b ≈ 0.8</text>
+<rect x="1430" y="100" width="20" height="15" fill="#f2c14e" opacity="0.7"/>
+<text x="1455" y="112" style="font-size: 10px;">b ≈ 1.0</text>
+<rect x="1430" y="125" width="20" height="15" fill="#9b5de5" opacity="0.7"/>
+<text x="1455" y="137" style="font-size: 10px;">b ≈ 1.3</text>
+<rect x="1430" y="150" width="20" height="15" fill="#9b5de5" opacity="0.7"/>
+<text x="1455" y="162" style="font-size: 10px;">b ≈ 1.6</text>
+<text x="800.0" y="30" text-anchor="middle" style="font-size: 14px; font-weight: bold;">Seismic b-value by region (M5+, 12 months)</text>
+<text x="60" y="30" style="font-size: 10px; fill: #888;">Bubble size = number of events</text>
+</svg>
