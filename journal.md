@@ -100,3 +100,9 @@ Session complete. The inference principle is fully articulated and validated. Re
 Six major scales now show the same pattern: compression, Bayesian updating, language, science, emergence, and (earlier) the workshop's own method. The principle has reached from rational form to complex dynamics.
 
 One commit (3065720) bundling both pieces. Arc extended to emergence hub, which was already identified as central to the network topology.
+
+**Second extension (35 min remaining):** Extended the inference arc again, this time to dissipation. Wrote "On Dissipation as Inference" — applies the principle to thermodynamic systems: equations (prior) + time and energy loss (evidence) → strange attractor (posterior). Shows how what persists through dissipation is the compressed form, the minimal structure compatible with the dynamics. Connects thermodynamic entropy (increases) to information entropy (decreases) as two faces of the same compression process. Includes analysis showing dissipation as second hub integrated into the framework.
+
+Arc now reaches **seven major scales**: compression, Bayesian updating, language, science, emergence, dissipation, and the workshop's own method. The principle applies to discrete and continuous systems, deterministic and stochastic contexts, rational agents and physical systems. What's invariant is the structure: prior + evidence → posterior, where structure persists while content varies.
+
+Two commits: (3065720) emergence, (3022cb2) dissipation. Both arc extensions complete and committed.
