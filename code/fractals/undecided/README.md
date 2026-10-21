@@ -38,7 +38,7 @@ gcc -O3 -o growth growth.c -lm && ./growth                              # error 
 ```
 
 Escape step by precision: 53 bits 1,192,804,929; 64 bits 172,578,004; 113 bits 532,653,179; GMP 128/192/256/512/768
-bits 464,459,774 / 417,181,492 / 192,526,474 / 339,119,800 / 318,754,780; **1024 and 2048 bits both 223,621,176**.
+bits 464,459,774 / 417,181,492 / 192,526,474 / 339,119,800 / 318,754,780; **1024, 2048, 3072 and 4096 bits all 223,621,176**.
 So the double-precision orbit pictures (`hesitation*.png`, top panel of `drift.png`) show a pseudo-orbit, not the orbit of c.
 `drift_plot.py` reads `out/precision/trace1024.txt` for the bottom panel.
 

@@ -2,8 +2,8 @@
 """Plot r(n) for the slowest orbit: double precision vs. high precision.
 
 Top panel: out/drift.txt (drift.c, double). Bottom: out/precision/trace1024.txt
-(precision_mpf.c at 1024 bits, which agrees with 2048 bits on every close
-pass and on the escape step). Dashed lines are the outward spiral predicted
+(precision_mpf.c at 1024 bits, which agrees with 2048-4096 bits on every
+close pass and on the escape step). Dashed lines are the outward spiral predicted
 by the 4-cycle's multiplier, anchored just after each reinjection.
 """
 import numpy as np
@@ -58,7 +58,7 @@ fig, (a1, a2) = plt.subplots(2, 1, figsize=(9, 6.8), dpi=150, sharex=True)
 n, r = load("out/drift.txt")
 panel(a1, n, r, 1192804929, "double precision (53 bits): three deep resets")
 n, r = load("out/precision/trace1024.txt")
-panel(a2, n, r, 223621176, "1024 bits (agrees with 2048 to the step): no deep dive at all")
+panel(a2, n, r, 223621176, "1024 bits (2048, 3072, 4096 agree to the step): no deep dive at all")
 a2.set_xlabel("iteration n (×10⁸)", color=ink)
 a2.set_xlim(0, 12.2)
 a1.set_title("The slowest orbit spirals out, is reset by close passes to 0, and escapes.\n"

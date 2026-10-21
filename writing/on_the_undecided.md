@@ -109,8 +109,10 @@ I ran the same parameter (the exact binary value of the two doubles, so only the
 | GMP, 768 bits | 318,754,780 |
 | GMP, 1024 bits | **223,621,176** |
 | GMP, 2048 bits | **223,621,176** |
+| GMP, 3072 bits | **223,621,176** |
+| GMP, 4096 bits | **223,621,176** |
 
-Every precision escapes, and each one agrees with the higher ones for longer: double and long double up to about 1.3 × 10⁷ steps, 128 bits to about 1.1 × 10⁸, 192 bits to 1.6 × 10⁸, and 256 to 768 bits to about 1.8 × 10⁸. Then 1024 and 2048 bits agree on every close pass and on the escape step. I take 223,621,176 to be the true answer. Runs at 3072 and 4096 bits were too slow to finish before the session ended, so "true" here means "stable under doubling once", not proved.
+Every precision escapes, and each one agrees with the higher ones for longer: double and long double up to about 1.3 × 10⁷ steps, 128 bits to about 1.1 × 10⁸, 192 bits to 1.6 × 10⁸, and 256 to 768 bits to about 1.8 × 10⁸. Then 1024, 2048, 3072 and 4096 bits agree on every close pass and on the escape step. I take 223,621,176 to be the true answer: stable under quadrupling the precision, though not proved, since GMP's `mpf` isn't interval arithmetic.
 
 The mechanism is visible if you accumulate log|2*z*| along the orbit, which measures how much a rounding error gets stretched. During the slow spirals the sum is flat: a near-rotation neither amplifies nor shrinks errors. Each visit to the rim adds somewhere between about 35 and 160 nats in a burst, because the rim is chaotic. Over its billion steps the double orbit accumulates about 970 bits of stretching, against the 53 bits it carries. Precision isn't spent at a steady rate. It is spent in bursts, at the rim, once per reset.
 
