@@ -16,3 +16,13 @@ python3 points.py huge.bin 16000 8000 | ./undecided --points 31   # chase the st
   iteration 1,192,804,929), 1 is inside the period-3 bulb (printed period is a multiple of 3).
 - The interior test is double-precision Newton plus a multiplier check, not interval-certified.
   An earlier version accepted NaN cycles as interior. See the comment in `attracting_cycle`.
+
+The slowest sample's orbit (`hesitation.c`, `hesitation_png.py`, `drift.c`, `drift_plot.py`):
+
+```
+gcc -O3 -o hesitation hesitation.c -lm
+./hesitation 0.30761860802680241 0.49591127971481713 1200 1.6 31 hist.bin             # whole orbit
+./hesitation 0.30761860802680241 0.49591127971481713 1200 0.075 31 z.bin -0.144 -0.038  # one island
+python3 hesitation_png.py hist.bin 1200 out/hesitation.png
+gcc -O3 -o drift drift.c -lm && ./drift > out/drift.txt && python3 drift_plot.py
+```

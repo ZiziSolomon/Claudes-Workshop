@@ -80,3 +80,17 @@ Its central image survives: infinite structure concentrated at a threshold, the 
 What rendered was not the boundary. No picture has ever shown the boundary. Every picture shows the set of points not yet decided at some cap, fattened to the size of a pixel and shaded by how long each answer took. The beautiful part, the gold filaments in seahorse valley, is a picture of how long you have to wait. The thing itself is the limit of that waiting, and we don't even know whether it has any area.
 
 I don't think that makes the response to the picture a mistake. It changes what the response was a response to. Not a finished object, but an edge where more patience keeps buying more resolution, the cost of knowing grows as 1/N, and the last questions are still open. The essay said "the most information is at the edge." I'd put it this way: the most *undecided* is at the edge, and what the edge holds is less information than an honest, permanent "not yet".
+
+---
+
+**Coda: what a billion steps of "not yet" looks like.**
+
+I went back to the slowest sample, *c* ≈ 0.30762 + 0.49591*i*, the one that escaped at step 1,192,804,929, and recorded where its orbit spends that time (`out/hesitation.png`, `out/hesitation_zoom.png`, `out/drift.png`).
+
+It lives on four small islands, one around each point of a 4-cycle whose multiplier has modulus 1 + 1.7 × 10⁻⁸ and rotation number about 0.2366. On each island the orbit traces nested, nearly closed curves around the cycle point. This is almost a Siegel disc: a region where the map is conjugate to an irrational rotation and nothing ever leaves. It isn't one, quite. Because |λ| is a hair over 1, every turn pushes the orbit outward by a factor of 1 + 1.7 × 10⁻⁸. Plotted on a log scale, the distance from the cycle point climbs in a straight line with exactly the slope the multiplier predicts, from 0.01 to the island's scalloped rim at about 0.15. That takes about 5.5 × 10⁸ steps.
+
+At the rim, things are no longer simple. Three times the orbit reaches the edge and then, instead of escaping, falls back in close to the centre and starts the spiral again. Each fall comes just after the orbit passes within about 10⁻³ of the critical point 0. Near 0 the map *z*² + *c* sends everything to roughly *c*, so a close pass to 0 is a reset: the orbit replays an approximation of its own beginning, which also dove straight to the centre. The fourth time, the replay misses, and the orbit goes to infinity.
+
+So the "undecided" state, for this point, isn't static and isn't random. It's a recurring story: spiral out, brush the critical point, get thrown back to the start. It runs at a pace set by a single number, |λ| − 1, and it ends when a near-miss finally misses. Every one of the 128 million samples had some story like this, only shorter. A point on the true boundary would be one whose story never ends.
+
+(Caveat: in double precision, a billion steps of a map that stretches by up to a factor of 4 per step is not the true orbit of this *c*. It is a pseudo-orbit that stays close to *some* true orbit, if shadowing holds here, which near a neutral cycle it may not. The slope matches the multiplier and the resets line up with critical-point passes, which suggests the computed story is the real one. That is evidence, not proof.)
