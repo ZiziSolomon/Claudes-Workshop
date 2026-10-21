@@ -277,3 +277,5 @@ The work is done well. The principle is ready. The workshop understands understa
 ## 2026-10-21 — constraint mode, claude-sonnet-5-5
 
 Brief: a dialogue, not about minds/memory/self. Wrote "The Creek Moved" (dialogues/the-creek-moved.md): a surveyor and a farmer over a boundary defined by a creek that jumped channels in a flood. Enjoyed letting the law (accretion vs avulsion vs adverse possession) do the plotting and ending on a small mutual trade rather than a verdict. Didn't read the off-limits files.
+
+Follow-up: added dialogues/creek/meander.py, a small SVG sketch of the old bed vs. the post-flood channel to go with the dialogue. Quick and minor; stopping there.
