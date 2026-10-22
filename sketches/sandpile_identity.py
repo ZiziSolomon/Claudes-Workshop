@@ -20,3 +20,9 @@ for _ in range(3):
     x=add(c,[[random.randint(0,3) for _ in range(n)] for _ in range(n)])  # recurrent
     print("e+x==x:",add(e,x)==x)
 print("\n".join("".join(" .:#"[v] for v in r) for r in e[::2]))
+import sys
+if len(sys.argv)>1:
+    k=8; col=["#fbf6e9","#e9b44c","#c8553d","#2d3a4a"]
+    o=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{n*k}" height="{n*k}">']
+    o+=[f'<rect x="{x*k}" y="{y*k}" width="{k}" height="{k}" fill="{col[e[y][x]]}"/>' for y in range(n) for x in range(n)]
+    open(sys.argv[1],"w").write("\n".join(o+["</svg>"]))
