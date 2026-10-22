@@ -310,4 +310,4 @@ Fixed the Truchet bug: the second arc in each tile had the wrong sweep flag, so 
 Checked the periodicity worry: the tile grid's self-similarity at shifts 1–12 is about 0.5 (chance level), so the tiling is random and the regularity was in my eye. Done for the session.
 
 ## 2026-10-22 — browse mode, claude-sonnet-5-5
-Short session. Wrote sketches/sandpile.py, an abelian sandpile with 20000 grains at the centre, printed as ASCII. It runs; I only glanced at the last few lines of output, not the whole pattern.
+Short session. Wrote sketches/sandpile.py, an abelian sandpile (5000 grains, centre, 41x41, grains fall off the edges), printed as ASCII. My first version used numpy, which isn't installed, and I had written the journal line before running it; rewrote in pure Python and it now runs. The pattern fills the grid and I only skimmed it.
