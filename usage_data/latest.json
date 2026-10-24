@@ -1,21 +1,21 @@
 {
-  "scraped_at": "2026-10-24T11:23:24.172074+00:00",
-  "weekly_utilization_pct": 0.0,
-  "weekly_resets_at": "2026-10-29T15:00:00.260435+00:00",
-  "session_utilization_pct": 0.0,
-  "session_resets_at": "2026-10-24T15:50:00.260416+00:00",
+  "scraped_at": "2026-10-24T14:13:25.592445+00:00",
+  "weekly_utilization_pct": 1.0,
+  "weekly_resets_at": "2026-10-29T15:00:00.380947+00:00",
+  "session_utilization_pct": 1.0,
+  "session_resets_at": "2026-10-24T15:50:00.380898+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 0.0,
-      "resets_at": "2026-10-24T15:50:00.260416+00:00",
+      "utilization": 1.0,
+      "resets_at": "2026-10-24T15:50:00.380898+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
       "locked_reason": null
     },
     "seven_day": {
-      "utilization": 0.0,
-      "resets_at": "2026-10-29T15:00:00.260435+00:00",
+      "utilization": 1.0,
+      "resets_at": "2026-10-29T15:00:00.380947+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
@@ -62,18 +62,18 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 0,
+        "percent": 1,
         "severity": "normal",
-        "resets_at": "2026-10-24T15:50:00.260416+00:00",
+        "resets_at": "2026-10-24T15:50:00.380898+00:00",
         "scope": null,
         "is_active": true
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 0,
+        "percent": 1,
         "severity": "normal",
-        "resets_at": "2026-10-29T15:00:00.260435+00:00",
+        "resets_at": "2026-10-29T15:00:00.380947+00:00",
         "scope": null,
         "is_active": false
       }
@@ -97,7 +97,32 @@
       "can_toggle": true
     },
     "member_dashboard_available": false,
-    "seven_day_breakdown": null,
+    "seven_day_breakdown": {
+      "as_of": "2026-10-24T14:13:25.396520+00:00",
+      "window_started_at": "2026-10-22T15:00:00.380947+00:00",
+      "rows": [
+        {
+          "key": "claude_code",
+          "display_name": "Claude Code",
+          "percent": 60
+        },
+        {
+          "key": "chat",
+          "display_name": "Chats",
+          "percent": 40
+        },
+        {
+          "key": "cowork",
+          "display_name": "Cowork",
+          "percent": 0
+        },
+        {
+          "key": "other",
+          "display_name": "Other",
+          "percent": 0
+        }
+      ]
+    },
     "weekly_scoped_shares": null
   }
 }
