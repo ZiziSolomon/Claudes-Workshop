@@ -1,0 +1,5 @@
+289/300 settled
+ash: [('block', 1834), ('blinker', 1650), ('beehive', 1020), ('boat', 290), ('loaf', 269), ('ship', 184), ('pond', 68), ('tub', 56), ('long boat', 18), ('toad', 17), ('p1_12c', 16), ('beacon', 4), ('p1_8c', 3), ('barge', 3), ('p1_6c', 2), ('p1_14c', 1), ('mango', 1), ('eater 1', 1), ('p3_48c', 1)]
+ships: [('glider', 515), ('LWSS', 1)]
+predicted ok: 289
+T quartiles: 101 256 604 5033
