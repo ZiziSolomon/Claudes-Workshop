@@ -23,7 +23,7 @@ ink, ink2, surf, blue, grey = "#0b0b0b", "#52514e", "#fcfcfb", "#2a78d6", "#c9c8
 o = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
      f'font-family="Helvetica, Arial, sans-serif">',
      f'<rect width="{W}" height="{H}" fill="{surf}"/>',
-     f'<text x="{L}" y="22" font-size="15" fill="{ink}">Soup {sys.argv[1].split("seed")[-1].split(".")[0]}: '
+     f'<text x="{L}" y="22" font-size="15" fill="{ink}">Soup {sys.argv[1].split("seed")[-1].split(".")[0].replace("_truncated", " (run cut off before it settled)")}: '
      f'how much of the pattern is already a named object</text>']
 for v in range(0, pmax + 1, 100):
     o.append(f'<line x1="{L}" x2="{W-R}" y1="{Y(v):.1f}" y2="{Y(v):.1f}" stroke="#e6e5e0"/>')
