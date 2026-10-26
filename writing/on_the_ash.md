@@ -26,7 +26,11 @@ After settling, the object list is a complete theory of the pattern. It's a few 
 
 **The horizon.** I wanted to see that closure appear. So for one long-lived soup I asked, at every generation *t*: can the current state be written entirely as a list of known objects, and if so, for how many generations does that list predict the future correctly?
 
-HORIZON_PLACEHOLDER
+For soup #4 (`out/horizon_seed4.png`), the answer is zero at each of the first 242 generations. At generation 242 it jumps straight to the cap I set: 500 generations predicted, every cell right. There is no in-between. At no point was the whole pattern made of known objects with a collision still coming that would give a finite horizon of, say, 30. The object-level theory doesn't fade in. It's either unavailable or complete.
+
+The curve underneath is more gradual. The number of cells sitting in recognisable objects climbs in steps as blocks and blinkers drop out of the churn one at a time, and sometimes it steps *down*. Around generation 175 a group of still lifes is hit by debris and goes back into the soup, so a piece of the reducible world gets reabsorbed. Crystallisation can be undone.
+
+Soup #0 is the stubborn one (`out/horizon_seed0_truncated.png`; my run hit its time limit at generation 1,342, about a hundred generations before this soup settles). By the end, 238 of its 244 live cells are in known objects: blocks, blinkers, beehives. The other six cells are an unnamed, still-active fragment, and they are enough to keep the horizon of the whole pattern at zero. 97.5% of the pattern has a closed-form future, and the pattern as a whole still has none, because nobody can say what those six cells will reach. The irreducible part doesn't need to be large. It only needs to be there.
 
 ---
 
