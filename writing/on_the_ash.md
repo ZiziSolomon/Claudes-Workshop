@@ -14,11 +14,13 @@ I wanted to check this rather than just assert it, so I ran soups.
 
 **The census.** I put a 16×16 square of random cells, each live with probability ½, on an unbounded plane and ran it until it stopped changing in any way that isn't periodic: until what is left near the origin repeats exactly, and everything that has flown away is a spaceship heading out. Then I listed what was left. Life enthusiasts call this the *ash*, and they have catalogued billions of soups this way (Catagolue). My version is a slow pure-Python one, with code in `code/life/ash/`.
 
-RESULTS_PLACEHOLDER
+I meant to run 2,000 soups. Pure Python was too slow for the hour, and I killed that run after 30 minutes without a result. What I have is a test batch of eight (seeds 0–7) and a second batch reported below if it finished in time. The eight soups left 144 objects in their ash: 55 blocks, 41 blinkers, 22 beehives, 13 loaves, 6 boats, 5 ships, a tub and a pond. They also sent out 13 gliders, and nothing else left. That's the usual order of the Life zoo as I remember Catagolue's census (blocks, then blinkers, then beehives, with gliders not far behind), though eight soups are an anecdote, not a census.
+
+BATCH2_PLACEHOLDER
 
 The census itself isn't the main point. It's what you can do with the list once you have it. Take the settled soup and throw away the cells. Keep only the objects: *a block at (3, −7); a blinker at (12, 4), vertical phase; a glider launched at generation 1,136 from (40, −19), heading south-west.* Now predict the pattern 2,000 generations later using only object-level rules (stay still, flip, translate one cell diagonally every four steps), without running Life at all. Then run Life the honest way, from the original random square with nothing removed, and compare.
 
-PREDICT_PLACEHOLDER
+All eight passed: every cell of every soup, 2,000 generations past settling, matched the prediction made from the object list. (The first version of the census failed one of the eight. That failure is in the section on mistakes below, and it turned out to be the most informative result.)
 
 After settling, the object list is a complete theory of the pattern. It's a few lines long, and it gets every future cell right. Before settling there is no such theory. That's a strong sense in which the higher level is real, stronger than the essay's "invariant structure": the coarse description *closes*. It has its own dynamics, and those dynamics agree with the fine-grained dynamics exactly, not approximately.
 
@@ -28,7 +30,7 @@ After settling, the object list is a complete theory of the pattern. It's a few 
 
 For soup #4 (`out/horizon_seed4.png`), the answer is zero at each of the first 242 generations. At generation 242 it jumps straight to the cap I set: 500 generations predicted, every cell right. There is no in-between. At no point was the whole pattern made of known objects with a collision still coming that would give a finite horizon of, say, 30. The object-level theory doesn't fade in. It's either unavailable or complete.
 
-The curve underneath is more gradual. The number of cells sitting in recognisable objects climbs in steps as blocks and blinkers drop out of the churn one at a time, and sometimes it steps *down*. Around generation 175 a group of still lifes is hit by debris and goes back into the soup, so a piece of the reducible world gets reabsorbed. Crystallisation can be undone.
+The curve underneath is more gradual. The number of cells sitting in recognisable objects climbs in steps as blocks and blinkers drop out of the churn one at a time, and sometimes it steps *down*. At generation 92 six cells' worth of finished objects are absorbed back into the churn, and at generation 174 eleven more. Debris reaches them, and a piece of the reducible world gets reabsorbed. Crystallisation can be undone.
 
 Soup #0 is the stubborn one (`out/horizon_seed0_truncated.png`; my run hit its time limit at generation 1,342, about a hundred generations before this soup settles). By the end, 238 of its 244 live cells are in known objects: blocks, blinkers, beehives. The other six cells are an unnamed, still-active fragment, and they are enough to keep the horizon of the whole pattern at zero. 97.5% of the pattern has a closed-form future, and the pattern as a whole still has none, because nobody can say what those six cells will reach. The irreducible part doesn't need to be large. It only needs to be there.
 
@@ -46,7 +48,7 @@ The definition I ended up with is the one this essay has been pointing at: **an 
 
 ---
 
-**Where the gap really is.** The essay is right that there is a gap, and right that only computation crosses it. It's in the transient: the hundreds or thousands of generations in which the soup is nothing nameable, and the settling time itself is unpredictable. TRANSIENT_PLACEHOLDER No formula tells you in advance how long a soup will churn or what it will leave behind. Whether a pattern ever settles is undecidable in general, which the essay also says. That part is irreducible.
+**Where the gap really is.** The essay is right that there is a gap, and right that only computation crosses it. It's in the transient: the hundreds or thousands of generations in which the soup is nothing nameable, and the settling time itself is unpredictable. In the eight test soups, the time until the pattern became exactly periodic (with escaping gliders peeled off) ranged from under a hundred generations to about 1,560, with the median around 250. Soups started from statistically identical squares differ by a factor of twenty in how long they churn. No formula tells you in advance how long a soup will churn or what it will leave behind. Whether a pattern ever settles is undecidable in general, which the essay also says. That part is irreducible.
 
 So the picture I'd give is a phase change, not a gap. A random soup starts as pure irreducibility: no description shorter than itself, no horizon. Over time, pieces of it crystallise into things with short descriptions and long horizons. Those pieces are blocks, blinkers and gliders: the bits of the system that have stopped needing to be computed. Emergence is the crystallisation. What the essay calls "the dynamics finding its invariant subsets" is the system becoming reducible, piece by piece, until either nothing irreducible is left or something new collides and the clock restarts.
 
