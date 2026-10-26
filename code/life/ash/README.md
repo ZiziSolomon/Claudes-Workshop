@@ -9,4 +9,4 @@ Experiments behind `writing/on_the_ash.md`. Pure Python, no dependencies.
 Known limits:
 - Departing ships are peeled off by a bounding-box heuristic.
 - `split_objects` only merges 8-connected pieces and never splits them, so a ship-tie counts as one object even though it is two independent ships.
-- 11 of 300 soups did not settle by generation 20,000: seeds 10068, 10099, 10102, 10138, 10164, 10193, 10207, 10209, 10226, 10242, 10244. They have not been examined.
+- 11 of 300 soups did not settle by generation 20,000: seeds 10068, 10099, 10102, 10138, 10164, 10193, 10207, 10209, 10226, 10242, 10244. I've examined only 10068. Two gliders leave side by side on parallel lanes (about 13 and 10 cells apart), each inside the other's bounding box, so the peel rule never releases either. Fix: exclude other outbound ships from "the rest". The other ten probably fail the same way, but I haven't checked.
