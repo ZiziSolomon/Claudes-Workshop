@@ -184,8 +184,15 @@ def run_soup(seed, size=16, maxgen=20000, horizon=2000):
             comps = components(cells)
             if len(comps) > 1:
                 gone = []
+                ids = [identify(c) if len(c) <= 40 else (None, None) for c in comps]
+                vel = [ps[1] if k is not None and k[2] else None for k, ps in ids]
                 for i, comp in enumerate(comps):
-                    rest = [c for j, cc in enumerate(comps) if j != i for c in cc]
+                    # ships flying in formation with this one never meet it,
+                    # so they don't count as "the rest" (seed 10068: twin gliders)
+                    rest = [c for j, cc in enumerate(comps)
+                            if j != i and (vel[i] is None or vel[j] != vel[i]) for c in cc]
+                    if not rest:
+                        rest = [c for j, cc in enumerate(comps) if j != i for c in cc]
                     rx0 = min(x for x, _ in rest); rx1 = max(x for x, _ in rest)
                     ry0 = min(y for _, y in rest); ry1 = max(y for _, y in rest)
                     cx0 = min(x for x, _ in comp); cx1 = max(x for x, _ in comp)
@@ -193,7 +200,7 @@ def run_soup(seed, size=16, maxgen=20000, horizon=2000):
                     out = (cx0 > rx1 + M, cx1 < rx0 - M, cy0 > ry1 + M, cy1 < ry0 - M)
                     if not any(out):
                         continue
-                    key, ps = identify(comp)
+                    key, ps = ids[i]
                     if key is None or not key[2]:
                         continue
                     dx, dy = ps[1]
