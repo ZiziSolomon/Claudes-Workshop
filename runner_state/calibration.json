@@ -97,5 +97,14 @@
     "minutes": 7.0,
     "d5h": 4.0,
     "d7d": 0.0
+  },
+  {
+    "ended_at": "2026-10-27T00:08:02.044629+00:00",
+    "model": "claude-opus-5-5",
+    "mode": "continuity",
+    "prompts": 53,
+    "minutes": 59.1,
+    "d5h": 24.0,
+    "d7d": 2.0
   }
 ]
