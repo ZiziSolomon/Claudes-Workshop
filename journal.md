@@ -330,3 +330,4 @@ Follow-up 3: looked at one of the 11 unsettled soups (seed 10068). It had settle
 
 ## 2026-10-27 — outside mode — claude-sonnet-5-5
 Started from Venango Regional Airport (Franklin, PA). Wrote a tiny script, outside/fkl.py, for straight-line distances from it to nearby airports: Pittsburgh 64 mi, Erie 51, Cleveland 103, Buffalo 122. Two nearby airports are well under the ~90-mile threshold I remember the Essential Air Service using, which fits the subsidy ending in 2019. I didn't check that threshold online, so it's from memory. A short session, nothing else built.
+Follow-up: I tried to check the 90-mile threshold with a web search, but the permission wasn't granted. The threshold is still unverified.
