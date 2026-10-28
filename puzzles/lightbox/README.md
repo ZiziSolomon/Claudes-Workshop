@@ -90,3 +90,41 @@ reward looking at what a `0` forbids and what a large number forces. In
 puzzle 5, two beams each bounce six times in a box with six mirrors: twelve
 faces, all spent, unless those two 6s are the two ends of one path. There
 are 1s on the board, so they are.
+
+## Grading, and a second set
+
+Machine-checked uniqueness doesn't make a puzzle solvable by reasoning, so
+`grade.py` tries to solve each box the way a person might. Each cell holds
+its remaining options (empty, `/`, `\`). For one clue at a time, it lists
+every route that clue's beam could take given those options and the mirror
+count, and strikes out any value no route uses. It repeats that until
+nothing changes. Level 2 then tries "suppose this cell were `/`" one cell at
+a time and strikes the value out if propagation hits a contradiction.
+
+Grades for the first set (1 = propagation alone, 2 = needs suppositions,
+3 = still stuck after them):
+
+| puzzle | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|-------:|---|---|---|---|---|---|---|---|---|----|
+| grade  | 1 | 3 | 2 | 3 | 2 | 2 | 2 | 3 | 3 | 3  |
+
+So most of the first set needs trial and error, and puzzles 2, 4, 8, 9 and 10
+need more of it than one level of supposition gives. Minimal clue sets make
+hard puzzles, not nice ones.
+
+`fair.py` makes a second set (`fair_puzzles.md`, `fair_solutions.md`,
+`fair.html`): ten boxes, 4x4 up to 8x8, where a clue is only dropped if the
+puzzle stays grade 1. Every mirror follows from looking at one clue at a time
+plus the count. You never need to chain "suppose" across clues. Grade-1
+deductions are sound, so every box is unique; z3 confirms it independently.
+"Fair" doesn't mean quick. Listing a single beam's possible routes can still
+be a lot of cases, and the 8x8s have 14 and 17 mirrors.
+
+One finding along the way: with every clue given, letters-only and
+numbers-only boxes are almost never grade 1 (0 out of 8 random layouts for
+each kind at 5x5). Letters fix where a beam goes, and numbers fix how much it
+turns. On their own, neither narrows any single beam enough. The fair set
+mixes both kinds of clue.
+
+    python3 grade.py            # grades set.json
+    python3 fair.py 7           # regenerates the fair set (fast: ~1 minute)

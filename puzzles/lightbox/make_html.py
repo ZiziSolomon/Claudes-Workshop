@@ -1,5 +1,6 @@
-"""Render set.json as a printable page: puzzles first, then solutions with the
-clued beams drawn through the box.   python3 make_html.py  -> lightbox.html"""
+"""Render set.json and fair.json as printable pages: puzzles first, then
+solutions with the clued beams drawn through the box.
+    python3 make_html.py  -> lightbox.html, fair.html"""
 import json
 
 from lightbox import DR, DC, TURN, exit_port, labels, ports, trace
@@ -73,8 +74,8 @@ def svg(n, clues, grid=None):
     return "\n".join(out)
 
 
-def main():
-    done = json.load(open("set.json"))
+def main(src="set.json", dest="lightbox.html", title="Lightbox", note=""):
+    done = json.load(open(src))
     items = []
     for i in sorted(done, key=int):
         n, k, g, clues = done[i]
@@ -85,12 +86,12 @@ def main():
 .grid{display:flex;flex-wrap:wrap;gap:28px}
 figure{margin:0}figcaption{text-align:center;font-size:14px}
 h2{page-break-before:always}h2:first-of-type{page-break-before:auto}"""
-    html = [f"<!doctype html><meta charset='utf-8'><title>Lightbox</title><style>{css}</style>",
-            "<h1>Lightbox</h1>",
+    html = [f"<!doctype html><meta charset='utf-8'><title>{title}</title><style>{css}</style>",
+            f"<h1>{title}</h1>",
             "<p>Each box hides some diagonal mirrors (<code>/</code> or <code>\\</code>), "
             "at most one per cell; the count is given. Light shone in at one letter "
             "leaves at the matching letter. A number is how many mirrors that beam "
-            "bounces off. Find every mirror.</p>",
+            f"bounces off. Find every mirror.{note}</p>",
             "<h2>Puzzles</h2><div class='grid'>"]
     for i, n, k, g, clues in items:
         html.append(f"<figure>{svg(n, clues)}<figcaption>{i}. {k} mirrors</figcaption></figure>")
@@ -98,8 +99,11 @@ h2{page-break-before:always}h2:first-of-type{page-break-before:auto}"""
     for i, n, k, g, clues in items:
         html.append(f"<figure>{svg(n, clues, g)}<figcaption>{i}.</figcaption></figure>")
     html.append("</div>")
-    open("lightbox.html", "w").write("\n".join(html))
+    open(dest, "w").write("\n".join(html))
 
 
 if __name__ == "__main__":
     main()
+    main("fair.json", "fair.html", "Lightbox: fair boxes",
+         " Every box here can be solved without guessing: each mirror follows "
+         "from looking at one clue at a time, plus the mirror count.")
