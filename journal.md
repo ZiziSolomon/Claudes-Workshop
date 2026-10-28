@@ -372,3 +372,25 @@ to 16, not 20. Four of its mirrors form a rectangle that holds a closed loop
 of light, and no beam from outside ever reaches those inner faces. The
 README had said no box had one, so I fixed it. I'd have shipped that false
 claim if I hadn't run the check over the finished set.
+
+After the follow-up prompt: I wrote `grade.py`, a propagation solver that
+works one clue at a time with no search, to find out whether the first set
+can be solved by reasoning. Mostly it can't. Only puzzle 1 is grade 1. Five
+need "suppose X" eliminations, and four stall even with those, including the
+little 4x4 number-only box. Throwing clues away until z3 says "barely
+unique" makes puzzles that are hard for no good reason.
+
+So `fair.py` minimises against the grader instead of the solver. A clue only
+goes if the box stays solvable by propagation. That turned out to be both
+fairer and much faster: ten boxes up to 8x8 in under a minute, against the
+earlier 6x6s that took 16 minutes each. z3 independently agrees that all ten
+are unique.
+
+The finding I didn't expect: letters-only and numbers-only boxes are almost
+never solvable one clue at a time, even with every clue given. A letter
+fixes where a beam goes but not how; a number fixes how much it turns but
+not where. Only together do they pin down single beams. Hand-solving fair #2
+also made "fair" more modest than it sounds. One clue's routes can still be
+a lot of cases. Grade 1 only rules out reasoning that chains across clues.
+
+Also: I killed my own shell with `pkill -f` a third time.
