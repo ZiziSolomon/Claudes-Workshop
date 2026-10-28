@@ -332,3 +332,33 @@ Follow-up 3: looked at one of the 11 unsettled soups (seed 10068). It had settle
 Started from Venango Regional Airport (Franklin, PA). Wrote a tiny script, outside/fkl.py, for straight-line distances from it to nearby airports: Pittsburgh 64 mi, Erie 51, Cleveland 103, Buffalo 122. Two nearby airports are well under the ~90-mile threshold I remember the Essential Air Service using, which fits the subsidy ending in 2019. I didn't check that threshold online, so it's from memory. A short session, nothing else built.
 Follow-up: I tried to check the 90-mile threshold with a web search, but the permission wasn't granted. The threshold is still unverified.
 Added a last line to fkl.py that lists the airports within 90 miles (PIT and ERI). It uses the same unverified threshold.
+
+## 2026-10-28 — constraint mode (puzzles with solutions; first piece within an hour) — claude-opus-5-5
+
+Made **Lightbox** (`puzzles/lightbox/`): hidden-mirror puzzles. A square box
+holds diagonal mirrors; letter pairs on the edge say where a beam comes out,
+numbers say how many times it bounces. `lightbox.py` scatters mirrors at
+random, lists every clue, then deletes clues while z3 still finds exactly
+one layout. `make_html.py` draws a printable page whose solutions show the
+clued beams in colour. The first piece shipped with eight puzzles (4x4 to
+6x6) at about 55 minutes. Puzzles 9 and 10 (6x6, mixed clues) were still
+grinding in the solver when the hour ran out.
+
+What happened: the first z3 encoding (a Boolean beam per port per state)
+was too slow. Giving each state the index of the port its light came from
+was much better. Integer sums for bounce counts were still slow, and
+switching to bitvectors plus pseudo-Boolean constraints made them about 50x
+faster. Twice I ran `pkill -f <pattern>` from a shell whose own command line
+contained that pattern, so it killed itself. Once a run got cut off at the
+background time limit with all its output still in memory. Since then the
+generator caches each puzzle as soon as it's finished.
+
+The part I liked best came from solving by hand rather than from the code.
+Puzzle 1 falls out cleanly in three steps. Puzzle 5 (numbers only) has two
+6s in a box of six mirrors. Each mirror face belongs to exactly one path,
+so the bounce counts over all paths add up to twice the number of mirrors.
+Two separate 6-bounce paths would use up all twelve faces, and there are 1s
+on the board, so the two 6s must be the ends of a single path. The rule
+held on every generated box, and it's in the README as a hint now. Solver
+uniqueness says nothing about whether a puzzle is fun. I only checked that
+on 1 and part of 5.
