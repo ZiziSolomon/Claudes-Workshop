@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width">
+<title>Lost Property</title>
+<style>
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: large;
+    line-height: normal;
+    color: black;
+    background: aliceblue;
+    border: thick solid transparent;
+    margin: auto;
+  }
+  body.morning   { background: aliceblue; }
+  body.midday    { background: ivory; }
+  body.afternoon { background: antiquewhite; }
+  body.dusk      { background: thistle; }
+  body.night     { background: midnightblue; color: lavender; }
+  body.night fieldset { border-color: lavender; }
+  header { font-size: xx-large; font-weight: normal; font-variant: small-caps; text-align: center; }
+  header small { display: block; font-size: medium; font-style: italic; font-variant: normal; }
+  main { display: grid; grid-template-columns: max-content auto; align-items: start; }
+  fieldset { border: medium double saddlebrown; }
+  legend { font-variant: small-caps; font-size: larger; }
+  #shelf ul { list-style: none; padding: unset; margin: unset; }
+  #shelf li button {
+    font: inherit; font-size: medium; color: inherit; background: none; border: thin solid transparent;
+    cursor: pointer; text-align: left; display: block;
+    width: -moz-available; width: -webkit-fill-available; width: stretch;
+  }
+  #shelf li button:hover { border-color: burlywood; }
+  #shelf li button[aria-pressed="true"] { background: wheat; color: black; border-color: saddlebrown; }
+  #shelf li.new button::after { content: " - new"; font-style: italic; color: firebrick; }
+  .tag {
+    background: wheat; border: thick solid wheat; outline: thin dashed saddlebrown;
+    font-family: "Courier New", monospace; font-size: medium; white-space: pre-wrap;
+  }
+  .tag:empty { display: none; }
+  .who { font-variant: small-caps; font-size: larger; }
+  .say::before { content: open-quote; }
+  .say::after { content: close-quote; }
+  .you { color: dimgray; font-style: italic; }
+  .you::before { content: "You: " open-quote; }
+  .you::after { content: close-quote; }
+  .narr { font-style: italic; color: saddlebrown; }
+  body.night .narr { color: lightsteelblue; }
+  .controls span { display: inline-block; border: thick solid transparent; }
+  .controls button {
+    font: inherit; font-size: medium; cursor: pointer; background: ivory;
+    border: thin solid saddlebrown;
+  }
+  .controls button:disabled { color: silver; border-color: silver; cursor: default; }
+  .controls button.act { background: wheat; }
+  hr { border: none; border-top: thin dotted saddlebrown; }
+</style>
+</head>
+<body class="morning">
+
+<header>Lost Property<small>the office at Saltmarsh Halt</small></header>
+
+<main>
+  <fieldset id="shelf">
+    <legend>The shelf</legend>
+    <ul id="items"></ul>
+    <hr>
+    <div id="tag" class="tag"></div>
+  </fieldset>
+
+  <fieldset id="counter">
+    <legend>The counter</legend>
+    <div id="talk"></div>
+    <div id="controls" class="controls"></div>
+  </fieldset>
+</main>
+
+<script>
+/*
+  A small game with no mathematics in it: nothing is counted, scored,
+  measured or rolled. The day is a queue of people; the shelf is a list
+  of things; each luggage tag is a few words written by whoever found it.
+  The only skill is reading.
+*/
+
+const ITEMS = {
+  duck: {
+    name: "a black umbrella",
+    tag: "UMBRELLA. Black. Handle carved like the head of a duck.\nFound: platform, under the bench by the timetable board.",
+    closing: "The duck-handled umbrella leans in the corner, looking out of the window."
+  },
+  plain: {
+    name: "another black umbrella",
+    tag: "UMBRELLA. Black, plain wooden handle. Very wet.\nFound: the up train, luggage rack.",
+    closing: "The plain black umbrella belongs, as plain black umbrellas do, to everyone and to no one."
+  },
+  glove: {
+    name: "a red glove",
+    tag: "GLOVE. Red wool, left hand.\nDarned at the thumb with green thread.\nFound: ticket office floor.",
+    closing: "The red glove waits for its other hand."
+  },
+  teeth: {
+    name: "something in a handkerchief",
+    tag: "TEETH, false, top and bottom.\nWrapped in a handkerchief. Some crumbs.\nFound: waiting room, behind the radiator.",
+    closing: "The teeth in the handkerchief grin at nothing in particular."
+  },
+  jar: {
+    name: "a jar",
+    tag: "JAR with a checked cloth lid tied on with string.\nSomething dark inside. Smells of autumn.\nFound: waiting room, by the boot-scraper.",
+    closing: "The jar sits on the shelf, dark and patient, smelling of somebody else's autumn."
+  },
+  case: {
+    name: "a silver case",
+    tag: "CIGARETTE CASE. Silver, worn smooth on one side.\nEngraved inside: \"For E., who kept the light on.\"\nFound: buffet counter, by the teapot.",
+    closing: "The silver case lies in the drawer, still keeping somebody's light on."
+  },
+  cage: {
+    name: "a birdcage",
+    tag: "BIRDCAGE. Brass. Empty. Door open.\nFound: the footbridge.",
+    closing: "The empty birdcage hangs by the window with its door open."
+  },
+  letter: {
+    name: "an envelope",
+    tag: "ENVELOPE, sealed, no stamp.\nAddressed in careful pencil: \"Miss Agnes Pell. To be left at the station until asked for.\"\nHanded in by: the guard of the early train.",
+    closing: "The pencilled envelope for Miss Agnes Pell stays sealed, still waiting to be asked for."
+  },
+  knitting: {
+    name: "a tapestry bag",
+    tag: "KNITTING BAG. Tapestry, a great many roses.\nInside: needles, and most of a blue sleeve.\nFound: the down train, at the end of the line.",
+    closing: "The tapestry bag of roses holds its unfinished sleeve, and the boy it is for keeps on growing."
+  },
+  hat: {
+    name: "a bowler hat",
+    tag: "BOWLER HAT. Too large for anyone in this office.\nFound: on the station cat.",
+    closing: "The bowler hat goes back to the cat, who has been waiting for it all day."
+  },
+  book: {
+    name: "a book of shells",
+    tag: "BOOK. A Pocket Guide to the Shells of the Shore.\nA pressed sea pink inside the cover. Owner's name inked out.\nFound: the beach path gate.",
+    closing: "The book of shells keeps its sea pink pressed and its owner's name a secret."
+  },
+  scarf: {
+    name: "a long scarf",
+    tag: "SCARF. Very long. Striped orange and brown.\nSmells faintly of bonfire.\nFound: hanging from the footbridge like a flag.",
+    closing: "The long striped scarf is draped over the stove pipe, smelling of bonfires."
+  },
+  bird: {
+    name: "a hatbox, singing",
+    tag: "CANARY, yellow, in a hatbox with air holes in the lid.\nFound: the roof of the signal box. Coaxed down with a crust.\nNOTE: sings when the kettle boils.",
+    closing: "The canary sings from the hatbox whenever the kettle boils, which, this evening, is often."
+  }
+};
+
+const ASK = {
+  look: "What does it look like?",
+  where: "Where did you last have it?",
+  mine: "How would I know it's yours?"
+};
+
+const DAY = [
+  { phase: "morning", text: "Morning. The first train has come and gone. Rain is thinking about it over the marshes. You unlock the hatch and lift the shutter." },
+
+  {
+    who: "Mrs Dorrit",
+    looks: "A small woman in a large wet coat. She is holding her handbag over her head, although she is indoors.",
+    opens: "My umbrella. You'll have it, I expect. Everybody's umbrella ends up here.",
+    look: "Black, like all of them. But the handle is a bird. A water bird.",
+    where: "I sat down to wait for the up train. Under the timetable, by the bench. Or was it on the train? No. The bench.",
+    mine: "My husband carved it, before he died. He was better with ducks than with people.",
+    item: "duck",
+    thanks: "There he is. Hello, you. She tucks the umbrella under her arm like a small dog, and goes out into the rain without opening it.",
+    wrong: { plain: "That's black, I grant you. But where's my duck?" },
+    patience: ["No, dear. Look again."],
+    leaves: "I'll come back when you've had your coffee.",
+    turnedAway: "She sighs. \"Oh. Well. I'll get wet, then.\"",
+    home: "Mrs Dorrit walked home under a duck.",
+    away: "Mrs Dorrit went home in the rain, and her umbrella stayed here, looking out of the window."
+  },
+
+  {
+    who: "Mr Hobb",
+    looks: "An elderly man in a good tweed suit. He keeps his lips very carefully together and talks around them.",
+    opens: "Good morning. I've lotht thomething. Rather perthonal.",
+    look: "Thmall. Pink and white. Thmile-thaped, you might thay.",
+    where: "I wath eating a bun in the waiting room, and then I thneethed. Quite violently. Thomething flew.",
+    mine: "Look at me, madam. Whothe elthe would they be?",
+    item: "teeth",
+    thanks: "He turns his back for a moment, there is a small click, and when he turns round again he is a different man. \"Thank you,\" he says, beautifully. \"Thank you so very much.\"",
+    wrong: {
+      jar: "Lovely. But I couldn't eat it. That'th rather the problem.",
+      hat: "A fine hat. But it ithn't my hat I'm mithing.",
+      book: "I can't even thay the word thellth."
+    },
+    patience: ["No, no. Thmaller. Pinker."],
+    leaves: "I think I'll go and be quiet thomewhere.",
+    turnedAway: "He nods, lips firmly together. \"Thank you for looking. I thhall have thoup for thupper, then.\"",
+    home: "Mr Hobb went home smiling, because he could.",
+    away: "Mr Hobb had soup for supper, and did not enjoy it."
+  },
+
+  {
+    who: "Mr Varley",
+    looks: "A tall man in a camel coat, with very clean shoes. He glances along the shelf before he looks at you.",
+    opens: "I believe you have a cigarette case of mine. Silver.",
+    look: "Silver. Expensive. You'll know it when you see it.",
+    where: "Somewhere about the station. The buffet, perhaps. Yes. The buffet, I should think.",
+    mine: "It has my initials inside, naturally. A V. For Varley.",
+    item: "case",
+    thanks: "He slips it into his inside pocket without opening it, nods, and is gone before you have finished saying goodbye.",
+    patience: ["That? Certainly not."],
+    leaves: "This is a waste of my morning.",
+    turnedAway: "He looks at the shelf a moment longer than he looks at you. Then he sniffs, and leaves, and does not look back.",
+    home: "Mr Varley went off with a silver case that said For E. inside, and never once read it.",
+    away: "Mr Varley went away empty-handed, which is how he came."
+  },
+
+  { phase: "midday", text: "Midday. The sun comes out over the marshes as if it had never been away. The buffet sends round a cup of tea." },
+
+  { arrive: "bird", text: "Bertram the porter puts a hatbox on your counter and wipes his forehead. \"Off the signal box roof,\" he says. \"Took a whole crust.\" Something inside the hatbox is singing." },
+
+  {
+    who: "Tam",
+    looks: "A boy in a school cap, out of breath, holding the cap in both hands as if there might be something in it.",
+    opens: "Have you got my bird? He's called Custard.",
+    look: "Yellow! Like custard. That's why.",
+    where: "He got out on the footbridge. I was showing him the trains. He likes trains.",
+    mine: "He sings when the kettle boils. Have you got a kettle? You could try.",
+    item: "bird",
+    thanks: "Tam lifts the lid a crack. Something yellow looks out at him and starts to sing. Tam does not say anything at all, which says everything.",
+    wrong: {
+      cage: "That's his house. But he isn't in it.",
+      scarf: "That's not a bird. That's a scarf.",
+      hat: "That's a hat. Birds don't live in hats. Well. Not that sort."
+    },
+    patience: ["That's not him."],
+    leaves: "I'll go and look on the footbridge again.",
+    turnedAway: "Oh. Tam puts his cap back on very slowly and goes out to look at the sky.",
+    home: "Tam carried Custard home in a hatbox, and Custard sang all the way.",
+    away: "Tam spent the afternoon on the footbridge, calling, while Custard sang to the kettle in your office."
+  },
+
+  {
+    who: "Miss Pell",
+    looks: "A young woman in a green hat, who has clearly put on her best gloves for this and is now not sure why.",
+    opens: "I'm sorry, this is silly. Has anything been left for me? I was told to ask here.",
+    look: "I don't know what it would look like. That's rather the point.",
+    where: "Someone said he'd leave it here. Or he said he might. He says a lot of things.",
+    mine: "My name would be on it, I suppose. Agnes Pell. If he remembered how to spell it.",
+    item: "letter",
+    thanks: "She looks at the pencilled name for a long moment. \"He did remember,\" she says. She doesn't open it here.",
+    wrong: {
+      book: "No, that's lovely, but it isn't from him. He doesn't know a whelk from a winkle.",
+      scarf: "Heavens, no. He wouldn't be seen in it."
+    },
+    patience: ["No. I don't think that's it."],
+    leaves: "Never mind. It was silly. I'll go.",
+    turnedAway: "\"No. Of course not.\" She smiles, too brightly, and buttons her gloves.",
+    home: "Agnes Pell read her letter on the bench under the timetable board, and then read it again.",
+    away: "Agnes Pell went home believing he had said a lot of things, and done none of them."
+  },
+
+  { phase: "afternoon", text: "Afternoon. The light goes long and yellow and lies down across the floor. A goods train goes through without stopping, and the shelf rattles." },
+
+  {
+    who: "Mr Ord",
+    looks: "A large, gentle man with a fringe of white hair and the look of someone who has just woken up somewhere unexpected.",
+    opens: "I've left my knitting somewhere. And my grandson's arm is in it.",
+    look: "A bag. Tapestry. Roses on it. Rather a lot of roses.",
+    where: "The down train. I nodded off at the gasworks and woke up at the end of the line.",
+    mine: "There's a sleeve in it. Blue. For a boy who grows faster than I knit.",
+    item: "knitting",
+    thanks: "He opens the bag, checks the sleeve is still a sleeve, and beams.",
+    wrong: {
+      scarf: "Ha! No, mine's a sleeve. That one's a whole winter.",
+      glove: "Not a glove. Gloves are fiddly. I don't do fingers."
+    },
+    patience: ["Hm. No. Roses, I said."],
+    leaves: "I'll start again. I expect he's grown out of it anyway.",
+    turnedAway: "\"Ah well.\" He pats his pockets, as if a sleeve might be in one of them. \"I'll start again.\"",
+    home: "Mr Ord knitted all the way home on the up train, and missed his stop.",
+    away: "Mr Ord bought new wool on the way home and began the sleeve again from the cuff."
+  },
+
+  {
+    who: "Mrs Ambery",
+    looks: "A brisk woman with a basket and a hat with a pheasant feather in it, which seems to be in a hurry too.",
+    opens: "Jam. Damson. It was for my sister, and if I turn up without it she will never let me forget it.",
+    look: "A jar. With a cloth over the top. Checked. Tied on with string.",
+    where: "The waiting room. I put it down to do up my boot.",
+    mine: "If you tasted it you'd know. Don't taste it.",
+    item: "jar",
+    thanks: "She holds it up to the window, checks the colour, and nods at it as if it had behaved itself. \"She will be insufferable regardless,\" she says. \"But less so.\"",
+    wrong: {
+      teeth: "Good heavens. No.",
+      bird: "That's singing. Jam doesn't sing."
+    },
+    patience: ["No. Jam. Jam is what I said."],
+    leaves: "I'll have to tell her the truth. That I forgot it. She'll be delighted.",
+    turnedAway: "\"Then I shall arrive with nothing,\" she says, \"and she will be delighted.\"",
+    home: "Mrs Ambery arrived at her sister's with the damson jam, and was forgiven for something else entirely.",
+    away: "Mrs Ambery arrived at her sister's with nothing, and her sister was delighted."
+  },
+
+  {
+    who: "Rosa",
+    looks: "A girl in a duffel coat, rubbing her hands together. Her left hand has a glove on it. Her right hand does not.",
+    opens: "I've lost a glove. You've probably got hundreds, haven't you.",
+    look: "Grey. Wool. It goes with this one.",
+    where: "I don't know. That's how you lose things, isn't it?",
+    mine: "It's the right hand. This one's the left. And it's grey. Did I say grey?",
+    item: "rosaglove",
+    wrong: {
+      glove: "That's red. And it's a left. I've already got a left.",
+      scarf: "Ooh. No. But ooh."
+    },
+    patience: ["No, grey. A grey glove."],
+    leaves: "I'll just keep a hand in my pocket.",
+    notHere: "That's all right. I'll keep a hand in my pocket. If it turns up, will you keep it for me?",
+    home: "",
+    away: "",
+    told: "Rosa went home with a hand in her pocket. If a grey glove turns up, you will keep it for her."
+  },
+
+  { phase: "dusk", text: "Dusk. The lamps come on along the platform, lamp by lamp, like someone walking down it with a taper. You can hear the sea." },
+
+  {
+    who: "Mr Marsh",
+    looks: "An old man in a railway greatcoat with the buttons polished. He takes his cap off before he speaks.",
+    opens: "I don't suppose... a little silver case? My wife gave it me when I retired. I'd hate to have lost it.",
+    look: "Silver. Worn smooth on one side, where my thumb goes.",
+    where: "The buffet. I had a pot of tea and a long think.",
+    mine: "There's writing inside. She said I was the one who kept the light on. In the signal box, she meant. Mostly.",
+    item: "case",
+    thanks: "He opens it, reads the inside without needing his glasses, and closes it again. \"Edward,\" he says. \"She always called me E.\"",
+    wrong: {
+      bird: "Ha. No. Though I used to see birds like that from the box.",
+      glove: "No. Thank you, though."
+    },
+    patience: ["No, it's smaller than that. Silver."],
+    leaves: "Never mind. It was only a thing.",
+    turnedAway: "\"Never mind,\" he says. \"It was only a thing.\" He puts his cap back on.",
+    notHere: "He nods slowly. \"It was only a thing,\" he says, and it plainly wasn't.",
+    home: "Edward Marsh went home with his light still on.",
+    away: "Edward Marsh went home without it, and told himself it was only a thing.",
+    told: "Edward Marsh went home without it, and told himself it was only a thing. Somewhere, a man in a camel coat has never read the inside."
+  },
+
+  { phase: "night", text: "" }
+];
+
+/* ---------- state ---------- */
+
+let shelf = ["duck", "plain", "glove", "teeth", "jar", "case", "cage", "letter", "knitting", "hat", "book", "scarf"];
+let fresh = [];
+let chosen = null;
+let visitor = null;
+let asked = [];
+const queue = DAY.slice();
+const story = [];
+
+const $ = id => document.getElementById(id);
+const el = (tag, cls, text) => {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text) e.textContent = text;
+  return e;
+};
+
+/* ---------- shelf ---------- */
+
+function drawShelf() {
+  const ul = $("items");
+  ul.replaceChildren();
+  shelf.forEach(id => {
+    const li = el("li");
+    if (fresh.includes(id)) li.className = "new";
+    const b = el("button", "", ITEMS[id].name);
+    b.setAttribute("aria-pressed", String(id === chosen));
+    b.onclick = () => { chosen = id; fresh = fresh.filter(f => f !== id); drawShelf(); drawControls(); };
+    li.append(b);
+    ul.append(li);
+  });
+  $("tag").textContent = chosen ? ITEMS[chosen].tag : "";
+}
+
+/* ---------- counter ---------- */
+
+const talk = (cls, text) => { const p = el("p", cls, text); $("talk").append(p); p.scrollIntoView({ block: "nearest", behavior: "smooth" }); };
+const narr = text => talk("narr", text);
+const say = text => talk("say", text);
+const you = text => talk("you", text);
+
+function controls(buttons) {
+  const c = $("controls");
+  c.replaceChildren();
+  buttons.forEach(([label, fn, opts]) => {
+    const b = el("button", opts && opts.act ? "act" : "", label);
+    b.onclick = fn;
+    if (opts && opts.off) b.disabled = true;
+    const s = el("span");
+    s.append(b);
+    c.append(s);
+  });
+}
+
+function drawControls() {
+  if (!visitor) return;
+  const qs = Object.keys(ASK).map(k => [ASK[k], () => ask(k), { off: asked.includes(k) }]);
+  controls([
+    ...qs,
+    [chosen ? "Hand over " + ITEMS[chosen].name : "Hand over... (choose from the shelf)", handOver, { off: !chosen, act: true }],
+    ["Say you can't help", refuse, { act: true }]
+  ]);
+}
+
+function ask(k) {
+  asked.push(k);
+  you(ASK[k]);
+  say(visitor[k]);
+  drawControls();
+}
+
+function handOver() {
+  const id = chosen;
+  you("Is this it?");
+  narr("You hand over " + ITEMS[id].name + ".");
+  if (id === visitor.item) {
+    narr(visitor.thanks);
+    shelf = shelf.filter(s => s !== id);
+    chosen = null;
+    story.push(visitor.home);
+    drawShelf();
+    depart();
+    return;
+  }
+  const grumble = visitor.patience.shift();
+  if (grumble) {
+    say((visitor.wrong && visitor.wrong[id]) || grumble);
+    drawControls();
+  } else {
+    say(visitor.leaves);
+    narr(visitor.who + " goes.");
+    story.push(shelf.includes(visitor.item) ? visitor.away : visitor.told);
+    depart();
+  }
+}
+
+function refuse() {
+  you("I'm sorry. I can't help you today.");
+  if (shelf.includes(visitor.item)) {
+    narr(visitor.turnedAway);
+    story.push(visitor.away);
+  } else {
+    say(visitor.notHere);
+    story.push(visitor.told);
+  }
+  depart();
+}
+
+function depart() {
+  visitor = null;
+  asked = [];
+  controls([["Ring the bell for whoever is next", next, { act: true }]]);
+}
+
+/* ---------- the day ---------- */
+
+function next() {
+  $("talk").replaceChildren();
+  const step = queue.shift();
+
+  if (step.phase === "night") return closing();
+
+  if (step.phase) {
+    document.body.className = step.phase;
+    narr(step.text);
+    controls([["Carry on", next, { act: true }]]);
+    return;
+  }
+
+  if (step.arrive) {
+    narr(step.text);
+    shelf.push(step.arrive);
+    fresh.push(step.arrive);
+    drawShelf();
+    controls([["Thank Bertram", next, { act: true }]]);
+    return;
+  }
+
+  visitor = Object.assign({}, step, { patience: step.patience.slice() });
+  talk("who", visitor.who);
+  narr(visitor.looks);
+  say(visitor.opens);
+  drawControls();
+}
+
+function closing() {
+  document.body.className = "night";
+  chosen = null;
+  drawShelf();
+  const t = $("talk");
+  t.className = "closing";
+  narr("Night. You pull the shutter down and lock the hatch. The last train sighs off towards the city.");
+  story.filter(Boolean).forEach(line => talk("", line));
+  t.append(el("hr"));
+  shelf.forEach(id => {
+    if (id === "cage" && !shelf.includes("bird")) {
+      talk("", "The empty birdcage hangs by the window. Tam forgot it, of course. Custard won't mind; he has the hatbox, and a kettle at home.");
+      return;
+    }
+    talk("", ITEMS[id].closing);
+  });
+  if (!shelf.some(Boolean)) talk("", "The shelf is bare.");
+  narr("You turn off the lamp. The things on the shelf stay where they are, being lost together, until morning.");
+  controls([["Open the office again", () => location.reload()]]);
+}
+
+/* ---------- opening ---------- */
+
+function begin() {
+  drawShelf();
+  narr("You keep the lost property office at Saltmarsh Halt: a hatch, a counter, a kettle, and a shelf of things that people put down and forgot to pick up again.");
+  narr("Click a thing on the shelf to read the luggage tag the finder tied to it. When someone comes to the hatch, you can ask them about what they've lost, hand something over, or tell them you can't help.");
+  narr("People describe things the way they remember them, not the way they look. And not everyone who comes to the hatch is telling the truth.");
+  controls([["Lift the shutter", next, { act: true }]]);
+}
+
+begin();
+</script>
+</body>
+</html>
