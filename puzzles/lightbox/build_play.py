@@ -3,7 +3,7 @@
 import json
 
 from lightbox import labels
-from grade import load
+from grade import explain, load
 
 
 def pack(path):
@@ -20,7 +20,12 @@ def pack(path):
                 cons.setdefault(f"{v[0]}{v[1]}", {})["exit"] = key
             else:
                 cons[key]["bounces"] = v
-        out.append({"id": i, "n": n, "k": k, "labels": lab, "cons": cons})
+        steps = explain(n, k, clues)
+        if steps is not None:
+            steps = [{"src": src if src == "count" else f"{src[0]}{src[1]}",
+                      "cells": [[r, c, sorted(v)] for (r, c), v in ch.items()]}
+                     for src, ch in steps]
+        out.append({"id": i, "n": n, "k": k, "labels": lab, "cons": cons, "steps": steps})
     return out
 
 
@@ -52,17 +57,19 @@ your current guess. A clue turns green when your layout agrees with it and red w
   <select id="num"></select>
   <button id="prev">&larr;</button><button id="next">&rarr;</button>
   <button id="all">show all beams</button>
+  <button id="hint">hint</button>
   <button id="clear">clear</button>
   <span id="status"></span>
 </div>
 <div id="board"></div>
+<p id="msg" class="rules"></p>
 <script>
 const SETS = __SETS__;
 const S = 46, M = 40;
 const DR = [1, 0, -1, 0], DC = [0, -1, 0, 1];          // S W N E
 const TURN = {1: {3: 2, 2: 3, 1: 0, 0: 1}, 2: {3: 0, 0: 3, 1: 2, 2: 1}};
 const COLS = ["#d1495b", "#00798c", "#edae49", "#66a182", "#8d6cab", "#2e4057", "#e07a5f", "#3d405b"];
-let set = "fair", idx = 0, P, grid, marks, fired = [], showAll = false;
+let set = "fair", idx = 0, P, grid, marks, fired = [], showAll = false, hint = null;
 const save = () => localStorage.setItem(`lightbox-${set}-${P.id}`, JSON.stringify({grid, marks}));
 
 function ports(n) {
@@ -109,7 +116,13 @@ function draw() {
   let h = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" oncontextmenu="return false">`;
   for (let r = 0; r < n; r++) for (let c = 0; c < n; c++)
     h += `<rect class="cell" data-r="${r}" data-c="${c}" x="${M + c * S}" y="${M + r * S}" width="${S}" height="${S}" fill="${marks[r][c] ? '#f1efe8' : '#fff'}" stroke="#bbb" stroke-width=".6"/>`;
+  if (hint) for (const [r, c] of settled(hint))
+    h += `<rect x="${M + c * S + 2}" y="${M + r * S + 2}" width="${S - 4}" height="${S - 4}" fill="#fbe7a1" pointer-events="none"/>`;
   h += `<rect x="${M}" y="${M}" width="${n * S}" height="${n * S}" fill="none" stroke="#333" stroke-width="2"/>`;
+  if (hint && hint.src !== "count") {
+    const [x, y] = portXY(hint.src);
+    h += `<circle cx="${x}" cy="${y - 6}" r="15" fill="#fbe7a1"/>`;
+  }
   const beams = showAll ? Object.keys(P.cons) : fired;
   const drawn = new Set();
   beams.forEach((p, j) => {
@@ -141,19 +154,45 @@ function draw() {
     ? `<span class="won">Solved.</span>`
     : `${placed} / ${P.k} mirrors` + (placed === P.k ? " (clue colours now show)" : "");
   document.querySelectorAll(".cell").forEach(el => {
-    el.onclick = () => { const r = +el.dataset.r, c = +el.dataset.c; grid[r][c] = (grid[r][c] + 1) % 3; if (grid[r][c]) marks[r][c] = 0; save(); draw(); };
-    el.oncontextmenu = e => { e.preventDefault(); const r = +el.dataset.r, c = +el.dataset.c; if (!grid[r][c]) marks[r][c] ^= 1; save(); draw(); };
+    el.onclick = () => { const r = +el.dataset.r, c = +el.dataset.c; grid[r][c] = (grid[r][c] + 1) % 3; if (grid[r][c]) marks[r][c] = 0; hint = null; save(); draw(); };
+    el.oncontextmenu = e => { e.preventDefault(); const r = +el.dataset.r, c = +el.dataset.c; if (!grid[r][c]) marks[r][c] ^= 1; hint = null; save(); draw(); };
   });
   document.querySelectorAll(".port").forEach(el => {
     el.onclick = () => { const p = el.dataset.p; fired = fired.includes(p) ? fired.filter(q => q !== p) : [...fired, p]; draw(); };
   });
+}
+// cells a hint step pins to one value, and whether the player has them right
+const settled = step => step.cells.filter(([, , v]) => v.length === 1);
+const playerHas = (r, c, t) => t ? grid[r][c] === t : grid[r][c] === 0 && marks[r][c] === 1;
+function side(p) {
+  const i = +p.slice(1);
+  return {T: `the top of column ${i + 1}`, B: `the bottom of column ${i + 1}`,
+          L: `the left end of row ${i + 1}`, R: `the right end of row ${i + 1}`}[p[0]];
+}
+function giveHint() {
+  const msg = document.getElementById("msg");
+  if (!P.steps) { msg.textContent = "No hints for this one: it can't be solved one clue at a time."; return; }
+  const step = P.steps.find(s => settled(s).some(([r, c, [t]]) => !playerHas(r, c, t)));
+  if (!step) { msg.textContent = "Everything the hints know, you have."; return; }
+  if (hint === step) {          // second press: fill the cells in
+    for (const [r, c, [t]] of settled(step)) { grid[r][c] = t; marks[r][c] = t ? 0 : 1; }
+    save(); hint = null; msg.textContent = "Filled in."; draw(); return;
+  }
+  hint = step;
+  const what = step.src === "count"
+    ? "The mirror count"
+    : `The clue ${P.labels[step.src] ? `<b>${P.labels[step.src]}</b> ` : ""}at ${side(step.src)}`;
+  msg.innerHTML = `${what} settles the highlighted cell${settled(step).length > 1 ? "s" : ""}, given what's already known. ` +
+    "(An empty cell counts as settled once you right-click it.) Press hint again to fill them in.";
+  draw();
 }
 function load() {
   P = SETS[set][idx];
   const blank = () => Array.from({length: P.n}, () => Array(P.n).fill(0));
   const saved = JSON.parse(localStorage.getItem(`lightbox-${set}-${P.id}`) || "null");
   grid = saved ? saved.grid : blank(); marks = saved ? saved.marks : blank();
-  fired = []; showAll = false;
+  fired = []; showAll = false; hint = null;
+  document.getElementById("msg").textContent = "";
   const num = document.getElementById("num");
   num.innerHTML = SETS[set].map((q, i) => `<option value="${i}">${q.id}. ${q.n}x${q.n}, ${q.k} mirrors</option>`).join("");
   num.value = idx;
@@ -163,6 +202,7 @@ document.getElementById("set").onchange = e => { set = e.target.value; idx = 0; 
 document.getElementById("num").onchange = e => { idx = +e.target.value; load(); };
 document.getElementById("prev").onclick = () => { idx = (idx + SETS[set].length - 1) % SETS[set].length; load(); };
 document.getElementById("next").onclick = () => { idx = (idx + 1) % SETS[set].length; load(); };
+document.getElementById("hint").onclick = giveHint;
 document.getElementById("all").onclick = () => { showAll = !showAll; draw(); };
 document.getElementById("clear").onclick = () => { localStorage.removeItem(`lightbox-${set}-${P.id}`); load(); };
 load();

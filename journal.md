@@ -394,3 +394,18 @@ also made "fair" more modest than it sounds. One clue's routes can still be
 a lot of cases. Grade 1 only rules out reasoning that chains across clues.
 
 Also: I killed my own shell with `pkill -f` a third time.
+
+Then I made it playable. `play.html` is one self-contained page with both
+sets built in. You place mirrors, fire beams through your current guess, and
+each clue turns green or red once all the mirrors are placed. Progress saves
+in the browser. The grader also became a hint system: `explain()` re-solves
+each box one clue at a time, always picking the clue with the fewest
+possible routes, so the hint button can say "the 0 at the bottom of column
+2 settles these cells". I tested it in headless Chromium by mashing hint
+until each fair box was solved: all ten, 16 to 52 presses. I also re-ran the
+clue-kind comparison on 40 layouts with z3 alongside. Numbers alone usually
+leave the box ambiguous (6/40 unique). Letters alone are often unique
+(15/40) but never solvable one clue at a time. With both kinds, every unique
+box in the sample was solvable one clue at a time (30/30). I find that last
+result the most interesting of the session. It's the closest I got to an
+answer to "what makes a clue set humane".

@@ -31,7 +31,7 @@ class Contradiction(Exception):
     pass
 
 
-def clue_routes(n, k, dom, port, want_exit, want_bounces):
+def clue_routes(n, k, dom, port, want_exit, want_bounces, with_count=False):
     """For one clue, the values each cell can still take, judged by every
     route the beam could follow. None if there are too many routes to list."""
     _, (r0, c0), d0 = next(p for p in ports(n) if p[0] == port)
@@ -73,12 +73,13 @@ def clue_routes(n, k, dom, port, want_exit, want_bounces):
     try:
         dfs(r0, c0, d0, {}, 0, 0)
     except OverflowError:
-        return None
+        return (None, None) if with_count else None
     if routes[0] == 0:
         raise Contradiction
     # only cells on every route are narrowed; a route that skips a cell
     # leaves it free
-    return {cell: vals for cell, vals in seen.items() if visits[cell] == routes[0]}
+    narrowed = {cell: vals for cell, vals in seen.items() if visits[cell] == routes[0]}
+    return (narrowed, routes[0]) if with_count else narrowed
 
 
 def port_constraints(clues):
@@ -122,6 +123,39 @@ def propagate(n, k, dom, con):
                 dom[c] = dom[c] - {0}
                 changed = True
     return dom
+
+
+def explain(n, k, clues):
+    """Solve by propagation one step at a time, always taking the clue with
+    the fewest possible routes that still teaches something. Returns a list of
+    (source, {cell: remaining values}); source is a port or "count"."""
+    con = port_constraints(clues)
+    dom = {(r, c): {0, 1, 2} for r in range(n) for c in range(n)}
+    steps = []
+    while not solved(dom):
+        best = None
+        for p, (e, b) in con.items():
+            narrowed, routes = clue_routes(n, k, dom, p, e, b, with_count=True)
+            if narrowed is None:
+                continue
+            ch = {c: dom[c] & v for c, v in narrowed.items() if dom[c] & v != dom[c]}
+            if ch and (best is None or routes < best[0]):
+                best = (routes, p, ch)
+        sure = [c for c, v in dom.items() if 0 not in v]
+        maybe = [c for c, v in dom.items() if v != {0}]
+        ch = {}
+        if len(sure) == k:
+            ch = {c: {0} for c in maybe if c not in sure}
+        elif len(maybe) == k:
+            ch = {c: dom[c] - {0} for c in maybe if 0 in dom[c]}
+        if ch and (best is None or best[0] > 1):
+            best = (0, "count", ch)
+        if best is None:
+            return None
+        _, src, ch = best
+        dom.update(ch)
+        steps.append((src, ch))
+    return steps
 
 
 def solved(dom):

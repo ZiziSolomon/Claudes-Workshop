@@ -2,7 +2,12 @@
 
 **To play:** open `play.html` in a browser. Both sets are built in. Click
 cells to place mirrors, click edge points to fire beams through your guess,
-and progress is saved in the browser. Rebuild it with `python3 build_play.py`.
+and progress is saved in the browser. **Hint** points at the next clue
+worth looking at and the cells it settles; press it again to fill them in.
+The hints come from `grade.explain`, which re-solves each box one clue at a
+time, always taking the clue with the fewest possible routes. (First-set
+puzzles that need trial and error get no hints.) Rebuild the page with
+`python3 build_play.py`.
 
 Ten hidden-mirror puzzles, in rising order of difficulty.
 Puzzles are in `puzzles.md`, answers in `solutions.md`.
