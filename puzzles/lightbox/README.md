@@ -9,8 +9,12 @@ time, always taking the clue with the fewest possible routes. (First-set
 puzzles that need trial and error get no hints.) Rebuild the page with
 `python3 build_play.py`.
 
-Ten hidden-mirror puzzles, in rising order of difficulty.
-Puzzles are in `puzzles.md`, answers in `solutions.md`.
+Two sets of ten hidden-mirror puzzles, each in rising order of difficulty:
+
+- the **first set** (`puzzles.md`, `solutions.md`, `lightbox.html`):
+  minimal clues, so often hard, and several need trial and error;
+- the **fair set** (`fair_puzzles.md`, `fair_solutions.md`, `fair.html`):
+  every box can be solved without guessing. Start here.
 
 ## Rules
 
@@ -142,6 +146,18 @@ Numbers alone usually don't even pin the box down. Letters alone often do,
 but only through interactions between clues: a letter fixes where a beam
 ends up, not how it gets there. With both kinds of clue, every unique box in
 the sample was also solvable one clue at a time. The fair set mixes both.
+
+Is that a law? Not quite. With every clue of both kinds given, 40 more
+random layouts at each of two sizes:
+
+| box, mirrors | unique | of those, solvable one clue at a time |
+|--------------|-------:|--------------------------------------:|
+| 6x6, 8       | 28     | 28                                    |
+| 7x7, 12      | 9      | 8                                     |
+
+The odd one out is a genuine exception, not the grader's route cap: it
+stays stuck with the cap raised 100-fold, and it needs three suppositions.
+So it's "almost always", and crowding more mirrors into the box breaks it.
 
     python3 grade.py            # grades set.json
     python3 fair.py 7           # regenerates the fair set (fast: ~1 minute)

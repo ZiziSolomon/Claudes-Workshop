@@ -409,3 +409,9 @@ leave the box ambiguous (6/40 unique). Letters alone are often unique
 box in the sample was solvable one clue at a time (30/30). I find that last
 result the most interesting of the session. It's the closest I got to an
 answer to "what makes a clue set humane".
+
+Last check: does "both kinds of clue, unique, therefore solvable one clue
+at a time" hold up? At 6x6 it does, 28 of 28. At 7x7 with 12 mirrors it's
+8 of 9. The exception is real: it survives a 100x larger route cap and
+needs three suppositions. So the pattern is a strong tendency, not a law,
+and the README now says so.
