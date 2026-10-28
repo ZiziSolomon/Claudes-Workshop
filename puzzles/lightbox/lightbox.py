@@ -129,14 +129,20 @@ class Checker:
         s.push()
         if exclude is not None:
             s.add(z3.Or([m[r][c] != exclude[r][c] for r in range(n) for c in range(n)]))
-        found = []
+        found, spurious = [], 0
         assume = [self.lits[it] for it in clues]
         while len(found) < limit and s.check(*assume) == z3.sat:
             mod = s.model()
             g = [[mod.eval(m[r][c]).as_long() for c in range(n)] for r in range(n)]
             s.add(z3.Or([m[r][c] != g[r][c] for r in range(n) for c in range(n)]))
-            if satisfies(g, clues, total):  # weed out spurious interior loops
+            if satisfies(g, clues, total):
                 found.append(g)
+            else:
+                # a closed interior loop let the model fake a bounce count;
+                # if that keeps happening, give up and report "not unique"
+                spurious += 1
+                if spurious > 25:
+                    found.append(None)
         s.pop()
         return found
 
@@ -260,7 +266,7 @@ if __name__ == "__main__":
         g, clues = make_puzzle(n, k, rng, nums, prs)
         spare = [x for x in all_items(g, nums, prs) if x not in clues]
         clues += rng.sample(spare, min(extra, len(spare)))
-        assert count_solutions(n, clues, k)[0] == 1
+        assert count_solutions(n, clues, k)[1] == [g]
         done[str(i)] = (n, k, g, clues)
         json.dump(done, open("set.json", "w"))
         write_set(done)
