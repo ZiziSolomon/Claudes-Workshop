@@ -1,0 +1,406 @@
+<!doctype html><meta charset='utf-8'><title>Lightbox</title><style>body{font-family:Georgia,serif;max-width:900px;margin:2em auto;color:#222}
+.grid{display:flex;flex-wrap:wrap;gap:28px}
+figure{margin:0}figcaption{text-align:center;font-size:14px}
+h2{page-break-before:always}h2:first-of-type{page-break-before:auto}</style>
+<h1>Lightbox</h1>
+<p>Each box hides some diagonal mirrors (<code>/</code> or <code>\</code>), at most one per cell; the count is given. Light shone in at one letter leaves at the matching letter. A number is how many mirrors that beam bounces off. Find every mirror.</p>
+<h2>Puzzles</h2><div class='grid'>
+<figure><svg width="244" height="244" viewBox="0 0 244 244">
+<line x1="34" y1="34" x2="210" y2="34" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="34" x2="34" y2="210" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="78" x2="210" y2="78" stroke="#333" stroke-width="0.6"/>
+<line x1="78" y1="34" x2="78" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="122" x2="210" y2="122" stroke="#333" stroke-width="0.6"/>
+<line x1="122" y1="34" x2="122" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="166" x2="210" y2="166" stroke="#333" stroke-width="0.6"/>
+<line x1="166" y1="34" x2="166" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="210" x2="210" y2="210" stroke="#333" stroke-width="2"/>
+<line x1="210" y1="34" x2="210" y2="210" stroke="#333" stroke-width="2"/>
+<text x="144.0" y="230" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="18" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="56.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="100.0" y="230" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="56.0" y="230" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="18" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="188.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">D</text>
+<text x="188.0" y="230" text-anchor="middle" font-size="16" font-family="Georgia, serif">D</text>
+<text x="100.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">E</text>
+<text x="226" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">E</text>
+</svg><figcaption>1. 3 mirrors</figcaption></figure>
+<figure><svg width="244" height="244" viewBox="0 0 244 244">
+<line x1="34" y1="34" x2="210" y2="34" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="34" x2="34" y2="210" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="78" x2="210" y2="78" stroke="#333" stroke-width="0.6"/>
+<line x1="78" y1="34" x2="78" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="122" x2="210" y2="122" stroke="#333" stroke-width="0.6"/>
+<line x1="122" y1="34" x2="122" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="166" x2="210" y2="166" stroke="#333" stroke-width="0.6"/>
+<line x1="166" y1="34" x2="166" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="210" x2="210" y2="210" stroke="#333" stroke-width="2"/>
+<line x1="210" y1="34" x2="210" y2="210" stroke="#333" stroke-width="2"/>
+<text x="188.0" y="230" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="56.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">3</text>
+<text x="18" y="193.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="18" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">2</text>
+<text x="226" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">3</text>
+<text x="18" y="105.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">0</text>
+<text x="144.0" y="230" text-anchor="middle" font-size="16" font-family="Georgia, serif">0</text>
+</svg><figcaption>2. 4 mirrors</figcaption></figure>
+<figure><svg width="244" height="244" viewBox="0 0 244 244">
+<line x1="34" y1="34" x2="210" y2="34" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="34" x2="34" y2="210" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="78" x2="210" y2="78" stroke="#333" stroke-width="0.6"/>
+<line x1="78" y1="34" x2="78" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="122" x2="210" y2="122" stroke="#333" stroke-width="0.6"/>
+<line x1="122" y1="34" x2="122" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="166" x2="210" y2="166" stroke="#333" stroke-width="0.6"/>
+<line x1="166" y1="34" x2="166" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="210" x2="210" y2="210" stroke="#333" stroke-width="2"/>
+<line x1="210" y1="34" x2="210" y2="210" stroke="#333" stroke-width="2"/>
+<text x="100.0" y="230" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="18" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="188.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="18" y="105.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="18" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="56.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">2</text>
+<text x="144.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="18" y="193.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">0</text>
+</svg><figcaption>3. 4 mirrors</figcaption></figure>
+<figure><svg width="288" height="288" viewBox="0 0 288 288">
+<line x1="34" y1="34" x2="254" y2="34" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="34" x2="34" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="78" x2="254" y2="78" stroke="#333" stroke-width="0.6"/>
+<line x1="78" y1="34" x2="78" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="122" x2="254" y2="122" stroke="#333" stroke-width="0.6"/>
+<line x1="122" y1="34" x2="122" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="166" x2="254" y2="166" stroke="#333" stroke-width="0.6"/>
+<line x1="166" y1="34" x2="166" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="210" x2="254" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="210" y1="34" x2="210" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="254" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="254" y1="34" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<text x="232.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="270" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="100.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="18" y="237.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="56.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="18" y="105.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="232.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">D</text>
+<text x="18" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">D</text>
+<text x="188.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">E</text>
+<text x="270" y="105.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">E</text>
+<text x="270" y="193.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">F</text>
+<text x="18" y="193.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">F</text>
+</svg><figcaption>4. 5 mirrors</figcaption></figure>
+<figure><svg width="288" height="288" viewBox="0 0 288 288">
+<line x1="34" y1="34" x2="254" y2="34" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="34" x2="34" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="78" x2="254" y2="78" stroke="#333" stroke-width="0.6"/>
+<line x1="78" y1="34" x2="78" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="122" x2="254" y2="122" stroke="#333" stroke-width="0.6"/>
+<line x1="122" y1="34" x2="122" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="166" x2="254" y2="166" stroke="#333" stroke-width="0.6"/>
+<line x1="166" y1="34" x2="166" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="210" x2="254" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="210" y1="34" x2="210" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="254" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="254" y1="34" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<text x="232.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="144.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="144.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="18" y="105.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">6</text>
+<text x="270" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">0</text>
+<text x="270" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">0</text>
+<text x="56.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="18" y="193.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">6</text>
+</svg><figcaption>5. 6 mirrors</figcaption></figure>
+<figure><svg width="288" height="288" viewBox="0 0 288 288">
+<line x1="34" y1="34" x2="254" y2="34" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="34" x2="34" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="78" x2="254" y2="78" stroke="#333" stroke-width="0.6"/>
+<line x1="78" y1="34" x2="78" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="122" x2="254" y2="122" stroke="#333" stroke-width="0.6"/>
+<line x1="122" y1="34" x2="122" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="166" x2="254" y2="166" stroke="#333" stroke-width="0.6"/>
+<line x1="166" y1="34" x2="166" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="210" x2="254" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="210" y1="34" x2="210" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="254" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="254" y1="34" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<text x="100.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">A1</text>
+<text x="270" y="105.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="188.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="18" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="270" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="270" y="237.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="144.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">D</text>
+<text x="18" y="237.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">D</text>
+<text x="144.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">2</text>
+<text x="270" y="193.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">0</text>
+<text x="232.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="56.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+</svg><figcaption>6. 6 mirrors</figcaption></figure>
+<figure><svg width="288" height="288" viewBox="0 0 288 288">
+<line x1="34" y1="34" x2="254" y2="34" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="34" x2="34" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="78" x2="254" y2="78" stroke="#333" stroke-width="0.6"/>
+<line x1="78" y1="34" x2="78" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="122" x2="254" y2="122" stroke="#333" stroke-width="0.6"/>
+<line x1="122" y1="34" x2="122" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="166" x2="254" y2="166" stroke="#333" stroke-width="0.6"/>
+<line x1="166" y1="34" x2="166" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="210" x2="254" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="210" y1="34" x2="210" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="254" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="254" y1="34" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<text x="100.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="270" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="232.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="18" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="188.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="18" y="237.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="270" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">D1</text>
+<text x="100.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">D</text>
+<text x="56.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">3</text>
+<text x="270" y="193.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">3</text>
+</svg><figcaption>7. 7 mirrors</figcaption></figure>
+</div><h2>Solutions</h2><div class='grid'>
+<figure><svg width="244" height="244" viewBox="0 0 244 244">
+<line x1="34" y1="34" x2="210" y2="34" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="34" x2="34" y2="210" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="78" x2="210" y2="78" stroke="#333" stroke-width="0.6"/>
+<line x1="78" y1="34" x2="78" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="122" x2="210" y2="122" stroke="#333" stroke-width="0.6"/>
+<line x1="122" y1="34" x2="122" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="166" x2="210" y2="166" stroke="#333" stroke-width="0.6"/>
+<line x1="166" y1="34" x2="166" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="210" x2="210" y2="210" stroke="#333" stroke-width="2"/>
+<line x1="210" y1="34" x2="210" y2="210" stroke="#333" stroke-width="2"/>
+<polyline points="144.0,214.4 144.0,144.0 29.6,144.0" fill="none" stroke="#d1495b" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="56.0,29.6 56.0,56.0 100.0,56.0 100.0,214.4" fill="none" stroke="#00798c" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="56.0,214.4 56.0,56.0 29.6,56.0" fill="none" stroke="#edae49" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="188.0,29.6 188.0,214.4" fill="none" stroke="#66a182" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="100.0,29.6 100.0,56.0 214.4,56.0" fill="none" stroke="#8d6cab" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<line x1="41" y1="41" x2="71" y2="71" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="85" y1="41" x2="115" y2="71" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="129" y1="129" x2="159" y2="159" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<text x="144.0" y="230" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="18" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="56.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="100.0" y="230" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="56.0" y="230" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="18" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="188.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">D</text>
+<text x="188.0" y="230" text-anchor="middle" font-size="16" font-family="Georgia, serif">D</text>
+<text x="100.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">E</text>
+<text x="226" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">E</text>
+</svg><figcaption>1.</figcaption></figure>
+<figure><svg width="244" height="244" viewBox="0 0 244 244">
+<line x1="34" y1="34" x2="210" y2="34" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="34" x2="34" y2="210" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="78" x2="210" y2="78" stroke="#333" stroke-width="0.6"/>
+<line x1="78" y1="34" x2="78" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="122" x2="210" y2="122" stroke="#333" stroke-width="0.6"/>
+<line x1="122" y1="34" x2="122" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="166" x2="210" y2="166" stroke="#333" stroke-width="0.6"/>
+<line x1="166" y1="34" x2="166" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="210" x2="210" y2="210" stroke="#333" stroke-width="2"/>
+<line x1="210" y1="34" x2="210" y2="210" stroke="#333" stroke-width="2"/>
+<polyline points="188.0,214.4 188.0,144.0 214.4,144.0" fill="none" stroke="#d1495b" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="56.0,29.6 56.0,144.0 188.0,144.0 188.0,56.0 214.4,56.0" fill="none" stroke="#00798c" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="29.6,188.0 56.0,188.0 56.0,214.4" fill="none" stroke="#edae49" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="29.6,144.0 56.0,144.0 56.0,188.0 214.4,188.0" fill="none" stroke="#66a182" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="29.6,100.0 214.4,100.0" fill="none" stroke="#8d6cab" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="144.0,214.4 144.0,29.6" fill="none" stroke="#2e4057" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<line x1="173" y1="71" x2="203" y2="41" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="41" y1="129" x2="71" y2="159" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="173" y1="159" x2="203" y2="129" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="41" y1="173" x2="71" y2="203" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<text x="188.0" y="230" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="56.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">3</text>
+<text x="18" y="193.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="18" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">2</text>
+<text x="226" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">3</text>
+<text x="18" y="105.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">0</text>
+<text x="144.0" y="230" text-anchor="middle" font-size="16" font-family="Georgia, serif">0</text>
+</svg><figcaption>2.</figcaption></figure>
+<figure><svg width="244" height="244" viewBox="0 0 244 244">
+<line x1="34" y1="34" x2="210" y2="34" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="34" x2="34" y2="210" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="78" x2="210" y2="78" stroke="#333" stroke-width="0.6"/>
+<line x1="78" y1="34" x2="78" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="122" x2="210" y2="122" stroke="#333" stroke-width="0.6"/>
+<line x1="122" y1="34" x2="122" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="166" x2="210" y2="166" stroke="#333" stroke-width="0.6"/>
+<line x1="166" y1="34" x2="166" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="210" x2="210" y2="210" stroke="#333" stroke-width="2"/>
+<line x1="210" y1="34" x2="210" y2="210" stroke="#333" stroke-width="2"/>
+<polyline points="100.0,214.4 100.0,144.0 29.6,144.0" fill="none" stroke="#d1495b" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="29.6,56.0 56.0,56.0 56.0,214.4" fill="none" stroke="#00798c" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="56.0,29.6 56.0,56.0 144.0,56.0 144.0,214.4" fill="none" stroke="#edae49" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="188.0,29.6 188.0,100.0 29.6,100.0" fill="none" stroke="#66a182" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="144.0,29.6 144.0,56.0 214.4,56.0" fill="none" stroke="#8d6cab" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="29.6,188.0 214.4,188.0" fill="none" stroke="#2e4057" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<line x1="41" y1="41" x2="71" y2="71" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="129" y1="41" x2="159" y2="71" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="173" y1="115" x2="203" y2="85" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="85" y1="129" x2="115" y2="159" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<text x="100.0" y="230" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="18" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="188.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="18" y="105.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="18" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="56.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">2</text>
+<text x="144.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="18" y="193.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">0</text>
+</svg><figcaption>3.</figcaption></figure>
+<figure><svg width="288" height="288" viewBox="0 0 288 288">
+<line x1="34" y1="34" x2="254" y2="34" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="34" x2="34" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="78" x2="254" y2="78" stroke="#333" stroke-width="0.6"/>
+<line x1="78" y1="34" x2="78" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="122" x2="254" y2="122" stroke="#333" stroke-width="0.6"/>
+<line x1="122" y1="34" x2="122" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="166" x2="254" y2="166" stroke="#333" stroke-width="0.6"/>
+<line x1="166" y1="34" x2="166" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="210" x2="254" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="210" y1="34" x2="210" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="254" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="254" y1="34" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<polyline points="232.0,29.6 232.0,56.0 258.4,56.0" fill="none" stroke="#d1495b" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="100.0,258.4 100.0,232.0 29.6,232.0" fill="none" stroke="#00798c" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="56.0,29.6 56.0,100.0 29.6,100.0" fill="none" stroke="#edae49" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="232.0,258.4 232.0,144.0 29.6,144.0" fill="none" stroke="#66a182" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="188.0,29.6 188.0,100.0 258.4,100.0" fill="none" stroke="#8d6cab" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="258.4,188.0 29.6,188.0" fill="none" stroke="#2e4057" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<line x1="217" y1="41" x2="247" y2="71" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="41" y1="115" x2="71" y2="85" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="173" y1="85" x2="203" y2="115" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="217" y1="129" x2="247" y2="159" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="85" y1="217" x2="115" y2="247" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<text x="232.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="270" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="100.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="18" y="237.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="56.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="18" y="105.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="232.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">D</text>
+<text x="18" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">D</text>
+<text x="188.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">E</text>
+<text x="270" y="105.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">E</text>
+<text x="270" y="193.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">F</text>
+<text x="18" y="193.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">F</text>
+</svg><figcaption>4.</figcaption></figure>
+<figure><svg width="288" height="288" viewBox="0 0 288 288">
+<line x1="34" y1="34" x2="254" y2="34" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="34" x2="34" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="78" x2="254" y2="78" stroke="#333" stroke-width="0.6"/>
+<line x1="78" y1="34" x2="78" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="122" x2="254" y2="122" stroke="#333" stroke-width="0.6"/>
+<line x1="122" y1="34" x2="122" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="166" x2="254" y2="166" stroke="#333" stroke-width="0.6"/>
+<line x1="166" y1="34" x2="166" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="210" x2="254" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="210" y1="34" x2="210" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="254" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="254" y1="34" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<polyline points="232.0,29.6 232.0,100.0 258.4,100.0" fill="none" stroke="#d1495b" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="144.0,29.6 144.0,188.0 258.4,188.0" fill="none" stroke="#00798c" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="144.0,258.4 144.0,232.0 258.4,232.0" fill="none" stroke="#edae49" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="29.6,100.0 56.0,100.0 56.0,188.0 144.0,188.0 144.0,232.0 56.0,232.0 56.0,188.0 29.6,188.0" fill="none" stroke="#66a182" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="258.4,144.0 29.6,144.0" fill="none" stroke="#8d6cab" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="258.4,56.0 29.6,56.0" fill="none" stroke="#2e4057" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="56.0,258.4 56.0,232.0 29.6,232.0" fill="none" stroke="#e07a5f" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<line x1="41" y1="85" x2="71" y2="115" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="217" y1="85" x2="247" y2="115" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="41" y1="173" x2="71" y2="203" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="129" y1="173" x2="159" y2="203" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="41" y1="217" x2="71" y2="247" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="129" y1="247" x2="159" y2="217" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<text x="232.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="144.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="144.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="18" y="105.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">6</text>
+<text x="270" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">0</text>
+<text x="270" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">0</text>
+<text x="56.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="18" y="193.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">6</text>
+</svg><figcaption>5.</figcaption></figure>
+<figure><svg width="288" height="288" viewBox="0 0 288 288">
+<line x1="34" y1="34" x2="254" y2="34" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="34" x2="34" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="78" x2="254" y2="78" stroke="#333" stroke-width="0.6"/>
+<line x1="78" y1="34" x2="78" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="122" x2="254" y2="122" stroke="#333" stroke-width="0.6"/>
+<line x1="122" y1="34" x2="122" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="166" x2="254" y2="166" stroke="#333" stroke-width="0.6"/>
+<line x1="166" y1="34" x2="166" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="210" x2="254" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="210" y1="34" x2="210" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="254" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="254" y1="34" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<polyline points="144.0,29.6 144.0,56.0 56.0,56.0 56.0,258.4" fill="none" stroke="#d1495b" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="100.0,29.6 100.0,100.0 258.4,100.0" fill="none" stroke="#00798c" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="258.4,188.0 29.6,188.0" fill="none" stroke="#edae49" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="232.0,258.4 232.0,144.0 258.4,144.0" fill="none" stroke="#66a182" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="188.0,258.4 188.0,144.0 29.6,144.0" fill="none" stroke="#8d6cab" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="258.4,56.0 144.0,56.0 144.0,232.0 258.4,232.0" fill="none" stroke="#2e4057" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="56.0,29.6 56.0,56.0 29.6,56.0" fill="none" stroke="#e07a5f" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="144.0,258.4 144.0,232.0 29.6,232.0" fill="none" stroke="#3d405b" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<line x1="41" y1="71" x2="71" y2="41" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="129" y1="71" x2="159" y2="41" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="85" y1="85" x2="115" y2="115" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="173" y1="129" x2="203" y2="159" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="217" y1="159" x2="247" y2="129" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="129" y1="217" x2="159" y2="247" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<text x="100.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">A1</text>
+<text x="270" y="105.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="188.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="18" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="270" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="270" y="237.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="144.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">D</text>
+<text x="18" y="237.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">D</text>
+<text x="144.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">2</text>
+<text x="270" y="193.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">0</text>
+<text x="232.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+<text x="56.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">1</text>
+</svg><figcaption>6.</figcaption></figure>
+<figure><svg width="288" height="288" viewBox="0 0 288 288">
+<line x1="34" y1="34" x2="254" y2="34" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="34" x2="34" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="34" y1="78" x2="254" y2="78" stroke="#333" stroke-width="0.6"/>
+<line x1="78" y1="34" x2="78" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="122" x2="254" y2="122" stroke="#333" stroke-width="0.6"/>
+<line x1="122" y1="34" x2="122" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="166" x2="254" y2="166" stroke="#333" stroke-width="0.6"/>
+<line x1="166" y1="34" x2="166" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="210" x2="254" y2="210" stroke="#333" stroke-width="0.6"/>
+<line x1="210" y1="34" x2="210" y2="254" stroke="#333" stroke-width="0.6"/>
+<line x1="34" y1="254" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<line x1="254" y1="34" x2="254" y2="254" stroke="#333" stroke-width="2"/>
+<polyline points="100.0,29.6 100.0,56.0 258.4,56.0" fill="none" stroke="#d1495b" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="56.0,29.6 56.0,144.0 100.0,144.0 100.0,56.0 29.6,56.0" fill="none" stroke="#00798c" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="232.0,29.6 232.0,188.0 56.0,188.0 56.0,144.0 29.6,144.0" fill="none" stroke="#edae49" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="258.4,188.0 232.0,188.0 232.0,232.0 188.0,232.0 188.0,29.6" fill="none" stroke="#66a182" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="188.0,258.4 188.0,232.0 29.6,232.0" fill="none" stroke="#8d6cab" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<polyline points="258.4,144.0 100.0,144.0 100.0,258.4" fill="none" stroke="#2e4057" stroke-width="3" stroke-opacity="0.75" stroke-linejoin="round"/>
+<line x1="85" y1="41" x2="115" y2="71" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="41" y1="129" x2="71" y2="159" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="85" y1="159" x2="115" y2="129" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="41" y1="173" x2="71" y2="203" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="217" y1="203" x2="247" y2="173" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="173" y1="217" x2="203" y2="247" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<line x1="217" y1="247" x2="247" y2="217" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+<text x="100.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="270" y="61.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">A</text>
+<text x="232.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="18" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">B</text>
+<text x="188.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="18" y="237.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">C</text>
+<text x="270" y="149.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">D1</text>
+<text x="100.0" y="274" text-anchor="middle" font-size="16" font-family="Georgia, serif">D</text>
+<text x="56.0" y="20" text-anchor="middle" font-size="16" font-family="Georgia, serif">3</text>
+<text x="270" y="193.0" text-anchor="middle" font-size="16" font-family="Georgia, serif">3</text>
+</svg><figcaption>7.</figcaption></figure>
+</div>

@@ -232,19 +232,36 @@ SET = [  # (size, mirrors, numbers?, pairs?, clues given back after minimising)
 ]
 
 
-if __name__ == "__main__":
-    seed = int(sys.argv[1]) if len(sys.argv) > 1 else 1
-    rng = random.Random(seed)
+def write_set(done):
     puz, sol = [], []
-    for i, (n, k, nums, prs, extra) in enumerate(SET, 1):
-        g, clues = make_puzzle(n, k, rng, nums, prs)
-        spare = [x for x in all_items(g, nums, prs) if x not in clues]
-        clues += rng.sample(spare, min(extra, len(spare)))
-        assert count_solutions(n, clues, k)[0] == 1
+    for i in sorted(done, key=int):
+        n, k, g, clues = done[i]
+        clues = [(kind, tuple(p), tuple(v) if kind == "pair" else v)
+                 for kind, p, v in clues]
         lab = labels(n, clues)
         head = f"### {i}. {n}x{n}, {k} mirrors"
         puz.append(head + "\n\n```\n" + render(n, lab) + "\n```\n")
         sol.append(head + "\n\n```\n" + render(n, lab, g) + "\n```\n")
-        print(head, len(clues), flush=True)
     open("puzzles.md", "w").write("\n".join(puz))
     open("solutions.md", "w").write("\n".join(sol))
+
+
+if __name__ == "__main__":
+    # each puzzle gets its own seed, and finished ones are cached in set.json,
+    # so an interrupted run picks up where it stopped
+    import json
+    import os
+    seed = int(sys.argv[1]) if len(sys.argv) > 1 else 1
+    done = json.load(open("set.json")) if os.path.exists("set.json") else {}
+    for i, (n, k, nums, prs, extra) in enumerate(SET, 1):
+        if str(i) in done:
+            continue
+        rng = random.Random(seed * 100 + i)
+        g, clues = make_puzzle(n, k, rng, nums, prs)
+        spare = [x for x in all_items(g, nums, prs) if x not in clues]
+        clues += rng.sample(spare, min(extra, len(spare)))
+        assert count_solutions(n, clues, k)[0] == 1
+        done[str(i)] = (n, k, g, clues)
+        json.dump(done, open("set.json", "w"))
+        write_set(done)
+        print(f"puzzle {i}: {n}x{n}, {k} mirrors, {len(clues)} clues", flush=True)
