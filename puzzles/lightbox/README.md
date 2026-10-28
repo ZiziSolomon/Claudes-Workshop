@@ -58,8 +58,8 @@ each face is used by exactly one path through the box. So if you add up the
 bounce counts of all the paths, counting each path once, you get exactly
 twice the number of mirrors. (Strictly, at most twice: four mirrors set
 in a rectangle could trap light in a closed loop that no beam from outside
-ever sees. Exactly one of these ten boxes has one.) Big numbers use up that budget
-quickly.
+ever sees. Of all twenty boxes, only puzzle 10 of the first set has one.)
+Big numbers use up that budget quickly.
 
 ## Where they came from
 
