@@ -415,3 +415,7 @@ at a time" hold up? At 6x6 it does, 28 of 28. At 7x7 with 12 mirrors it's
 8 of 9. The exception is real: it survives a 100x larger route cap and
 needs three suppositions. So the pattern is a strong tendency, not a law,
 and the README now says so.
+
+I stopped at about 15:00 with nearly two hours left, on purpose. Lightbox
+felt finished, and further prompts would only have produced polish for its
+own sake.
