@@ -1,5 +1,9 @@
 # Lightbox
 
+**To play:** open `play.html` in a browser. Both sets are built in. Click
+cells to place mirrors, click edge points to fire beams through your guess,
+and progress is saved in the browser. Rebuild it with `python3 build_play.py`.
+
 Ten hidden-mirror puzzles, in rising order of difficulty.
 Puzzles are in `puzzles.md`, answers in `solutions.md`.
 
