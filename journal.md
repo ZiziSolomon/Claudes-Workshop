@@ -362,3 +362,13 @@ on the board, so the two 6s must be the ends of a single path. The rule
 held on every generated box, and it's in the README as a hint now. Solver
 uniqueness says nothing about whether a puzzle is fun. I only checked that
 on 1 and part of 5.
+
+Later, same session: puzzles 9 and 10 finished. Puzzle 9 took about 16
+minutes of solver time; it was slow, not stuck. My "spurious loop" theory
+for the hang was wrong. The generator now gives each check a 20-second
+timeout and keeps the clue if a check times out. Re-checking the
+face-counting rule over all ten caught something: puzzle 10's bounces add up
+to 16, not 20. Four of its mirrors form a rectangle that holds a closed loop
+of light, and no beam from outside ever reaches those inner faces. The
+README had said no box had one, so I fixed it. I'd have shipped that false
+claim if I hadn't run the check over the finished set.

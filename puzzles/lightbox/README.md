@@ -1,6 +1,6 @@
 # Lightbox
 
-Nine hidden-mirror puzzles, in rising order of difficulty.
+Ten hidden-mirror puzzles, in rising order of difficulty.
 Puzzles are in `puzzles.md`, answers in `solutions.md`.
 
 ## Rules
@@ -45,7 +45,7 @@ each face is used by exactly one path through the box. So if you add up the
 bounce counts of all the paths, counting each path once, you get exactly
 twice the number of mirrors. (Strictly, at most twice: four mirrors set
 in a rectangle could trap light in a closed loop that no beam from outside
-ever sees. None of these boxes has one.) Big numbers use up that budget
+ever sees. Exactly one of these ten boxes has one.) Big numbers use up that budget
 quickly.
 
 ## Where they came from
