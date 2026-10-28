@@ -90,9 +90,11 @@ class Checker:
     """z3 model of a box: every light state (cell, heading) carries the index
     of the port its light came in from. Clues are switched on per query."""
 
-    def __init__(self, n, total, items):
+    def __init__(self, n, total, items, timeout_ms=None):
         self.n = n
         self.s = s = z3.Solver()
+        if timeout_ms:
+            s.set("timeout", timeout_ms)
         self.m = m = [[z3.BitVec(f"m{r}_{c}", 2) for c in range(n)] for r in range(n)]
         for row in m:
             for v in row:
@@ -131,7 +133,13 @@ class Checker:
             s.add(z3.Or([m[r][c] != exclude[r][c] for r in range(n) for c in range(n)]))
         found, spurious = [], 0
         assume = [self.lits[it] for it in clues]
-        while len(found) < limit and s.check(*assume) == z3.sat:
+        while len(found) < limit:
+            res = s.check(*assume)
+            if res == z3.unknown:  # timed out: can't vouch for uniqueness
+                found.append(None)
+                break
+            if res == z3.unsat:
+                break
             mod = s.model()
             g = [[mod.eval(m[r][c]).as_long() for c in range(n)] for r in range(n)]
             s.add(z3.Or([m[r][c] != g[r][c] for r in range(n) for c in range(n)]))
@@ -175,7 +183,7 @@ def make_puzzle(n, k, rng, numbers=True, pairs=True):
     while True:
         g = random_grid(n, k, rng)
         items = all_items(g, numbers, pairs)
-        chk = Checker(n, k, items)
+        chk = Checker(n, k, items, timeout_ms=20000)
         if chk.solutions(items, k, 1, exclude=g):
             continue
         rng.shuffle(items)

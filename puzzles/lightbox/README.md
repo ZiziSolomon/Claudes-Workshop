@@ -1,6 +1,6 @@
 # Lightbox
 
-Eight hidden-mirror puzzles, in rising order of difficulty.
+Nine hidden-mirror puzzles, in rising order of difficulty.
 Puzzles are in `puzzles.md`, answers in `solutions.md`.
 
 ## Rules
@@ -59,7 +59,13 @@ reasoning rather than by trial is something only a person working it finds
 out.
 
     pip install z3-solver
-    python3 lightbox.py 2026     # regenerates this exact set
+    python3 lightbox.py 2026     # finished puzzles are cached in set.json
+    python3 make_html.py         # printable lightbox.html
+
+With `set.json` removed it starts from scratch. Each puzzle has its own
+seed, but each solver check gives up after 20 seconds (and keeps the clue
+it was testing), so a slower machine may end up with a few more clues on
+the 6x6 boxes.
 
 ## Puzzle 1, worked (spoiler)
 
