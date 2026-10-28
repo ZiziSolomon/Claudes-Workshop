@@ -40,6 +40,14 @@ it. But a `0` does mean the whole row (or column) is empty, and that's the
 strongest clue there is. Start from zeros and from short paths between
 neighbouring edge points.
 
+One fact is worth having in your pocket. Every mirror has two faces, and
+each face is used by exactly one path through the box. So if you add up the
+bounce counts of all the paths, counting each path once, you get exactly
+twice the number of mirrors. (Strictly, at most twice: four mirrors set
+in a rectangle could trap light in a closed loop that no beam from outside
+ever sees. None of these ten boxes has one.) Big numbers use up that budget
+quickly.
+
 ## Where they came from
 
 `lightbox.py` makes them. It scatters mirrors at random, writes down every
@@ -52,3 +60,27 @@ out.
 
     pip install z3-solver
     python3 lightbox.py 2026     # regenerates this exact set
+
+## Puzzle 1, worked (spoiler)
+
+Rows and columns are numbered from 0 at the top left.
+
+- `B` runs from the top of column 0 to the bottom of column 1. A beam can't
+  change columns without turning twice: it must turn east off a `\` somewhere
+  in column 0, then south off another `\` in column 1, in the same row.
+  That's two of the three mirrors.
+- `E` runs from the top of column 1 to the right end of row 0. Going down and
+  coming out to the east needs at least one `\` turn, and doing it any other
+  way costs three. `A` (row 2 into column 2) needs a mirror of its own too.
+  So `E` gets no new mirror: it must share one of `B`'s, which means the
+  beam down column 1 meets `B`'s column-1 mirror in row 0. `B`'s pair sits
+  in row 0: `\` at (0,0) and `\` at (0,1).
+- `C` checks out: in at the left of row 0, off the `\` at (0,0), straight
+  down column 0. The third mirror is `A`'s, a `\` at (2,2), and `D` runs
+  straight down an empty column 3.
+
+The later puzzles don't all fall this neatly. The number-only ones (2 and 5)
+reward looking at what a `0` forbids and what a large number forces. In
+puzzle 5, two beams each bounce six times in a box with six mirrors: twelve
+faces, all spent, unless those two 6s are the two ends of one path. There
+are 1s on the board, so they are.
