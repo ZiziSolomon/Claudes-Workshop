@@ -144,6 +144,11 @@ const ITEMS = {
     tag: "SCARF. Very long. Striped orange and brown.\nSmells faintly of bonfire.\nFound: hanging from the footbridge like a flag.",
     closing: "The long striped scarf is draped over the stove pipe, smelling of bonfires."
   },
+  greyglove: {
+    name: "a grey glove",
+    tag: "GLOVE. Grey wool, right hand.\nFound: behind the waiting room radiator, with the end of a bun.",
+    closing: "The grey glove waits on the shelf, a little way from the red glove."
+  },
   bird: {
     name: "a hatbox, singing",
     tag: "CANARY, yellow, in a hatbox with air holes in the lid.\nFound: the roof of the signal box. Coaxed down with a crust.\nNOTE: sings when the kettle boils.",
@@ -158,10 +163,11 @@ const ASK = {
 };
 
 const DAY = [
-  { phase: "morning", text: "Morning. The first train has come and gone. Rain is thinking about it over the marshes. You unlock the hatch and lift the shutter." },
+  { phase: "morning", text: "Monday morning. The first train has come and gone. Rain is thinking about it over the marshes. You unlock the hatch and lift the shutter." },
 
   {
     who: "Mrs Dorrit",
+    key: "dorrit",
     looks: "A small woman in a large wet coat. She is holding her handbag over her head, although she is indoors.",
     opens: "My umbrella. You'll have it, I expect. Everybody's umbrella ends up here.",
     look: "Black, like all of them. But the handle is a bird. A water bird.",
@@ -179,6 +185,7 @@ const DAY = [
 
   {
     who: "Mr Hobb",
+    key: "hobb",
     looks: "An elderly man in a good tweed suit. He keeps his lips very carefully together and talks around them.",
     opens: "Good morning. I've lotht thomething. Rather perthonal.",
     look: "Thmall. Pink and white. Thmile-thaped, you might thay.",
@@ -200,6 +207,7 @@ const DAY = [
 
   {
     who: "Mr Varley",
+    key: "varley",
     looks: "A tall man in a camel coat, with very clean shoes. He glances along the shelf before he looks at you.",
     opens: "I believe you have a cigarette case of mine. Silver.",
     look: "Silver. Expensive. You'll know it when you see it.",
@@ -216,10 +224,11 @@ const DAY = [
 
   { phase: "midday", text: "Midday. The sun comes out over the marshes as if it had never been away. The buffet sends round a cup of tea." },
 
-  { arrive: "bird", text: "Bertram the porter puts a hatbox on your counter and wipes his forehead. \"Off the signal box roof,\" he says. \"Took a whole crust.\" Something inside the hatbox is singing." },
+  { scene: ["Bertram the porter puts a hatbox on your counter and wipes his forehead. \"Off the signal box roof,\" he says. \"Took a whole crust.\" Something inside the hatbox is singing."], arrive: "bird", button: "Thank Bertram" },
 
   {
     who: "Tam",
+    key: "tam",
     looks: "A boy in a school cap, out of breath, holding the cap in both hands as if there might be something in it.",
     opens: "Have you got my bird? He's called Custard.",
     look: "Yellow! Like custard. That's why.",
@@ -241,6 +250,7 @@ const DAY = [
 
   {
     who: "Miss Pell",
+    key: "agnes",
     looks: "A young woman in a green hat, who has clearly put on her best gloves for this and is now not sure why.",
     opens: "I'm sorry, this is silly. Has anything been left for me? I was told to ask here.",
     look: "I don't know what it would look like. That's rather the point.",
@@ -263,6 +273,7 @@ const DAY = [
 
   {
     who: "Mr Ord",
+    key: "ord",
     looks: "A large, gentle man with a fringe of white hair and the look of someone who has just woken up somewhere unexpected.",
     opens: "I've left my knitting somewhere. And my grandson's arm is in it.",
     look: "A bag. Tapestry. Roses on it. Rather a lot of roses.",
@@ -283,6 +294,7 @@ const DAY = [
 
   {
     who: "Mrs Ambery",
+    key: "ambery",
     looks: "A brisk woman with a basket and a hat with a pheasant feather in it, which seems to be in a hurry too.",
     opens: "Jam. Damson. It was for my sister, and if I turn up without it she will never let me forget it.",
     look: "A jar. With a cloth over the top. Checked. Tied on with string.",
@@ -303,6 +315,7 @@ const DAY = [
 
   {
     who: "Rosa",
+    key: "rosa",
     looks: "A girl in a duffel coat, rubbing her hands together. Her left hand has a glove on it. Her right hand does not.",
     opens: "I've lost a glove. You've probably got hundreds, haven't you.",
     look: "Grey. Wool. It goes with this one.",
@@ -325,6 +338,7 @@ const DAY = [
 
   {
     who: "Mr Marsh",
+    key: "marsh",
     looks: "An old man in a railway greatcoat with the buttons polished. He takes his cap off before he speaks.",
     opens: "I don't suppose... a little silver case? My wife gave it me when I retired. I'd hate to have lost it.",
     look: "Silver. Worn smooth on one side, where my thumb goes.",
@@ -345,7 +359,261 @@ const DAY = [
     told: "Edward Marsh went home without it, and told himself it was only a thing. Somewhere, a man in a camel coat has never read the inside."
   },
 
-  { phase: "night", text: "" }
+  {
+    phase: "night",
+    text: "Night. You pull the shutter down and lock the hatch. The last train sighs off towards the city.",
+    after: ["You turn off the lamp. The things on the shelf stay where they are, being lost together, until morning."],
+    tomorrow: true
+  }
+];
+
+/* ---------- Tuesday: the day remembers Monday ---------- */
+
+const not = (key, how) => () => fate[key] !== how;
+
+const TUESDAY = [
+  { phase: "morning", text: "Tuesday morning. Fog has come in off the marshes and sat down on the station. The signal lamps are lit at breakfast time." },
+
+  { scene: ["Mrs Gage, who does the waiting room, drops something grey on your counter. \"Down the back of the radiator,\" she says. \"With the end of a bun.\" She sniffs. \"Somebody had a time of it in there yesterday.\""], arrive: "greyglove", button: "Thank Mrs Gage" },
+
+  {
+    who: "Mrs Dorrit",
+    key: "dorrit",
+    when: not("dorrit", "home"),
+    looks: "Mrs Dorrit again, wetter than yesterday, if anything. She looks at you as if you owe her an umbrella, which perhaps you do.",
+    opens: "I'm back. It rained all the way home, and I told my husband about it, and he said, go back, Win.",
+    look: "The bird. The water bird. On the handle. I did say.",
+    where: "Under the timetable. I've had a night to think about it. The bench.",
+    mine: "He carved it. I watched him do the beak. It took all winter.",
+    item: "duck",
+    thanks: "She takes it in both hands and looks the duck in the eye. \"There you are,\" she says. \"I told him you'd be here.\"",
+    wrong: { plain: "Still no duck, dear. Still no duck." },
+    patience: ["No. Look again. Look properly."],
+    leaves: "I'll tell him you tried.",
+    turnedAway: "She opens her mouth, closes it, and goes out into the fog without a word.",
+    home: "Mrs Dorrit went home under her duck, a day late, and told her husband all about it.",
+    away: "Mrs Dorrit has stopped coming. Her umbrella still looks out of the window for her."
+  },
+
+  {
+    who: "Dr Linnet",
+    key: "linnet",
+    looks: "A woman in oilskins with sand on her boots and a tin bucket over her arm. Something in the bucket is moving slightly.",
+    opens: "This is going to sound odd. I've lost a book with my name crossed out of it.",
+    look: "Small. Green cloth, rather battered. Shells on the cover, naturally.",
+    where: "The gate on the beach path. I stopped to get a stone out of my boot, and put it down on the post.",
+    mine: "There's a flower pressed in the front. Sea pink. My husband picked it, back when he was my husband. The name I crossed out was his as well.",
+    item: "book",
+    thanks: "She opens it to the sea pink, closes it again, and drops it in the bucket with whatever else is in there. \"I'll write a name back in,\" she says. \"The one I started with.\"",
+    wrong: {
+      letter: "No. Nobody writes to me. That's rather the attraction of shells.",
+      scarf: "Lord, no. I'd be seen from the lighthouse."
+    },
+    patience: ["No. A book. Small and green and full of shells."],
+    leaves: "I'll buy another. They're all the same book, really, apart from the flower.",
+    turnedAway: "\"Ah well,\" she says, and goes off towards the shore, swinging the bucket.",
+    home: "Dr Linnet went down to the shore with her book of shells, and wrote her old name in the front in pencil.",
+    away: "Dr Linnet bought a new book of shells, and has nothing pressed in it yet."
+  },
+
+  {
+    who: "Rosa",
+    key: "rosa",
+    looks: "Rosa in her duffel coat, with a hand in her pocket.",
+    opens: "Me again. Did it turn up? I've been walking around like Napoleon.",
+    look: "Grey! Wool! The partner to this!",
+    where: "I've been thinking. I sat in the waiting room for a bit. There was a man sneezing.",
+    mine: "Right hand. Grey. You know all this. Is it there? It's there, isn't it.",
+    item: "greyglove",
+    thanks: "She pulls it on and holds up both hands, wriggling her fingers, as if somebody had given her those back too.",
+    wrong: { glove: "Still red. Still a left. Poor thing." },
+    patience: ["No! Grey!"],
+    leaves: "I'm going to buy mittens.",
+    turnedAway: "\"Oh,\" says Rosa, looking at the shelf. Then she looks at you, and puts her hand back in her pocket.",
+    notHere: "Never mind. Mittens, then.",
+    home: "Rosa went home with both hands out of her pockets.",
+    away: "Rosa bought mittens, and her grey glove stayed on your shelf, next to a red glove it did not get on with.",
+    told: "Rosa bought mittens."
+  },
+
+  { phase: "midday", text: "Midday. The fog lifts as if somebody had remembered it was there. The buffet sends round a cup of tea and, today, a biscuit." },
+
+  {
+    when: () => fate.varley === "home",
+    scene: [
+      "Mr Varley is at the hatch before you have finished your biscuit. He does not look at the shelf this time. He puts the silver case down on the counter between you, and leaves his hand on it a moment.",
+      "\"I opened it last night,\" he says. \"I don't know who E. is. But it isn't me, and I have never in my life kept a light on for anyone.\"",
+      "He takes his hand away. \"I'd be glad if they got it back,\" he says, and goes, quite quickly, as if he might change his mind."
+    ],
+    arrive: "case",
+    story: "Mr Varley brought the silver case back. Nobody will ever know about it but you.",
+    button: "Put it back on the shelf"
+  },
+
+  {
+    who: "Mrs Hobb",
+    key: "hobb",
+    when: not("hobb", "home"),
+    looks: "A stout woman in a purple hat, towing Mr Hobb behind her by the sleeve. Mr Hobb keeps his lips together and gazes at the ceiling.",
+    opens: "My husband has lost his teeth and his dignity. I'm here about the teeth.",
+    look: "Teeth. You know what teeth look like. His are rather better than mine, if anything.",
+    where: "The waiting room. He sneezed. He sneezes like a ship's cannon.",
+    mine: "Hold them up against him. If they fit, they're his. If they don't, I don't want to know whose they are.",
+    item: "teeth",
+    thanks: "She takes the handkerchief, looks inside, and puts it in her handbag. \"He can have them back when he's said sorry for the sneeze,\" she says. Mr Hobb says something with a great many s's in it.",
+    wrong: {
+      jar: "We have jam at home. We have nothing to eat it with.",
+      hat: "He has a hat. It's the head underneath that's the trouble."
+    },
+    patience: ["No. Teeth."],
+    leaves: "Soup again, then.",
+    turnedAway: "Mrs Hobb looks at you for a long time. Mr Hobb looks at the ceiling for a long time. Then they go.",
+    home: "Mrs Hobb carried Mr Hobb's teeth home in her handbag, and he got them back after supper.",
+    away: "The Hobbs had soup for supper again."
+  },
+
+  {
+    who: "Mr Pellegrini",
+    key: "pellegrini",
+    looks: "A thin man in an evening coat, at an hour when nobody wears evening coats. He bows to you, slightly, as if you were an audience.",
+    opens: "Good afternoon. I have come about my hat. And possibly whatever is in it.",
+    look: "Black. Bowler. Roomy. Rather roomier than it looks, if you follow me.",
+    where: "I did a little show for the children on the up platform yesterday. Then a cat sat in it, and I hadn't the heart.",
+    mine: "Tap the crown, if you would. Gently.",
+    item: "hat",
+    thanks: "He taps the crown. Nothing happens. He taps it again, frowns, and turns it over, and the station cat steps out of it, which is impossible, and strolls away along your counter. Mr Pellegrini bows to the cat.",
+    wrong: {
+      cage: "Doves, normally. Not today, thank you.",
+      book: "No. I find shells upsetting. Something about the way they keep looking empty."
+    },
+    patience: ["Alas, no."],
+    leaves: "Then I shall vanish.",
+    turnedAway: "\"Then I shall vanish,\" he says, and turns round, and he hasn't, but it was a very good try.",
+    home: "Mr Pellegrini went to his next show with his hat, and the cat followed him to the end of the platform, and thought better of it.",
+    away: "Mr Pellegrini did his next show without a hat, and nothing came out of anything."
+  },
+
+  {
+    who: "Miss Pell",
+    key: "agnes",
+    when: not("agnes", "home"),
+    looks: "Agnes Pell, in the same green hat. She looks as if she has not slept and has decided not to mind.",
+    opens: "I'm sorry. I came back. I thought perhaps I asked the wrong way.",
+    look: "Paper, I suppose. If he wrote. He did say he might write.",
+    where: "He said he'd leave it here. Here, where you are.",
+    mine: "Agnes Pell. P, E, L, L. He never gets that right.",
+    item: "letter",
+    thanks: "She looks at her name for a long moment. \"He spelled it right,\" she says. She doesn't open it here, either.",
+    wrong: { book: "No. He doesn't know a whelk from a winkle." },
+    patience: ["No. Paper. A letter."],
+    leaves: "No. All right. That's that, then.",
+    turnedAway: "\"No,\" she says. \"Of course.\" And this time she goes without buttoning her gloves.",
+    home: "Agnes Pell got her letter a day late, and read it on the bench under the timetable board, and then read it again.",
+    away: "Agnes Pell has stopped asking."
+  },
+
+  {
+    when: () => fate.agnes === "home",
+    scene: [
+      "A young man in a borrowed suit comes to the hatch, hat in his hands. \"I left a letter,\" he says. \"For a Miss Pell. I just wanted to know if...\"",
+      "You tell him she came for it. He stands very still. Then he puts his hat on, takes it off again, says thank you to you and also, for some reason, to the umbrella, and runs for the up train."
+    ],
+    button: "Watch him go"
+  },
+
+  { phase: "afternoon", text: "Afternoon. Gulls on the platform roof. A child on the footbridge is calling a name that isn't Custard; it's a dog, and it comes." },
+
+  {
+    who: "Alf",
+    key: "alf",
+    looks: "An enormous man with coal dust in his eyebrows, from the gasworks. He holds his cap in front of him like something that might protect him from you.",
+    opens: "Excuse me. Sorry. It's my scarf. My mother made it. She'll ask.",
+    look: "Orange and brown. Stripy. Long. It goes round me and round me and round me and then there's still some left.",
+    where: "I hung it on the footbridge to dry, and then a train went under, and I watched the train.",
+    mine: "Smells of bonfire. We had a bonfire for my mother's birthday. She likes a bonfire.",
+    item: "scarf",
+    thanks: "He winds it round himself, and round, and round, and there's still some left. He looks, for a moment, like a small boy.",
+    wrong: {
+      glove: "That's not a scarf. That's a glove. That wouldn't go round anything.",
+      greyglove: "That's somebody's glove. Somebody'll want that."
+    },
+    patience: ["No. Sorry. Longer."],
+    leaves: "I'll tell her it blew away. It sort of did.",
+    turnedAway: "\"Right,\" says Alf, very quietly for such a big man. \"I'll tell her it blew away.\"",
+    home: "Alf went back to the gasworks in his scarf, and his mother asked, and he could say yes.",
+    away: "Alf told his mother it blew away, and she has started on another one, longer."
+  },
+
+  {
+    who: "Mr Ord",
+    key: "ord",
+    when: not("ord", "home"),
+    looks: "Mr Ord, with a new ball of blue wool sticking out of his pocket.",
+    opens: "I started again, but it's not the same. You lose the place, don't you. Did my roses turn up?",
+    look: "Roses. Tapestry. Most of a sleeve.",
+    where: "The down train. Same as before. I was asleep, if you remember.",
+    mine: "The sleeve's for my grandson. He's grown again since yesterday, I shouldn't wonder.",
+    item: "knitting",
+    thanks: "He takes the bag and lays the new wool in beside the old sleeve. \"Now I've got enough for the whole arm,\" he says, pleased.",
+    wrong: { scarf: "Ha! No. That's somebody else's winter." },
+    patience: ["Roses, I said."],
+    leaves: "Ah well. I'll keep going on the new one.",
+    turnedAway: "\"Ah well,\" he says, and goes out already knitting.",
+    home: "Mr Ord got his roses back and knitted all the way home, and did not miss his stop, quite.",
+    away: "Mr Ord's grandson will have a jumper with sleeves that don't quite match, and won't mind."
+  },
+
+  { phase: "dusk", text: "Dusk. The lamps come on along the platform, lamp by lamp. You put the kettle on." },
+
+  {
+    who: "Tam",
+    key: "tam",
+    when: not("tam", "home"),
+    looks: "Tam, in his school cap, with cold red ears. He has a slice of bread in his pocket.",
+    opens: "Has anyone brought him in? I looked all night. Well. Till bedtime.",
+    look: "Yellow. Small. Like custard. He's called Custard.",
+    where: "The footbridge. Then I think he went up. Up's where birds go.",
+    mine: "He sings when the kettle boils. Is your kettle on? It sounds like it's on.",
+    item: "bird",
+    thanks: "The kettle boils, and the hatbox sings, and Tam stands completely still in the middle of the booking hall with his mouth open.",
+    wrong: { cage: "That's his house. He's still not in it." },
+    patience: ["That's not him."],
+    leaves: "I'll keep the bread in my pocket. In case.",
+    turnedAway: "Tam nods, and goes out, and you hear him calling on the footbridge till it's dark.",
+    home: "Tam took Custard home in the hatbox, a day late, and the kettle in his kitchen has never been so busy.",
+    away: "Tam still keeps bread in his pocket."
+  },
+
+  {
+    who: "Mr Marsh",
+    key: "marsh",
+    when: not("marsh", "home"),
+    looks: "Edward Marsh in his railway greatcoat. He takes his cap off. He seems a little embarrassed to be back.",
+    opens: "I said it was only a thing. I couldn't sleep, though. Is there any chance?",
+    look: "Silver. Worn on one side, where my thumb goes.",
+    where: "The buffet, by the teapot. I've retraced my steps till I'm dizzy.",
+    mine: "Inside it says she was grateful I kept the light on. In the box. And at home, she meant. I see that now.",
+    item: "case",
+    thanks: "He opens it and reads the inside, and closes it, and holds it for a while with his thumb in the worn place. \"Thank you,\" he says. \"She'd have liked you.\"",
+    wrong: { glove: "No. Thank you, though." },
+    patience: ["No. Silver. Small."],
+    leaves: "No. Well. It was only a thing.",
+    turnedAway: "\"No,\" he says. \"Well. It was only a thing.\" He puts his cap back on with great care.",
+    notHere: "He nods. \"It was only a thing,\" he says again, and believes it less.",
+    home: "Edward Marsh has his case back, and his light is still on.",
+    away: "Edward Marsh does not come back again. The case stays in your drawer, keeping his light on without him.",
+    told: "Edward Marsh does not come back again."
+  },
+
+  {
+    phase: "night",
+    text: "Night again. You pull the shutter down. The last train sighs off towards the city, with some of your things on it, going home.",
+    lines: {
+      plain: "It is raining when you lock up. You take the plain black umbrella down from the shelf, the one that belongs to everyone, and walk home under it, and bring it back in the morning."
+    },
+    after: ["You turn off the lamp. Whatever is still on the shelf will be lost together for a while longer. That's what the shelf is for."],
+    tomorrow: false
+  }
 ];
 
 /* ---------- state ---------- */
@@ -356,7 +624,8 @@ let chosen = null;
 let visitor = null;
 let asked = [];
 const queue = DAY.slice();
-const story = [];
+let story = [];
+const fate = {};
 
 const $ = id => document.getElementById(id);
 const el = (tag, cls, text) => {
@@ -428,7 +697,7 @@ function handOver() {
     narr(visitor.thanks);
     shelf = shelf.filter(s => s !== id);
     chosen = null;
-    story.push(visitor.home);
+    settle("home");
     drawShelf();
     depart();
     return;
@@ -440,7 +709,7 @@ function handOver() {
   } else {
     say(visitor.leaves);
     narr(visitor.who + " goes.");
-    story.push(shelf.includes(visitor.item) ? visitor.away : visitor.told);
+    settle(shelf.includes(visitor.item) ? "away" : "told");
     depart();
   }
 }
@@ -449,12 +718,17 @@ function refuse() {
   you("I'm sorry. I can't help you today.");
   if (shelf.includes(visitor.item)) {
     narr(visitor.turnedAway);
-    story.push(visitor.away);
+    settle("away");
   } else {
     say(visitor.notHere);
-    story.push(visitor.told);
+    settle("told");
   }
   depart();
+}
+
+function settle(how) {
+  fate[visitor.key] = how;
+  story.push(visitor[how]);
 }
 
 function depart() {
@@ -467,9 +741,10 @@ function depart() {
 
 function next() {
   $("talk").replaceChildren();
-  const step = queue.shift();
+  let step = queue.shift();
+  while (step.when && !step.when()) step = queue.shift();
 
-  if (step.phase === "night") return closing();
+  if (step.phase === "night") return closing(step);
 
   if (step.phase) {
     document.body.className = step.phase;
@@ -478,12 +753,15 @@ function next() {
     return;
   }
 
-  if (step.arrive) {
-    narr(step.text);
-    shelf.push(step.arrive);
-    fresh.push(step.arrive);
-    drawShelf();
-    controls([["Thank Bertram", next, { act: true }]]);
+  if (step.scene) {
+    step.scene.forEach(narr);
+    if (step.arrive) {
+      shelf.push(step.arrive);
+      fresh.push(step.arrive);
+      drawShelf();
+    }
+    if (step.story) story.push(step.story);
+    controls([[step.button || "Carry on", next, { act: true }]]);
     return;
   }
 
@@ -494,13 +772,13 @@ function next() {
   drawControls();
 }
 
-function closing() {
+function closing(night) {
   document.body.className = "night";
   chosen = null;
   drawShelf();
   const t = $("talk");
   t.className = "closing";
-  narr("Night. You pull the shutter down and lock the hatch. The last train sighs off towards the city.");
+  narr(night.text);
   story.filter(Boolean).forEach(line => talk("", line));
   t.append(el("hr"));
   shelf.forEach(id => {
@@ -508,11 +786,21 @@ function closing() {
       talk("", "The empty birdcage hangs by the window. Tam forgot it, of course. Custard won't mind; he has the hatbox, and a kettle at home.");
       return;
     }
-    talk("", ITEMS[id].closing);
+    talk("", (night.lines && night.lines[id]) || ITEMS[id].closing);
   });
   if (!shelf.some(Boolean)) talk("", "The shelf is bare.");
-  narr("You turn off the lamp. The things on the shelf stay where they are, being lost together, until morning.");
-  controls([["Open the office again", () => location.reload()]]);
+  night.after.forEach(narr);
+  controls(night.tomorrow
+    ? [["Come in on Tuesday", tomorrow, { act: true }]]
+    : [["Begin again from Monday", () => location.reload()]]);
+}
+
+function tomorrow() {
+  $("talk").className = "";
+  story = [];
+  fresh = [];
+  queue.push(...TUESDAY);
+  next();
 }
 
 /* ---------- opening ---------- */
