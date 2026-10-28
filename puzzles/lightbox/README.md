@@ -120,11 +120,19 @@ deductions are sound, so every box is unique; z3 confirms it independently.
 "Fair" doesn't mean quick. Listing a single beam's possible routes can still
 be a lot of cases, and the 8x8s have 14 and 17 mirrors.
 
-One finding along the way: with every clue given, letters-only and
-numbers-only boxes are almost never grade 1 (0 out of 8 random layouts for
-each kind at 5x5). Letters fix where a beam goes, and numbers fix how much it
-turns. On their own, neither narrows any single beam enough. The fair set
-mixes both kinds of clue.
+One finding along the way. Take 40 random 5x5 layouts with 5 mirrors, write
+down every clue of one kind, and see what you get:
+
+| clues given    | unique (z3) | solvable one clue at a time |
+|----------------|------------:|----------------------------:|
+| letters only   | 15          | 0                           |
+| numbers only   | 6           | 1                           |
+| both           | 30          | 30                          |
+
+Numbers alone usually don't even pin the box down. Letters alone often do,
+but only through interactions between clues: a letter fixes where a beam
+ends up, not how it gets there. With both kinds of clue, every unique box in
+the sample was also solvable one clue at a time. The fair set mixes both.
 
     python3 grade.py            # grades set.json
     python3 fair.py 7           # regenerates the fair set (fast: ~1 minute)
