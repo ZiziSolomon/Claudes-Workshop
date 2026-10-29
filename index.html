@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taipei Metro Circular Line — Complete Knowledge System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 80px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 12px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            opacity: 0.95;
+            margin-bottom: 20px;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 40px auto 0;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        section {
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .learning-paths {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .path-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+
+        .path-card:hover {
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(30, 41, 59, 0.95);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .path-icon {
+            font-size: 2.5em;
+            margin-bottom: 12px;
+        }
+
+        .path-title {
+            font-size: 1.3em;
+            color: #667eea;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .path-description {
+            color: #a0a0a0;
+            margin-bottom: 16px;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .path-steps {
+            list-style: none;
+            margin-bottom: 16px;
+        }
+
+        .path-steps li {
+            color: #a0a0a0;
+            padding: 6px 0;
+            font-size: 0.9em;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .path-steps li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .tool-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 10px;
+            padding: 18px;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card:hover {
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(30, 41, 59, 0.95);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .tool-icon {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .tool-name {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #667eea;
+        }
+
+        .tool-description {
+            color: #a0a0a0;
+            font-size: 0.85em;
+            flex: 1;
+        }
+
+        .tool-tag {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            margin-top: 10px;
+        }
+
+        .category-section {
+            margin-bottom: 50px;
+        }
+
+        .category-title {
+            font-size: 1.4em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .highlight {
+            background: rgba(102, 126, 234, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-left: 3px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .highlight-title {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .highlight-text {
+            color: #a0a0a0;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #a0a0a0;
+            border-top: 1px solid rgba(102, 126, 234, 0.1);
+            margin-top: 60px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 12px;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .path-card, .tool-card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>🚇 Taipei Metro Circular Line</h1>
+        <p>Complete Knowledge System — 19 Interactive Tools</p>
+        <div class="hero-stats">
+            <div class="stat">
+                <div class="stat-value">19</div>
+                <div class="stat-label">Tools</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">6.9K</div>
+                <div class="stat-label">Lines of Code</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">8</div>
+                <div class="stat-label">Disciplines</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Dependencies</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <section>
+            <h2>🎯 Choose Your Learning Path</h2>
+            <div class="learning-paths">
+                <div class="path-card">
+                    <div class="path-icon">🌍</div>
+                    <div class="path-title">Explorer</div>
+                    <div class="path-description">Understand the system visually and understand where it fits globally.</div>
+                    <ul class="path-steps">
+                        <li>Watch the 70-year timeline</li>
+                        <li>Compare with global systems</li>
+                        <li>Explore the interactive map</li>
+                        <li>Find stations and routes</li>
+                    </ul>
+                    <a href="circular-metro-timeline.html" class="button">Start Timeline</a>
+                </div>
+
+                <div class="path-card">
+                    <div class="path-icon">⚙️</div>
+                    <div class="path-title">Engineer</div>
+                    <div class="path-description">Understand operations, capacity, and system dynamics.</div>
+                    <ul class="path-steps">
+                        <li>Run the operations simulator</li>
+                        <li>Stress-test capacity limits</li>
+                        <li>Analyze system resilience</li>
+                        <li>View live departure board</li>
+                    </ul>
+                    <a href="taipei-metro-simulator.html" class="button">Open Simulator</a>
+                </div>
+
+                <div class="path-card">
+                    <div class="path-icon">📊</div>
+                    <div class="path-title">Planner</div>
+                    <div class="path-description">Design circular lines and make planning decisions.</div>
+                    <ul class="path-steps">
+                        <li>Design optimal line parameters</li>
+                        <li>Check station accessibility</li>
+                        <li>Model financial viability</li>
+                        <li>Analyze environmental impact</li>
+                    </ul>
+                    <a href="circular-line-design-tool.html" class="button">Start Design Tool</a>
+                </div>
+
+                <div class="path-card">
+                    <div class="path-icon">🎓</div>
+                    <div class="path-title">Learner</div>
+                    <div class="path-description">Test your knowledge and learn about circular systems.</div>
+                    <ul class="path-steps">
+                        <li>Take the learning quiz</li>
+                        <li>Read the analysis document</li>
+                        <li>Review reference data</li>
+                        <li>Check your progress</li>
+                    </ul>
+                    <a href="circular-metro-quiz.html" class="button">Take Quiz</a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>📚 All Tools by Category</h2>
+
+            <div class="category-section">
+                <div class="category-title">🗺️ Visualization & Exploration (6 tools)</div>
+                <div class="tools-grid">
+                    <a href="taipei-metro-circular.html" class="tool-card">
+                        <div class="tool-icon">📍</div>
+                        <div class="tool-name">Circular Line Map</div>
+                        <div class="tool-description">Static information map with key statistics and timeline</div>
+                        <div class="tool-tag">Quick Reference</div>
+                    </a>
+                    <a href="taipei-metro-interactive.html" class="tool-card">
+                        <div class="tool-icon">🎬</div>
+                        <div class="tool-name">Interactive Explorer</div>
+                        <div class="tool-description">Real-time animated explorer with train movement</div>
+                        <div class="tool-tag">Visual Learning</div>
+                    </a>
+                    <a href="taipei-metro-full-system.html" class="tool-card">
+                        <div class="tool-icon">🌐</div>
+                        <div class="tool-name">Full Network Map</div>
+                        <div class="tool-description">All 6 lines and system integration visualization</div>
+                        <div class="tool-tag">System Overview</div>
+                    </a>
+                    <a href="taipei-metro-station-finder.html" class="tool-card">
+                        <div class="tool-icon">🔍</div>
+                        <div class="tool-name">Station Finder</div>
+                        <div class="tool-description">Search 107 stations across all lines</div>
+                        <div class="tool-tag">Reference Tool</div>
+                    </a>
+                    <a href="circular-metro-comparison.html" class="tool-card">
+                        <div class="tool-icon">📊</div>
+                        <div class="tool-name">Global Comparison</div>
+                        <div class="tool-description">Side-by-side analysis of 5 major circular lines</div>
+                        <div class="tool-tag">Global Context</div>
+                    </a>
+                    <a href="circular-metro-timeline.html" class="tool-card">
+                        <div class="tool-icon">📅</div>
+                        <div class="tool-name">Evolution Timeline</div>
+                        <div class="tool-description">70-year history from Moscow 1952 to Taipei 2020</div>
+                        <div class="tool-tag">Historical</div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="category-section">
+                <div class="category-title">⚙️ Operations & Simulation (3 tools)</div>
+                <div class="tools-grid">
+                    <a href="taipei-metro-simulator.html" class="tool-card">
+                        <div class="tool-icon">🎮</div>
+                        <div class="tool-name">Operations Simulator</div>
+                        <div class="tool-description">Real-time train and passenger flow simulation</div>
+                        <div class="tool-tag">Interactive</div>
+                    </a>
+                    <a href="taipei-metro-departure-board.html" class="tool-card">
+                        <div class="tool-icon">📺</div>
+                        <div class="tool-name">Departure Board</div>
+                        <div class="tool-description">Live train arrivals and crowding levels</div>
+                        <div class="tool-tag">Real-time</div>
+                    </a>
+                    <a href="taipei-metro-capacity-analyzer.html" class="tool-card">
+                        <div class="tool-icon">📈</div>
+                        <div class="tool-name">Capacity Analyzer</div>
+                        <div class="tool-description">Stress-test capacity under different demand scenarios</div>
+                        <div class="tool-tag">Modeling</div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="category-section">
+                <div class="category-title">🎯 Planning & Optimization (4 tools)</div>
+                <div class="tools-grid">
+                    <a href="taipei-metro-route-planner.html" class="tool-card">
+                        <div class="tool-icon">🛣️</div>
+                        <div class="tool-name">Route Planner</div>
+                        <div class="tool-description">Smart pathfinding between any two stations</div>
+                        <div class="tool-tag">Planning</div>
+                    </a>
+                    <a href="circular-line-design-tool.html" class="tool-card">
+                        <div class="tool-icon">🏗️</div>
+                        <div class="tool-name">Design Optimizer</div>
+                        <div class="tool-description">Design circular lines for different cities</div>
+                        <div class="tool-tag">Professional</div>
+                    </a>
+                    <a href="taipei-metro-accessibility-analyzer.html" class="tool-card">
+                        <div class="tool-icon">📍</div>
+                        <div class="tool-name">Accessibility Analyzer</div>
+                        <div class="tool-description">Station coverage and neighborhood analysis</div>
+                        <div class="tool-tag">Planning</div>
+                    </a>
+                    <a href="taipei-metro-economic-model.html" class="tool-card">
+                        <div class="tool-icon">💰</div>
+                        <div class="tool-name">Economic Model</div>
+                        <div class="tool-description">Financial viability and payback analysis</div>
+                        <div class="tool-tag">Business</div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="category-section">
+                <div class="category-title">🌱 Analysis & Learning (4 tools)</div>
+                <div class="tools-grid">
+                    <a href="taipei-metro-environmental-impact.html" class="tool-card">
+                        <div class="tool-icon">🌱</div>
+                        <div class="tool-name">Environmental Impact</div>
+                        <div class="tool-description">CO₂ reduction and sustainability metrics</div>
+                        <div class="tool-tag">Sustainability</div>
+                    </a>
+                    <a href="taipei-metro-resilience-analyzer.html" class="tool-card">
+                        <div class="tool-icon">🛡️</div>
+                        <div class="tool-name">Resilience Analyzer</div>
+                        <div class="tool-description">Network robustness under disruption scenarios</div>
+                        <div class="tool-tag">Infrastructure</div>
+                    </a>
+                    <a href="circular-metro-quiz.html" class="tool-card">
+                        <div class="tool-icon">🎓</div>
+                        <div class="tool-name">Learning Quiz</div>
+                        <div class="tool-description">15-question educational game with scoring</div>
+                        <div class="tool-tag">Education</div>
+                    </a>
+                    <a href="CIRCULAR_METRO_ANALYSIS.md" class="tool-card">
+                        <div class="tool-icon">📖</div>
+                        <div class="tool-name">Analysis Document</div>
+                        <div class="tool-description">Comprehensive global circular metro analysis</div>
+                        <div class="tool-tag">Reference</div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>💡 Key Insights from the Project</h2>
+            <div class="highlights">
+                <div class="highlight">
+                    <div class="highlight-title">🌍 70 Years of Evolution</div>
+                    <div class="highlight-text">From Moscow's 1952 pioneering design through Asia's adoption to Taipei's 2020 driverless innovation, the evolution shows why circular systems matter for modern cities.</div>
+                </div>
+                <div class="highlight">
+                    <div class="highlight-title">🚀 Technology Breakthrough</div>
+                    <div class="highlight-text">Taipei Circular proves 100% driverless metro works at scale with 99.2% on-time performance, creating template for next-generation transit.</div>
+                </div>
+                <div class="highlight">
+                    <div class="highlight-title">💰 Economic Viability</div>
+                    <div class="highlight-text">10-25 year payback periods, enabled by distributed passenger loads and operational efficiency gains from driverless automation.</div>
+                </div>
+                <div class="highlight">
+                    <div class="highlight-title">🌱 Environmental Benefits</div>
+                    <div class="highlight-text">75% less CO₂ per km than cars, plus reduced congestion, noise, and parking demand. Critical for climate goals.</div>
+                </div>
+                <div class="highlight">
+                    <div class="highlight-title">🛡️ Network Resilience</div>
+                    <div class="highlight-text">Circular topology reduces stranded passengers from 40% to 12% under line closure, providing critical redundancy.</div>
+                </div>
+                <div class="highlight">
+                    <div class="highlight-title">📍 Urban Planning Impact</div>
+                    <div class="highlight-text">Distributes capacity around periphery, supports polycentric growth, and enables suburban-to-suburban travel without downtown transfer.</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>🎯 How to Use This System</h2>
+            <div style="background: rgba(102, 126, 234, 0.05); border: 1px solid rgba(102, 126, 234, 0.2); border-radius: 12px; padding: 30px;">
+                <h3 style="color: #667eea; margin-bottom: 15px;">Getting Started</h3>
+                <ol style="color: #a0a0a0; line-height: 1.8; margin-left: 20px;">
+                    <li><strong>Choose your path above</strong> — Explorer, Engineer, Planner, or Learner</li>
+                    <li><strong>Browse the tool categories</strong> — Click any tool card to launch it</li>
+                    <li><strong>Explore deeply</strong> — Each tool is self-contained and fully interactive</li>
+                    <li><strong>Cross-reference</strong> — Tools work together to build complete understanding</li>
+                    <li><strong>Test your knowledge</strong> — Use the quiz to measure learning</li>
+                </ol>
+                <p style="color: #a0a0a0; margin-top: 20px;">All tools work offline in your browser. No installation needed. Zero external dependencies.</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>🚇 Taipei Metro Circular Line — Complete Knowledge System</p>
+        <p>19 Interactive Tools | 8 Integrated Disciplines | 6,900+ Lines of Code | 0 Dependencies</p>
+        <p style="margin-top: 20px; font-size: 0.85em;">Built October 2026 | Open-source for educational and professional use</p>
+    </footer>
+</body>
+</html>
