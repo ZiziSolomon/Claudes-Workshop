@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started in 30 Minutes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            color: #e0e0e0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #667eea;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #999;
+            font-size: 1em;
+        }
+
+        .timer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .step {
+            background: rgba(30, 41, 59, 0.8);
+            border-left: 4px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .step:hover {
+            border-left-color: #764ba2;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+            transform: translateX(4px);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-title {
+            color: #a0d4f7;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .step-time {
+            color: #f59e0b;
+            font-weight: 600;
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        .step-description {
+            color: #a0a0a0;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .step-action {
+            background: rgba(102, 126, 234, 0.15);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .action-label {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+
+        .action-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 8px;
+        }
+
+        .action-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .thinking-point {
+            color: #999;
+            font-size: 0.9em;
+            font-style: italic;
+            padding-left: 15px;
+            border-left: 2px solid rgba(102, 126, 234, 0.3);
+            margin-top: 10px;
+        }
+
+        .summary {
+            background: rgba(102, 126, 234, 0.05);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+        .summary h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .summary-item {
+            color: #a0a0a0;
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .summary-item:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .next-steps {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            color: #10b981;
+        }
+
+        .next-steps h3 {
+            margin-bottom: 10px;
+        }
+
+        .next-steps p {
+            color: #a0a0a0;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .step-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .step-time {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⏱️ Getting Started in 30 Minutes</h1>
+            <p>Your quickest path to understanding the system</p>
+        </header>
+
+        <div class="timer" id="timer">30:00</div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <div class="step-title">Understand What This Is</div>
+                <div class="step-time">4 minutes</div>
+            </div>
+            <div class="step-description">
+                Get oriented on the system and why circular metros matter for your city.
+            </div>
+            <div class="step-action">
+                <div class="action-label">📖 Read this first:</div>
+                <a href="QUICK_REFERENCE_ONE_PAGER.md" class="action-link" target="_blank">One-Pager (2 min)</a>
+            </div>
+            <div class="thinking-point">
+                💭 After this: You'll know what the system covers, what's inside, and whether it's relevant for your project.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <div class="step-title">See It In Action</div>
+                <div class="step-time">8 minutes</div>
+            </div>
+            <div class="step-description">
+                Explore two interactive tools to understand what's possible. Pick based on your role:
+            </div>
+            <div class="step-action">
+                <div class="action-label">👨‍💼 If you're a planner:</div>
+                <a href="circular-line-design-tool.html" class="action-link" target="_blank">Design Tool (5 min)</a>
+                <a href="taipei-metro-economic-model.html" class="action-link" target="_blank">Finance Model (3 min)</a>
+            </div>
+            <div class="step-action">
+                <div class="action-label">⚙️ If you're an engineer:</div>
+                <a href="taipei-metro-simulator.html" class="action-link" target="_blank">Simulator (5 min)</a>
+                <a href="taipei-metro-resilience-analyzer.html" class="action-link" target="_blank">Resilience (3 min)</a>
+            </div>
+            <div class="step-action">
+                <div class="action-label">💰 If you're in finance:</div>
+                <a href="taipei-metro-economic-model.html" class="action-link" target="_blank">Economic Model (5 min)</a>
+                <a href="CASE_STUDIES_APPLIED.md" class="action-link" target="_blank">Case Studies (3 min)</a>
+            </div>
+            <div class="step-action">
+                <div class="action-label">🌍 If you're just exploring:</div>
+                <a href="circular-metro-timeline.html" class="action-link" target="_blank">Timeline (5 min)</a>
+                <a href="circular-metro-comparison.html" class="action-link" target="_blank">Comparison (3 min)</a>
+            </div>
+            <div class="thinking-point">
+                💭 After this: You'll know the tools work, you'll have a sense of what's possible, and you'll start thinking about your specific scenario.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <div class="step-title">Learn What You Need Next</div>
+                <div class="step-time">8 minutes</div>
+            </div>
+            <div class="step-description">
+                Based on your role, find what you should focus on next:
+            </div>
+            <div class="step-action">
+                <div class="action-label">📋 Get the full roadmap:</div>
+                <a href="SYSTEM_CONTENTS_GUIDE.md" class="action-link" target="_blank">Contents Guide (4 min)</a>
+                <a href="START_HERE_ONE_HOUR.md" class="action-link" target="_blank">Full Orientation (5 min)</a>
+            </div>
+            <div class="thinking-point">
+                💭 After this: You'll have a clear path for the next 1-2 hours of learning specific to your role.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <div class="step-title">Make Your First Decision</div>
+                <div class="step-time">10 minutes</div>
+            </div>
+            <div class="step-description">
+                Use what you've learned to make one concrete decision about your project:
+            </div>
+            <div class="step-action">
+                <div class="action-label">🎯 Choose one action:</div>
+                <a href="project-kickoff-checklist.html" class="action-link" target="_blank">Start Month 1 Planning</a>
+            </div>
+            <div class="step-action">
+                <div class="action-label">OR take the quiz to test your knowledge:</div>
+                <a href="circular-metro-quiz.html" class="action-link" target="_blank">Knowledge Test</a>
+            </div>
+            <div class="step-action">
+                <div class="action-label">OR verify you understand the system:</div>
+                <a href="SYSTEM_VERIFICATION.html" class="action-link" target="_blank">System Verification</a>
+            </div>
+            <div class="thinking-point">
+                💭 After this: You'll have moved from "learning" to "doing" — you'll be ready to take the system forward into your actual project work.
+            </div>
+        </div>
+
+        <div class="summary">
+            <h2>🎯 What You Just Did</h2>
+            <div class="summary-item">Understood the concept of circular metro systems</div>
+            <div class="summary-item">Explored interactive tools relevant to your role</div>
+            <div class="summary-item">Discovered what resources are available to you</div>
+            <div class="summary-item">Made your first concrete decision or action</div>
+            <div class="summary-item">Are now ready to go deeper into your specific area</div>
+
+            <div class="next-steps">
+                <h3>✅ Ready for the Next 2-4 Hours?</h3>
+                <p>
+                    Go back to <strong>SYSTEM_CONTENTS_GUIDE.md</strong> and follow your role-specific path.
+                    You'll understand how everything connects and be ready to actually plan or design a circular metro for your city.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Timer countdown
+        let secondsRemaining = 30 * 60;
+
+        function updateTimer() {
+            const minutes = Math.floor(secondsRemaining / 60);
+            const seconds = secondsRemaining % 60;
+            const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timer').textContent = display;
+
+            if (secondsRemaining > 0) {
+                secondsRemaining--;
+                setTimeout(updateTimer, 1000);
+            } else {
+                document.getElementById('timer').textContent = 'Time\'s up! Ready to go deeper?';
+                document.getElementById('timer').style.background = 'rgba(16, 185, 129, 0.3)';
+                document.getElementById('timer').style.color = '#10b981';
+            }
+        }
+
+        // Start timer on load
+        window.addEventListener('load', updateTimer);
+    </script>
+</body>
+</html>
