@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circular Metro Design Optimizer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.3em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 1.05em;
+            margin-bottom: 20px;
+        }
+
+        .presets {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .preset-btn {
+            padding: 10px 16px;
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            color: #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .preset-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .preset-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+        }
+
+        .design-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .design-panel {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .design-panel h3 {
+            color: #667eea;
+            margin-bottom: 18px;
+            font-size: 1.1em;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .param-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            color: #a0a0a0;
+            margin-bottom: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(102, 126, 234, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            border: none;
+        }
+
+        .param-value {
+            color: #667eea;
+            font-weight: 600;
+            margin-top: 4px;
+            font-size: 1em;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .result-card {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 16px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .result-label {
+            color: #a0a0a0;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 4px;
+        }
+
+        .result-unit {
+            color: #a0a0a0;
+            font-size: 0.8em;
+        }
+
+        .result-status {
+            font-size: 0.85em;
+            margin-top: 8px;
+            padding: 6px;
+            border-radius: 4px;
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .result-status.warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .result-status.critical {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .comparison-table {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .table-title {
+            color: #667eea;
+            padding: 16px 20px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            color: #a0a0a0;
+        }
+
+        tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .value-highlight {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .recommendations {
+            background: rgba(102, 126, 234, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .recommendations h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .rec-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            background: rgba(30, 41, 59, 0.5);
+            border-left: 3px solid #667eea;
+            border-radius: 4px;
+        }
+
+        .rec-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .rec-title {
+            color: #e0e0e0;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .rec-text {
+            color: #a0a0a0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 1100px) {
+            .design-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .design-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏗️ Circular Metro Design Optimizer</h1>
+            <p class="subtitle">Design Tool for Planning Optimal Circular Transit Systems</p>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 30px;">
+            <p style="margin-bottom: 15px; color: #a0a0a0;">Load a reference design:</p>
+            <div class="presets">
+                <button class="preset-btn active" onclick="loadPreset('taipei')">Taipei (2020)</button>
+                <button class="preset-btn" onclick="loadPreset('moscow')">Moscow (1952)</button>
+                <button class="preset-btn" onclick="loadPreset('beijing')">Beijing Ring 3</button>
+                <button class="preset-btn" onclick="loadPreset('shanghai')">Shanghai</button>
+                <button class="preset-btn" onclick="loadPreset('custom')">Custom Design</button>
+            </div>
+        </div>
+
+        <div class="design-grid">
+            <div class="design-panel">
+                <h3>Line Configuration</h3>
+                <div class="param-group">
+                    <label for="circumference">Circumference (km)</label>
+                    <input type="range" id="circumference" min="10" max="60" value="15.4" step="1">
+                    <div class="param-value" id="circDisplay">15.4 km</div>
+                </div>
+                <div class="param-group">
+                    <label for="stations">Number of Stations</label>
+                    <input type="range" id="stations" min="10" max="40" value="14" step="1">
+                    <div class="param-value" id="stationsDisplay">14 stations</div>
+                </div>
+                <div class="param-group">
+                    <label for="platformType">Platform Configuration</label>
+                    <select id="platformType" style="width: 100%; padding: 8px; background: #1a1a1a; color: #667eea; border: 1px solid #667eea; border-radius: 4px;">
+                        <option value="full">Full Platform Screens</option>
+                        <option value="partial">Partial Platform</option>
+                        <option value="open">Open Platform</option>
+                    </select>
+                    <div class="param-value" style="margin-top: 8px;">Full PSD</div>
+                </div>
+            </div>
+
+            <div class="design-panel">
+                <h3>Fleet & Operations</h3>
+                <div class="param-group">
+                    <label for="fleetSize">Fleet Size (trains)</label>
+                    <input type="range" id="fleetSize" min="6" max="25" value="17" step="1">
+                    <div class="param-value" id="fleetDisplay">17 trains</div>
+                </div>
+                <div class="param-group">
+                    <label for="carsPerTrain">Cars per Train</label>
+                    <input type="range" id="carsPerTrain" min="2" max="6" value="4" step="1">
+                    <div class="param-value" id="carsDisplay">4 cars</div>
+                </div>
+                <div class="param-group">
+                    <label for="automation">Automation Level</label>
+                    <select id="automation" style="width: 100%; padding: 8px; background: #1a1a1a; color: #667eea; border: 1px solid #667eea; border-radius: 4px;">
+                        <option value="traditional">Traditional (Manned)</option>
+                        <option value="ato">ATO Grade 2</option>
+                        <option value="uto">GoA4 (Driverless)</option>
+                    </select>
+                    <div class="param-value" style="margin-top: 8px;">100% Driverless</div>
+                </div>
+            </div>
+
+            <div class="design-panel">
+                <h3>Demand & Economics</h3>
+                <div class="param-group">
+                    <label for="dailyRidership">Daily Ridership (000s)</label>
+                    <input type="range" id="dailyRidership" min="100" max="500" value="320" step="20">
+                    <div class="param-value" id="riderDisplay">320,000</div>
+                </div>
+                <div class="param-group">
+                    <label for="capitalCost">Capital Cost (B NT$)</label>
+                    <input type="range" id="capitalCost" min="5" max="30" value="10" step="1">
+                    <div class="param-value" id="capDisplay">NT$10.0B</div>
+                </div>
+                <div class="param-group">
+                    <label for="annualOpCost">Annual Op. Cost (B NT$)</label>
+                    <input type="range" id="annualOpCost" min="2" max="8" value="3.1" step="0.5">
+                    <div class="param-value" id="opDisplay">NT$3.1B</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-grid">
+            <div class="result-card">
+                <div class="result-label">Station Spacing</div>
+                <div class="result-value" id="spacing">—</div>
+                <div class="result-unit">km</div>
+                <div class="result-status" id="spacingStatus">—</div>
+            </div>
+            <div class="result-card">
+                <div class="result-label">Capacity/Hour</div>
+                <div class="result-value" id="capacity">—</div>
+                <div class="result-unit">passengers</div>
+                <div class="result-status" id="capacityStatus">—</div>
+            </div>
+            <div class="result-card">
+                <div class="result-label">Avg Headway</div>
+                <div class="result-value" id="headway">—</div>
+                <div class="result-unit">minutes</div>
+                <div class="result-status" id="headwayStatus">—</div>
+            </div>
+            <div class="result-card">
+                <div class="result-label">Capital/km</div>
+                <div class="result-value" id="capPerKm">—</div>
+                <div class="result-unit">B NT$</div>
+                <div class="result-status" id="costStatus">—</div>
+            </div>
+            <div class="result-card">
+                <div class="result-label">Payback Period</div>
+                <div class="result-value" id="payback">—</div>
+                <div class="result-unit">years</div>
+                <div class="result-status" id="paybackStatus">—</div>
+            </div>
+            <div class="result-card">
+                <div class="result-label">Viability Score</div>
+                <div class="result-value" id="viability">—</div>
+                <div class="result-unit">%</div>
+                <div class="result-status" id="viabilityStatus">—</div>
+            </div>
+        </div>
+
+        <div class="comparison-table">
+            <div class="table-title">📊 Design Reference Comparison</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Your Design</th>
+                        <th>Taipei (2020)</th>
+                        <th>Shanghai</th>
+                        <th>Beijing Ring 3</th>
+                    </tr>
+                </thead>
+                <tbody id="comparisonTable">
+                    <!-- Generated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="recommendations">
+            <h3>💡 Design Recommendations</h3>
+            <div id="recommendationsContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        const presets = {
+            taipei: {
+                circumference: 15.4, stations: 14, fleetSize: 17, carsPerTrain: 4,
+                dailyRidership: 320, capitalCost: 10, annualOpCost: 3.1, automation: 'uto'
+            },
+            moscow: {
+                circumference: 11.5, stations: 12, fleetSize: 10, carsPerTrain: 3,
+                dailyRidership: 150, capitalCost: 1.5, annualOpCost: 0.8, automation: 'traditional'
+            },
+            beijing: {
+                circumference: 48.3, stations: 30, fleetSize: 20, carsPerTrain: 6,
+                dailyRidership: 280, capitalCost: 20, annualOpCost: 5.2, automation: 'ato'
+            },
+            shanghai: {
+                circumference: 32.5, stations: 21, fleetSize: 16, carsPerTrain: 5,
+                dailyRidership: 220, capitalCost: 15, annualOpCost: 4.0, automation: 'ato'
+            }
+        };
+
+        function loadPreset(name) {
+            if (name === 'custom') {
+                Object.keys(presets.taipei).forEach(key => {
+                    const el = document.getElementById(key);
+                    if (el) el.value = presets.taipei[key];
+                });
+            } else {
+                const preset = presets[name];
+                Object.keys(preset).forEach(key => {
+                    const el = document.getElementById(key);
+                    if (el) el.value = preset[key];
+                });
+            }
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            updateResults();
+        }
+
+        function updateResults() {
+            const circ = parseFloat(document.getElementById('circumference').value);
+            const stns = parseInt(document.getElementById('stations').value);
+            const fleet = parseInt(document.getElementById('fleetSize').value);
+            const cars = parseInt(document.getElementById('carsPerTrain').value);
+            const riders = parseInt(document.getElementById('dailyRidership').value) * 1000;
+            const capCost = parseInt(document.getElementById('capitalCost').value);
+            const opCost = parseFloat(document.getElementById('annualOpCost').value);
+            const automation = document.getElementById('automation').value;
+
+            // Calculations
+            const spacing = (circ / stns).toFixed(2);
+            const capacity = Math.floor((60 / 2.8) * 240 * (fleet / 17));
+            const headway = (circ / (capacity / 60) / 240).toFixed(1);
+            const capPerKm = (capCost / circ).toFixed(2);
+            const payback = (capCost * 1000000000 / (riders * 35 * 365 - opCost * 1000000000)).toFixed(1);
+
+            // Viability score
+            let viability = 50;
+            if (spacing >= 1.2 && spacing <= 2.0) viability += 15;
+            if (capacity >= 10000) viability += 15;
+            if (payback >= 10 && payback <= 25) viability += 10;
+            if (automation === 'uto') viability += 10;
+            viability = Math.min(100, viability);
+
+            // Update displays
+            document.getElementById('spacing').textContent = spacing;
+            document.getElementById('capacity').textContent = capacity.toLocaleString();
+            document.getElementById('headway').textContent = headway;
+            document.getElementById('capPerKm').textContent = capPerKm;
+            document.getElementById('payback').textContent = payback;
+            document.getElementById('viability').textContent = viability.toFixed(0);
+
+            // Status indicators
+            document.getElementById('spacingStatus').textContent = spacing >= 1.2 && spacing <= 2.0 ? '✓ Optimal' : '⚠ Consider Adjustment';
+            document.getElementById('spacingStatus').classList = spacing >= 1.2 && spacing <= 2.0 ? 'result-status' : 'result-status warning';
+
+            document.getElementById('capacityStatus').textContent = capacity >= 12000 ? '✓ Adequate' : '⚠ May be Limited';
+            document.getElementById('capacityStatus').classList = capacity >= 12000 ? 'result-status' : 'result-status warning';
+
+            document.getElementById('headwayStatus').textContent = headway <= 4 ? '✓ Good Frequency' : '⚠ Increase Fleet';
+            document.getElementById('headwayStatus').classList = headway <= 4 ? 'result-status' : 'result-status warning';
+
+            document.getElementById('paybackStatus').textContent = payback >= 10 && payback <= 25 ? '✓ Viable' : '⚠ Review Model';
+            document.getElementById('paybackStatus').classList = payback >= 10 && payback <= 25 ? 'result-status' : 'result-status critical';
+
+            document.getElementById('viabilityStatus').textContent = viability >= 70 ? '✓ Viable Design' : '⚠ Reconsider';
+            document.getElementById('viabilityStatus').classList = viability >= 70 ? 'result-status' : 'result-status warning';
+
+            // Update comparison table
+            const compData = [
+                ['Circumference', circ + ' km', '15.4 km', '32.5 km', '48.3 km'],
+                ['Stations', stns, '14', '21', '30'],
+                ['Fleet Size', fleet, '17', '16', '20'],
+                ['Daily Riders', (riders/1000).toFixed(0) + 'k', '320k', '220k', '280k'],
+                ['Payback Period', payback + ' yr', '9.5 yr', '12 yr', '14 yr']
+            ];
+
+            document.getElementById('comparisonTable').innerHTML = compData.map(row => `
+                <tr>
+                    <td>${row[0]}</td>
+                    <td><span class="value-highlight">${row[1]}</span></td>
+                    <td>${row[2]}</td>
+                    <td>${row[3]}</td>
+                    <td>${row[4]}</td>
+                </tr>
+            `).join('');
+
+            // Generate recommendations
+            const recs = [];
+            if (spacing < 1.2) recs.push({ title: 'Increase Station Spacing', text: 'Current spacing too tight. Increase to 1.2-1.6 km for operational efficiency.' });
+            if (spacing > 2.0) recs.push({ title: 'Reduce Station Spacing', text: 'Large gaps reduce coverage. Consider adding intermediate stations.' });
+            if (payback > 25) recs.push({ title: 'Capital Cost Too High', text: 'Payback exceeds 25 years. Review construction methods or consider phased approach.' });
+            if (automation === 'traditional' && fleet > 15) recs.push({ title: 'Consider Automation', text: 'Large fleet with manual operation increases costs. GoA4 driverless would reduce crew expenses significantly.' });
+            if (capacity < riders) recs.push({ title: 'Fleet Expansion Needed', text: 'Current fleet cannot meet projected demand. Add 2-3 additional trains.' });
+            if (viability >= 80) recs.push({ title: '✓ Strong Design', text: 'This configuration demonstrates good viability across multiple metrics.' });
+
+            document.getElementById('recommendationsContainer').innerHTML = recs.map(r => `
+                <div class="rec-item">
+                    <div class="rec-title">${r.title}</div>
+                    <div class="rec-text">${r.text}</div>
+                </div>
+            `).join('');
+        }
+
+        // Event listeners
+        ['circumference', 'stations', 'fleetSize', 'carsPerTrain', 'dailyRidership', 'capitalCost', 'annualOpCost', 'automation'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updateResults);
+        });
+
+        // Initial calculation
+        updateResults();
+    </script>
+</body>
+</html>
