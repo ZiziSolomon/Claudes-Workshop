@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taipei Metro Circular Line - Economic Model</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.3em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 1.05em;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .panel {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+
+        .panel:hover {
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(30, 41, 59, 0.95);
+        }
+
+        .panel h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+            padding-bottom: 12px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            color: #a0a0a0;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(102, 126, 234, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            border: none;
+        }
+
+        .value-display {
+            color: #667eea;
+            font-weight: 600;
+            margin-top: 6px;
+            font-size: 1em;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .metric-card {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 18px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .metric-label {
+            color: #a0a0a0;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .metric-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 4px;
+        }
+
+        .metric-unit {
+            color: #a0a0a0;
+            font-size: 0.85em;
+        }
+
+        .metric-trend {
+            font-size: 0.9em;
+            margin-top: 8px;
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .metric-trend.negative {
+            color: #ef4444;
+        }
+
+        .financial-summary {
+            background: rgba(102, 126, 234, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            align-items: center;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: #a0a0a0;
+        }
+
+        .summary-value {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .summary-value.positive {
+            color: #10b981;
+        }
+
+        .summary-value.negative {
+            color: #ef4444;
+        }
+
+        .chart {
+            background: rgba(102, 126, 234, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 25px;
+        }
+
+        .chart h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .bar-chart {
+            display: flex;
+            gap: 20px;
+            height: 200px;
+            align-items: flex-end;
+            justify-content: space-around;
+        }
+
+        .bar-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bar {
+            width: 100%;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.3s;
+            min-height: 2px;
+        }
+
+        .bar:hover {
+            opacity: 0.8;
+            box-shadow: 0 0 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .bar-label {
+            color: #a0a0a0;
+            font-size: 0.85em;
+            text-align: center;
+        }
+
+        .bar-value {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-top: 4px;
+        }
+
+        .insights {
+            background: rgba(102, 126, 234, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 25px;
+            grid-column: 1 / -1;
+        }
+
+        .insights h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .insight-item {
+            padding: 12px;
+            margin-bottom: 12px;
+            background: rgba(30, 41, 59, 0.5);
+            border-left: 3px solid #667eea;
+            border-radius: 4px;
+        }
+
+        .insight-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .insight-title {
+            color: #e0e0e0;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .insight-text {
+            color: #a0a0a0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 1100px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .bar-chart {
+                height: 150px;
+                gap: 10px;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 Taipei Metro Circular Line — Economic Model</h1>
+            <p class="subtitle">Financial Performance Analysis & Projections</p>
+        </div>
+
+        <div class="main-grid">
+            <div class="panel">
+                <h2>Operating Parameters</h2>
+
+                <div class="input-group">
+                    <label for="dailyRiders">Daily Ridership</label>
+                    <input type="range" id="dailyRiders" min="100000" max="500000" value="320000" step="10000">
+                    <div class="value-display" id="ridersDisplay">320,000 passengers/day</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="avgFare">Average Fare</label>
+                    <input type="range" id="avgFare" min="20" max="60" value="35" step="5">
+                    <div class="value-display" id="fareDisplay">NT$35 per trip</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="operatingCost">Daily Operating Cost</label>
+                    <input type="range" id="operatingCost" min="500000" max="1500000" value="850000" step="50000">
+                    <div class="value-display" id="costDisplay">NT$850,000/day</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="capitalRecovery">Annual Capital Recovery</label>
+                    <input type="range" id="capitalRecovery" min="5000000000" max="15000000000" value="10000000000" step="500000000">
+                    <div class="value-display" id="capDisplay">NT$10.0 billion/year</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>Performance Metrics</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Daily Revenue</div>
+                        <div class="metric-value" id="dailyRevenue">—</div>
+                        <div class="metric-unit">NT$ millions</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Monthly Revenue</div>
+                        <div class="metric-value" id="monthlyRevenue">—</div>
+                        <div class="metric-unit">NT$ millions</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Annual Revenue</div>
+                        <div class="metric-value" id="annualRevenue">—</div>
+                        <div class="metric-unit">NT$ billions</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Daily Profit/Loss</div>
+                        <div class="metric-value" id="dailyProfit">—</div>
+                        <div class="metric-unit">NT$ thousands</div>
+                        <div class="metric-trend" id="profitTrend">—</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Operating Margin</div>
+                        <div class="metric-value" id="operatingMargin">—</div>
+                        <div class="metric-unit">%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Payback Period</div>
+                        <div class="metric-value" id="paybackPeriod">—</div>
+                        <div class="metric-unit">years</div>
+                    </div>
+                </div>
+
+                <div class="financial-summary">
+                    <div class="summary-row">
+                        <span class="summary-label">Annual Operating Cost</span>
+                        <span class="summary-value" id="annualOpCost">—</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Capital Recovery Needed</span>
+                        <span class="summary-value" id="capRecovery">—</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Total Annual Cost</span>
+                        <span class="summary-value" id="totalCost">—</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Annual Net Result</span>
+                        <span class="summary-value" id="netResult">—</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart">
+            <h3>Revenue vs. Cost Projection (Daily)</h3>
+            <div class="bar-chart">
+                <div class="bar-group">
+                    <div class="bar" id="revenueBar" style="height: 60%;"></div>
+                    <div class="bar-label">Revenue</div>
+                    <div class="bar-value" id="revenueBval">—</div>
+                </div>
+                <div class="bar-group">
+                    <div class="bar" id="costBar" style="height: 50%;"></div>
+                    <div class="bar-label">Operating Cost</div>
+                    <div class="bar-value" id="costBval">—</div>
+                </div>
+                <div class="bar-group">
+                    <div class="bar" id="capitalBar" style="height: 45%;"></div>
+                    <div class="bar-label">Capital Cost (Daily)</div>
+                    <div class="bar-value" id="capBval">—</div>
+                </div>
+                <div class="bar-group">
+                    <div class="bar" id="profitBar" style="height: 35%;"></div>
+                    <div class="bar-label">Operating Profit</div>
+                    <div class="bar-value" id="profBval">—</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-grid" style="margin-top: 25px;">
+            <div class="insights">
+                <h3>💡 Financial Analysis & Insights</h3>
+                <div id="insightsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateMetrics() {
+            const dailyRiders = parseInt(document.getElementById('dailyRiders').value);
+            const avgFare = parseInt(document.getElementById('avgFare').value);
+            const dailyOpCost = parseInt(document.getElementById('operatingCost').value);
+            const annualCapitalRecovery = parseInt(document.getElementById('capitalRecovery').value);
+
+            // Daily calculations
+            const dailyRevenue = dailyRiders * avgFare;
+            const dailyCapital = annualCapitalRecovery / 365;
+            const dailyOperatingProfit = dailyRevenue - dailyOpCost;
+            const dailyNetProfit = dailyOperatingProfit - dailyCapital;
+
+            // Annual calculations
+            const monthlyRevenue = (dailyRevenue * 30) / 1000000;
+            const annualRevenue = (dailyRevenue * 365) / 1000000000;
+            const annualOpCost = (dailyOpCost * 365) / 1000000000;
+            const annualNetResult = (annualRevenue * 1000000000) - (annualOpCost * 1000000000) - annualCapitalRecovery;
+
+            // Margins & payback
+            const operatingMargin = (dailyOperatingProfit / dailyRevenue) * 100;
+            const paybackPeriod = annualCapitalRecovery / Math.max(dailyOperatingProfit * 365, 1);
+
+            // Update displays
+            document.getElementById('ridersDisplay').textContent = dailyRiders.toLocaleString() + ' passengers/day';
+            document.getElementById('fareDisplay').textContent = 'NT$' + avgFare + ' per trip';
+            document.getElementById('costDisplay').textContent = 'NT$' + dailyOpCost.toLocaleString() + '/day';
+            document.getElementById('capDisplay').textContent = 'NT$' + (annualCapitalRecovery / 1000000000).toFixed(1) + ' billion/year';
+
+            // Update metrics
+            document.getElementById('dailyRevenue').textContent = (dailyRevenue / 1000000).toFixed(2);
+            document.getElementById('monthlyRevenue').textContent = monthlyRevenue.toFixed(1);
+            document.getElementById('annualRevenue').textContent = annualRevenue.toFixed(2);
+            document.getElementById('dailyProfit').textContent = (dailyOperatingProfit / 1000).toFixed(0);
+            document.getElementById('operatingMargin').textContent = operatingMargin.toFixed(1);
+            document.getElementById('paybackPeriod').textContent = paybackPeriod.toFixed(1);
+
+            // Trend indicator
+            const profitTrend = document.getElementById('profitTrend');
+            if (dailyOperatingProfit > 0) {
+                profitTrend.textContent = '↑ Profitable';
+                profitTrend.classList.remove('negative');
+            } else {
+                profitTrend.textContent = '↓ Loss';
+                profitTrend.classList.add('negative');
+            }
+
+            // Summary
+            document.getElementById('annualOpCost').textContent = 'NT$' + annualOpCost.toFixed(2) + ' B';
+            document.getElementById('capRecovery').textContent = 'NT$' + (annualCapitalRecovery / 1000000000).toFixed(2) + ' B';
+            document.getElementById('totalCost').textContent = 'NT$' + (annualOpCost + (annualCapitalRecovery / 1000000000)).toFixed(2) + ' B';
+
+            const netClass = annualNetResult >= 0 ? 'positive' : 'negative';
+            document.getElementById('netResult').classList = 'summary-value ' + netClass;
+            document.getElementById('netResult').textContent = 'NT$' + (annualNetResult / 1000000000).toFixed(2) + ' B';
+
+            // Update bars
+            const maxValue = Math.max(dailyRevenue, dailyOpCost + dailyCapital) * 1.1;
+            document.getElementById('revenueBar').style.height = (dailyRevenue / maxValue * 100) + '%';
+            document.getElementById('costBar').style.height = (dailyOpCost / maxValue * 100) + '%';
+            document.getElementById('capitalBar').style.height = (dailyCapital / maxValue * 100) + '%';
+            document.getElementById('profitBar').style.height = Math.max(0, dailyOperatingProfit / maxValue * 100) + '%';
+
+            document.getElementById('revenueBval').textContent = (dailyRevenue / 1000000).toFixed(1) + 'M';
+            document.getElementById('costBval').textContent = (dailyOpCost / 1000000).toFixed(1) + 'M';
+            document.getElementById('capBval').textContent = (dailyCapital / 1000000).toFixed(1) + 'M';
+            document.getElementById('profBval').textContent = (dailyOperatingProfit / 1000000).toFixed(1) + 'M';
+
+            // Generate insights
+            generateInsights(dailyRiders, avgFare, operatingMargin, paybackPeriod, annualNetResult);
+        }
+
+        function generateInsights(riders, fare, margin, payback, netResult) {
+            const insights = [];
+
+            if (riders > 400000) {
+                insights.push({
+                    title: '📈 Strong Ridership Growth',
+                    text: `${riders.toLocaleString()} daily riders exceeds design capacity. Consider frequency increase or Phase 2 expansion.`
+                });
+            } else if (riders > 300000) {
+                insights.push({
+                    title: '✓ Optimal Load Factor',
+                    text: `${riders.toLocaleString()} daily riders is within target range. Healthy system utilization.`
+                });
+            }
+
+            if (margin > 40) {
+                insights.push({
+                    title: '💡 High Operating Efficiency',
+                    text: `Operating margin of ${margin.toFixed(1)}% indicates excellent cost control. Below-average maintenance and energy costs.`
+                });
+            } else if (margin > 20) {
+                insights.push({
+                    title: '✓ Healthy Margins',
+                    text: `${margin.toFixed(1)}% operating margin is sustainable and allows reinvestment.`
+                });
+            } else {
+                insights.push({
+                    title: '⚠️ Tight Operating Margins',
+                    text: `${margin.toFixed(1)}% margin leaves little room for unexpected costs. Monitor efficiency closely.`
+                });
+            }
+
+            if (payback < 15) {
+                insights.push({
+                    title: '🎯 Strong Financial Viability',
+                    text: `${payback.toFixed(1)}-year payback period demonstrates capital investment will be recovered. Comparable to other metros.`
+                });
+            } else if (payback < 25) {
+                insights.push({
+                    title: '⏱️ Extended Payback Needed',
+                    text: `${payback.toFixed(1)}-year payback period. Requires sustained ridership and operational efficiency.`
+                });
+            }
+
+            if (netResult > 0) {
+                insights.push({
+                    title: '📊 Path to Sustainability',
+                    text: `Annual net surplus of NT$${(netResult / 1000000000).toFixed(1)}B shows path to financial sustainability after capital recovery.`
+                });
+            } else if (netResult > -5000000000) {
+                insights.push({
+                    title: '⚠️ Capital Recovery Challenge',
+                    text: `Annual deficit of NT$${(Math.abs(netResult) / 1000000000).toFixed(1)}B typical for new infrastructure. Improves with ridership growth.`
+                });
+            }
+
+            const container = document.getElementById('insightsContainer');
+            container.innerHTML = insights.map(i => `
+                <div class="insight-item">
+                    <div class="insight-title">${i.title}</div>
+                    <div class="insight-text">${i.text}</div>
+                </div>
+            `).join('');
+        }
+
+        // Event listeners
+        ['dailyRiders', 'avgFare', 'operatingCost', 'capitalRecovery'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calculateMetrics);
+        });
+
+        // Initial calculation
+        calculateMetrics();
+    </script>
+</body>
+</html>
