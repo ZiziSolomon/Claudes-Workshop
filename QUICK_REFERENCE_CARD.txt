@@ -1,0 +1,200 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║           TAIPEI METRO CIRCULAR LINE SYSTEM — QUICK REFERENCE                ║
+║                    Keep this handy during deployment                         ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📋 DEPLOYMENT PLATFORMS & TIME ESTIMATES
+═════════════════════════════════════════════════════════════════════════════
+
+Netlify        │ 30 sec   │ Click "Deploy"                      │ FREE
+Vercel         │ 30 sec   │ Import repo, click deploy           │ FREE
+GitHub Pages   │ 2 min    │ Settings → Pages → Save             │ FREE
+Azure          │ 2 min    │ Create Static Web App               │ FREE tier
+AWS S3         │ 5 min    │ Create bucket, aws s3 sync .        │ ~$0.50/mo
+Docker         │ 10 min   │ docker build & docker run           │ Varies
+On-Premise     │ 30 min   │ Copy files, configure server        │ Infrastructure
+
+→ RECOMMENDATION FOR FIRST-TIME: Pick Netlify or Vercel (literally 30 seconds)
+
+═════════════════════════════════════════════════════════════════════════════
+
+🚀 DEPLOYMENT CHECKLIST (3 minutes)
+═════════════════════════════════════════════════════════════════════════════
+
+BEFORE YOU DEPLOY:
+□ Read: 60_SECOND_DEPLOYMENT.md (your platform section)
+□ Check: Git is clean (git status → "nothing to commit")
+□ Choose: Your platform from table above
+
+DURING DEPLOYMENT:
+□ Follow: Platform-specific steps from DEPLOYMENT_GUIDE.md
+□ Watch: Deploy progress (usually shows %)
+□ Note: Live URL when deployment completes
+
+AFTER DEPLOYMENT (2 minutes):
+□ Open: Your live URL in browser
+□ Press: F12 → Console tab (should be clean/empty)
+□ Click: One tool → should respond instantly
+□ Share: Live URL with team
+□ Success: You're done! 🎉
+
+═════════════════════════════════════════════════════════════════════════════
+
+⚠️ COMMON ISSUES & INSTANT FIXES
+═════════════════════════════════════════════════════════════════════════════
+
+ISSUE                          │ FIRST TRY                    │ IF STILL BROKEN
+────────────────────────────────┼──────────────────────────────┼─────────────────────
+Blank page / error             │ Clear cache: Ctrl+Shift+Del  │ Check F12 → Console
+404 Not Found                  │ Wait 2-3 minutes, refresh    │ Check files uploaded
+Page is slow                   │ Refresh with Ctrl+Shift+R    │ Try different browser
+Can't connect                  │ Check your internet          │ Check platform status
+Shows old version              │ Clear cache, hard refresh    │ Force redeploy
+Tools don't respond            │ Try different tool           │ Check internet speed
+
+→ 80% of issues: Clear cache (Ctrl+Shift+Delete) and refresh
+
+═════════════════════════════════════════════════════════════════════════════
+
+📖 WHAT TO READ WHEN
+═════════════════════════════════════════════════════════════════════════════
+
+⏱️ 30 seconds        → START_HERE.txt (what is this?)
+⏱️ 5 minutes         → QUICK_REFERENCE_ONE_PAGER.md (key facts)
+⏱️ 1 minute (deploy) → 60_SECOND_DEPLOYMENT.md (do it now)
+⏱️ 5 minutes (check) → FINAL_DEPLOYMENT_CHECKLIST.md (verify)
+⏱️ 10 minutes        → DEPLOYMENT_GUIDE.md (your platform)
+⏱️ 30 min (post)     → POST_DEPLOYMENT_GUIDE.md (after going live)
+⏱️ 30 min (problem)  → DEPLOYMENT_TROUBLESHOOTING_FAQ.md (if issues)
+⏱️ 30 min (overview) → DEPLOYMENT_WORKFLOW_MAP.md (see whole journey)
+⏱️ 1 hour (learn)    → START_HERE_ONE_HOUR.md (complete overview)
+
+═════════════════════════════════════════════════════════════════════════════
+
+🔗 PLATFORM-SPECIFIC QUICK COMMANDS
+═════════════════════════════════════════════════════════════════════════════
+
+NETLIFY:      netlify.com → New site from Git → Select repo → Deploy
+VERCEL:       vercel.com → New Project → Select repo → Deploy
+GITHUB:       repo → Settings → Pages → Select main → Save
+AZURE:        portal.azure.com → Static Web App → Create → Deploy
+AWS:          aws s3 mb s3://bucket && aws s3 sync . s3://bucket
+DOCKER:       docker build -t metro . && docker run -p 8080:80 metro
+ON-PREM:      scp -r ./* user@server:/var/www/ && restart web server
+
+═════════════════════════════════════════════════════════════════════════════
+
+✅ SUCCESS VERIFICATION (30 seconds)
+═════════════════════════════════════════════════════════════════════════════
+
+1. [ ] Site loads without error (doesn't say "404")
+2. [ ] F12 → Console tab → Clean (no red errors)
+3. [ ] Click one tool → responds in <1 second
+4. [ ] Try on mobile browser → still works
+5. [ ] Try in incognito mode → still works
+
+ALL 5 ✅ = YOU'RE DEPLOYED SUCCESSFULLY!
+
+═════════════════════════════════════════════════════════════════════════════
+
+📊 WHAT'S IN THE SYSTEM
+═════════════════════════════════════════════════════════════════════════════
+
+26 Interactive Tools          43+ Reference Documents      100+ Glossary Terms
+├─ Route Planner             ├─ Planning Guides            └─ All terminology
+├─ Financial Models          ├─ Implementation Roadmap         defined
+├─ Capacity Analyzers        ├─ Risk Frameworks
+├─ Simulations               ├─ Success Metrics
+├─ Comparisons               └─ Deployment Guides
+└─ Learning Tools
+
+All works OFFLINE. Zero external dependencies. Responsive design.
+
+═════════════════════════════════════════════════════════════════════════════
+
+⏰ TIMELINE
+═════════════════════════════════════════════════════════════════════════════
+
+Deployment:          30 seconds to 5 minutes (platform dependent)
+Verification:        2 minutes (run checklist)
+Share with team:     2 minutes (copy live URL)
+First feedback:      24 hours (gather user input)
+Quick improvements:  48 hours (fix obvious issues)
+Month 1 success:     30 days (metrics & planning)
+
+═════════════════════════════════════════════════════════════════════════════
+
+🎯 YOUR NEXT STEPS RIGHT NOW
+═════════════════════════════════════════════════════════════════════════════
+
+1. [ ] Choose a platform from table above (30 sec)
+2. [ ] Read: 60_SECOND_DEPLOYMENT.md → your platform (1 min)
+3. [ ] Follow: Step-by-step deployment (5-30 min)
+4. [ ] Verify: Run checklist above (2 min)
+5. [ ] Share: Copy live URL, send to team (2 min)
+
+TOTAL TIME: 10-40 minutes depending on platform choice.
+
+═════════════════════════════════════════════════════════════════════════════
+
+📞 IF YOU GET STUCK
+═════════════════════════════════════════════════════════════════════════════
+
+Question                          → Read
+"What's this system?"             → README_FIRST.txt
+"How do I deploy it?"             → 60_SECOND_DEPLOYMENT.md
+"What goes wrong?"                → DEPLOYMENT_TROUBLESHOOTING_FAQ.md
+"What's my platform?"             → DEPLOYMENT_GUIDE.md (that section)
+"What do I do after?"             → POST_DEPLOYMENT_GUIDE.md
+"I see the whole journey"         → DEPLOYMENT_WORKFLOW_MAP.md
+"I want to learn everything"      → START_HERE_ONE_HOUR.md or TABLE_OF_CONTENTS.md
+
+═════════════════════════════════════════════════════════════════════════════
+
+✨ PRO TIPS
+═════════════════════════════════════════════════════════════════════════════
+
+• Browser cache is your enemy. First step for ANY problem: Ctrl+Shift+Delete
+• Most deployments take 30-90 seconds. Be patient.
+• Netlify/Vercel: Just click "Deploy". No setup needed.
+• GitHub Pages: Easiest if you're already on GitHub.
+• AWS: Cheapest for high traffic (~$0.50/month for our size).
+• Docker: Best if you want to run it yourself.
+• On-Premise: Most control, most setup required.
+
+═════════════════════════════════════════════════════════════════════════════
+
+📋 DEPLOYMENT LOG (Save this info once deployed)
+═════════════════════════════════════════════════════════════════════════════
+
+Date Deployed:     _________________________
+Platform:          _________________________
+Live URL:          _________________________
+Deployed By:       _________________________
+Deployment Time:   _________________________
+Issues Encountered: (none / list below)
+   _________________________________________________________________
+
+Next Review Date:  _________________________
+Verified Working:  (yes / what needs fixing?)
+   _________________________________________________________________
+
+═════════════════════════════════════════════════════════════════════════════
+
+🎉 YOU'VE GOT THIS
+
+This system is production-ready. Your platform choice is simple. Deployment
+is fast. Verification is quick. You can have this live in 30 seconds to
+5 minutes.
+
+The worst thing that happens: You refresh the page. Second worst: You wait
+3 minutes. That's it. You can't break anything.
+
+Go. Deploy. Live. Now.
+
+═════════════════════════════════════════════════════════════════════════════
+
+Version: 2.0 | Last Updated: 2026-10-29 | Status: PRODUCTION-READY
+Keep this card handy. Share it with your team. Reference during deployment.
+
+Made with 🚇 for cities everywhere.
