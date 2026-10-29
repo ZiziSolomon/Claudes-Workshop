@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circular Metro Systems - Learning Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 700px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .splash-screen {
+            text-align: center;
+        }
+
+        .splash-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .splash-title {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .splash-description {
+            color: #666;
+            font-size: 1.05em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .quiz-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            padding: 16px;
+            background: #f5f5f5;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+
+        .option-btn:hover {
+            background: #efefef;
+            border-color: #667eea;
+        }
+
+        .option-btn.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .option-btn.correct {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+
+        .option-btn.incorrect {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+
+        .option-btn.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            color: #7f1d1d;
+            border-left: 4px solid #ef4444;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        button.secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        button.secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .results-screen {
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+        }
+
+        .score-value {
+            font-size: 3em;
+            font-weight: 700;
+        }
+
+        .score-label {
+            font-size: 0.5em;
+            opacity: 0.8;
+        }
+
+        .results-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .results-description {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+        }
+
+        .results-breakdown {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-label {
+            color: #666;
+        }
+
+        .breakdown-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .content {
+                padding: 25px;
+            }
+
+            .quiz-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .header h1 {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Circular Metro Learning Quiz</h1>
+            <p>Test your knowledge about circular transit systems</p>
+        </div>
+
+        <div class="content">
+            <!-- Splash Screen -->
+            <div id="splashScreen" class="splash-screen">
+                <div class="splash-icon">🚇</div>
+                <div class="splash-title">Ready to Learn?</div>
+                <div class="splash-description">
+                    Test your knowledge about circular metro systems, their history, design, and economics.
+                    15 questions across multiple difficulty levels.
+                </div>
+                <div class="quiz-stats">
+                    <div class="stat">
+                        <div class="stat-value">15</div>
+                        <div class="stat-label">Questions</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Levels</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">∞</div>
+                        <div class="stat-label">Learning</div>
+                    </div>
+                </div>
+                <button onclick="startQuiz()">Begin Quiz</button>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div id="quizScreen" class="hidden">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                </div>
+
+                <div style="text-align: right; margin-bottom: 20px; color: #999; font-size: 0.9em;">
+                    Question <span id="questionNumber">1</span> of 15
+                </div>
+
+                <div class="question-text" id="questionText"></div>
+
+                <div class="options" id="optionsContainer"></div>
+
+                <div class="feedback" id="feedback"></div>
+
+                <div class="button-group">
+                    <button id="submitBtn" onclick="submitAnswer()">Submit Answer</button>
+                    <button id="nextBtn" class="secondary hidden" onclick="nextQuestion()">Next Question</button>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="resultsScreen" class="hidden">
+                <div class="results-screen">
+                    <div class="score-circle">
+                        <div>
+                            <div class="score-value" id="finalScore">0</div>
+                            <div class="score-label">/ 100</div>
+                        </div>
+                    </div>
+
+                    <div class="results-title" id="resultsTitle"></div>
+                    <div class="results-description" id="resultsDescription"></div>
+
+                    <div class="results-breakdown">
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Correct Answers</span>
+                            <span class="breakdown-value" id="correctCount">0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Accuracy</span>
+                            <span class="breakdown-value" id="accuracyPercent">0%</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Time Taken</span>
+                            <span class="breakdown-value" id="timeTaken">0:00</span>
+                        </div>
+                    </div>
+
+                    <button onclick="restartQuiz()">Try Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                difficulty: 'easy',
+                question: 'When did Moscow open the world\'s first dedicated circular metro line?',
+                options: ['1950', '1952', '1955', '1960'],
+                correct: 1,
+                explanation: 'Moscow\'s Koltsevaya Ring Line opened in 1952, establishing the circular metro concept.'
+            },
+            {
+                difficulty: 'easy',
+                question: 'How many stations are on the Taipei Circular Line (Phase 1)?',
+                options: ['10', '12', '14', '16'],
+                correct: 2,
+                explanation: 'The Taipei Circular Line opened with 14 stations across 15.4 km.'
+            },
+            {
+                difficulty: 'easy',
+                question: 'What automation level does the Taipei Circular Line operate at?',
+                options: ['ATO Grade 1', 'ATO Grade 2', 'GoA4 (Driverless)', 'Manual Only'],
+                correct: 2,
+                explanation: 'Taipei Circular is 100% driverless, operating at GoA4 (Unattended Train Operation).'
+            },
+            {
+                difficulty: 'medium',
+                question: 'What is the main advantage of circular metro topology over radial lines?',
+                options: ['Faster downtown access', 'Direct suburban-to-suburban travel without downtown transfer', 'Lower construction cost', 'Better passenger comfort'],
+                correct: 1,
+                explanation: 'Circular lines distribute capacity around periphery, enabling direct peripheral-to-peripheral travel.'
+            },
+            {
+                difficulty: 'medium',
+                question: 'Which city operates THREE concentric circular metro lines?',
+                options: ['Shanghai', 'Moscow', 'Beijing', 'Seoul'],
+                correct: 2,
+                explanation: 'Beijing operates Ring Lines 2, 3, and is building more rings in its multi-ring strategy.'
+            },
+            {
+                difficulty: 'medium',
+                question: 'What is the optimal station spacing for a circular metro?',
+                options: ['0.8-1.0 km', '1.2-1.6 km', '2.0-2.5 km', '3.0+ km'],
+                correct: 1,
+                explanation: 'Station spacing of 1.2-1.6 km balances coverage, operational efficiency, and construction economics.'
+            },
+            {
+                difficulty: 'medium',
+                question: 'Why is driverless automation particularly suited to circular lines?',
+                options: ['Reduces ticket revenue loss', 'Eliminates peak-direction optimization need', 'Increases train speed', 'Reduces energy consumption'],
+                correct: 1,
+                explanation: 'Circular lines don\'t have directional asymmetry, so automation\'s consistency provides value everywhere.'
+            },
+            {
+                difficulty: 'hard',
+                question: 'What is the typical payback period for a circular metro capital investment?',
+                options: ['5-8 years', '10-15 years', '20-30 years', '40+ years'],
+                correct: 1,
+                explanation: 'Circular metro payback periods typically range 10-25 years depending on ridership and automation level.'
+            },
+            {
+                difficulty: 'hard',
+                question: 'Beijing\'s Ring Line 3 is how long?',
+                options: ['22 km', '32 km', '48 km', '65 km'],
+                correct: 2,
+                explanation: 'Beijing Ring Line 3 spans 48.3 km with 30 stations, demonstrating feasibility of mega-ring systems.'
+            },
+            {
+                difficulty: 'hard',
+                question: 'What was the estimated construction cost of the Taipei Circular Line?',
+                options: ['NT$3 billion', 'NT$6 billion', 'NT$10 billion', 'NT$15 billion'],
+                correct: 2,
+                explanation: 'Taipei Circular cost approximately NT$234 billion (~US$8.2 billion, or ~US$532M per km).'
+            },
+            {
+                difficulty: 'easy',
+                question: 'Which Italian company supplied driverless trains for Taipei Circular?',
+                options: ['Alstom', 'Siemens', 'Hitachi Rail Italy', 'Bombardier'],
+                correct: 2,
+                explanation: 'Hitachi Rail Italy supplied 17 four-car SiRa platform driverless trains for the Taipei Circular Line.'
+            },
+            {
+                difficulty: 'medium',
+                question: 'What percentage on-time performance has Taipei Circular achieved since opening?',
+                options: ['92%', '95%', '99.2%', '99.8%'],
+                correct: 2,
+                explanation: 'Taipei Circular has maintained 99.2% on-time performance since opening January 31, 2020.'
+            },
+            {
+                difficulty: 'medium',
+                question: 'How many cities worldwide are currently planning or building new circular metro lines?',
+                options: ['2-3', '5-7', '10+', 'None planned'],
+                correct: 2,
+                explanation: 'Seoul, Shenzhen, Singapore, and others are evaluating circular/ring lines based on global success.'
+            },
+            {
+                difficulty: 'hard',
+                question: 'What is the relationship between circular line circumference and optimal station count?',
+                options: ['1 station per 1 km', '1 station per 1.5-2.5 km', '1 station per 3+ km', 'No relationship'],
+                correct: 1,
+                explanation: 'Optimal spacing of 1.2-1.6 km means a 15 km circle gets ~10-12 stations, 30 km gets ~15-20 stations.'
+            },
+            {
+                difficulty: 'hard',
+                question: 'Which factor MOST affects the payback period for a circular line investment?',
+                options: ['Station architecture design', 'Daily ridership volume', 'Train color preference', 'Platform screen doors'],
+                correct: 1,
+                explanation: 'Ridership directly determines annual revenue; higher ridership significantly shortens payback period.'
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedAnswer = null;
+        let startTime = 0;
+        let answered = false;
+        let correctAnswers = 0;
+
+        function startQuiz() {
+            document.getElementById('splashScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+            startTime = Date.now();
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = quizData[currentQuestion];
+            const progress = ((currentQuestion) / 15) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('questionNumber').textContent = currentQuestion + 1;
+            document.getElementById('questionText').textContent = q.question;
+
+            const optionsHtml = q.options.map((opt, idx) => `
+                <button class="option-btn" onclick="selectAnswer(${idx})" id="option-${idx}">
+                    ${String.fromCharCode(65 + idx)}. ${opt}
+                </button>
+            `).join('');
+            document.getElementById('optionsContainer').innerHTML = optionsHtml;
+
+            document.getElementById('feedback').classList.remove('show', 'correct', 'incorrect');
+            document.getElementById('submitBtn').classList.remove('hidden');
+            document.getElementById('nextBtn').classList.add('hidden');
+            selectedAnswer = null;
+            answered = false;
+        }
+
+        function selectAnswer(idx) {
+            selectedAnswer = idx;
+            document.querySelectorAll('.option-btn').forEach((btn, i) => {
+                btn.classList.toggle('selected', i === idx);
+            });
+        }
+
+        function submitAnswer() {
+            if (selectedAnswer === null) return;
+
+            answered = true;
+            const q = quizData[currentQuestion];
+            const isCorrect = selectedAnswer === q.correct;
+
+            if (isCorrect) {
+                correctAnswers++;
+                score += Math.max(50, 100 - currentQuestion * 3);
+            }
+
+            document.querySelectorAll('.option-btn').forEach((btn, i) => {
+                btn.classList.add('disabled');
+                if (i === q.correct) btn.classList.add('correct');
+                if (i === selectedAnswer && !isCorrect) btn.classList.add('incorrect');
+            });
+
+            const feedback = document.getElementById('feedback');
+            feedback.innerHTML = (isCorrect ? '✓ Correct! ' : '✗ Incorrect. ') + q.explanation;
+            feedback.className = 'feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+
+            document.getElementById('submitBtn').classList.add('hidden');
+            document.getElementById('nextBtn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < 15) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            const duration = Date.now() - startTime;
+            const minutes = Math.floor(duration / 60000);
+            const seconds = Math.floor((duration % 60000) / 1000);
+
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+
+            const finalScore = Math.floor((correctAnswers / 15) * 100);
+            document.getElementById('finalScore').textContent = finalScore;
+
+            let title, description;
+            if (finalScore >= 80) {
+                title = 'Excellent! 🌟';
+                description = 'You\'re a circular metro expert! Ready to design your own transit system?';
+            } else if (finalScore >= 60) {
+                title = 'Great Job! 👍';
+                description = 'You understand circular metro systems well. Keep exploring!';
+            } else if (finalScore >= 40) {
+                title = 'Good Start! 📚';
+                description = 'You\'re learning about circular metros. Try again to improve!';
+            } else {
+                title = 'Keep Learning! 🚀';
+                description = 'Check out the other tools to deepen your understanding of circular transit systems.';
+            }
+
+            document.getElementById('resultsTitle').textContent = title;
+            document.getElementById('resultsDescription').textContent = description;
+            document.getElementById('correctCount').textContent = correctAnswers + ' / 15';
+            document.getElementById('accuracyPercent').textContent = finalScore + '%';
+            document.getElementById('timeTaken').textContent = minutes + ':' + String(seconds).padStart(2, '0');
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            selectedAnswer = null;
+            answered = false;
+            correctAnswers = 0;
+            document.getElementById('resultsScreen').classList.add('hidden');
+            document.getElementById('splashScreen').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
