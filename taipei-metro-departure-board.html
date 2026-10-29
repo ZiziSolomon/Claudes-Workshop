@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taipei Metro - Live Departure Board</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #00ff00;
+            padding: 20px;
+            line-height: 1.4;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+        }
+
+        .header {
+            background: linear-gradient(90deg, #001a00 0%, #003300 100%);
+            padding: 20px;
+            border-bottom: 2px solid #00ff00;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #00cc00;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .info-label {
+            font-size: 0.8em;
+            opacity: 0.7;
+            margin-bottom: 3px;
+        }
+
+        .info-value {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #00ff00;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .station-selector {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #003300;
+        }
+
+        .station-selector label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00ff00;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            background: #1a1a1a;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.95em;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .board-title {
+            color: #00ff00;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .board-header {
+            display: grid;
+            grid-template-columns: 12% 15% 20% 18% 15% 20%;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #003300;
+            border: 1px solid #00ff00;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .board-row {
+            display: grid;
+            grid-template-columns: 12% 15% 20% 18% 15% 20%;
+            gap: 10px;
+            padding: 12px;
+            margin-bottom: 5px;
+            border: 1px solid #003300;
+            border-radius: 4px;
+            background: #0d0d0d;
+            transition: all 0.3s;
+            align-items: center;
+        }
+
+        .board-row:hover {
+            background: #1a1a1a;
+            border-color: #00ff00;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+        }
+
+        .board-row.arriving {
+            background: #001a00;
+            border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 0, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 0, 0.5); }
+        }
+
+        .train-number {
+            font-weight: bold;
+            color: #00ff00;
+        }
+
+        .destination {
+            color: #00cc00;
+        }
+
+        .time-display {
+            font-weight: bold;
+            color: #00ff00;
+        }
+
+        .time-display.imminent {
+            color: #ffff00;
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        .time-display.arriving {
+            color: #ff3300;
+            font-size: 1.1em;
+            animation: blink 0.5s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .crowding-bar {
+            height: 20px;
+            background: #003300;
+            border: 1px solid #00ff00;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .crowding-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00 0%, #ffff00 50%, #ff3300 100%);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 4px;
+            font-size: 0.75em;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .next-train {
+            color: #00cc00;
+            font-size: 0.9em;
+        }
+
+        .alerts-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #003300;
+        }
+
+        .alerts-title {
+            color: #ffff00;
+            margin-bottom: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .alert-item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: #1a0a0a;
+            border-left: 3px solid #ffff00;
+            border-radius: 4px;
+            color: #ffff00;
+            font-size: 0.9em;
+        }
+
+        .alert-item.critical {
+            border-left-color: #ff3300;
+            color: #ff3300;
+            background: #1a0505;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #003300;
+        }
+
+        .stat-box {
+            background: #003300;
+            border: 1px solid #00ff00;
+            padding: 12px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .stat-label {
+            color: #00cc00;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .stat-value {
+            color: #00ff00;
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        .update-indicator {
+            color: #00cc00;
+            font-size: 0.85em;
+            margin-top: 20px;
+            text-align: center;
+            opacity: 0.7;
+        }
+
+        .blinking {
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        @media (max-width: 900px) {
+            .board-header,
+            .board-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .header-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>▶ TAIPEI METRO DEPARTURE BOARD ◀</h1>
+            <div class="header-info">
+                <div class="info-item">
+                    <div class="info-label">Current Time</div>
+                    <div class="info-value" id="currentTime">--:--:--</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">System Status</div>
+                    <div class="info-value">OPERATIONAL</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Line</div>
+                    <div class="info-value">CIRCULAR (C)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="station-selector">
+                <label for="stationSelect">Select Station:</label>
+                <select id="stationSelect" onchange="updateBoard()">
+                    <option value="">Choose a station...</option>
+                </select>
+            </div>
+
+            <div id="boardContainer" style="display: none;">
+                <div class="board-title" id="boardTitle">---</div>
+
+                <div class="board-header">
+                    <div>Train #</div>
+                    <div>Destination</div>
+                    <div>Time to Arrival</div>
+                    <div>Platform</div>
+                    <div>Crowding</div>
+                    <div>Next Train</div>
+                </div>
+
+                <div id="boardContent"></div>
+
+                <div class="alerts-section">
+                    <div class="alerts-title">⚠ System Alerts</div>
+                    <div id="alertsContent">
+                        <div class="alert-item">✓ All services operating normally</div>
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <div class="stat-box">
+                        <div class="stat-label">Avg Headway</div>
+                        <div class="stat-value">2.8m</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Peak Load</div>
+                        <div class="stat-value">73%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">On-Time</div>
+                        <div class="stat-value">99.2%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Trains Active</div>
+                        <div class="stat-value">14/17</div>
+                    </div>
+                </div>
+
+                <div class="update-indicator">
+                    <span class="blinking">●</span> Real-time updates — Last update: <span id="lastUpdate">now</span>
+                </div>
+            </div>
+
+            <div id="placeholder" style="text-align: center; color: #00cc00; padding: 40px;">
+                👆 Select a station above to view live departure information
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const stations = [
+            'Dapinglin', 'Nanshan', 'Banqiao', 'Shulin', 'Taishan',
+            'Xinzhuang', 'Huilong', 'Fengshan', 'Jingmei', 'Xindian',
+            'Xizhi', 'Neihu', 'Songshan', 'N.T.I. Park'
+        ];
+
+        const stationDestinations = {
+            'Dapinglin': ['N.T.I. Park', 'Songshan', 'Xizhi'],
+            'Nanshan': ['N.T.I. Park', 'Songshan', 'Xizhi'],
+            'Banqiao': ['Dapinglin', 'Songshan', 'Xizhi'],
+            'Shulin': ['Dapinglin', 'Songshan', 'Jingmei'],
+            'Taishan': ['Dapinglin', 'Neihu', 'Jingmei'],
+            'Xinzhuang': ['Dapinglin', 'Neihu', 'Jingmei'],
+            'Huilong': ['Dapinglin', 'Neihu', 'Xizhi'],
+            'Fengshan': ['Songshan', 'Neihu', 'Xizhi'],
+            'Jingmei': ['Songshan', 'Neihu', 'Xizhi'],
+            'Xindian': ['Banqiao', 'Neihu', 'Songshan'],
+            'Xizhi': ['Banqiao', 'Jingmei', 'Songshan'],
+            'Neihu': ['Banqiao', 'Jingmei', 'N.T.I. Park'],
+            'Songshan': ['Banqiao', 'Jingmei', 'N.T.I. Park'],
+            'N.T.I. Park': ['Banqiao', 'Xizhi', 'Dapinglin']
+        };
+
+        let departureData = {};
+        let currentStation = '';
+        let updateCounter = 0;
+
+        function initializeSelect() {
+            const select = document.getElementById('stationSelect');
+            stations.forEach(station => {
+                const option = document.createElement('option');
+                option.value = station;
+                option.textContent = station;
+                select.appendChild(option);
+            });
+        }
+
+        function generateDepartures(station) {
+            const departures = [];
+            const destinations = stationDestinations[station] || stations;
+            const now = new Date();
+            const baseTime = now.getTime();
+
+            for (let i = 0; i < 8; i++) {
+                const minutesFromNow = (i + 1) * (Math.random() * 2 + 2.5);
+                const arrivalTime = new Date(baseTime + minutesFromNow * 60000);
+                const crowding = Math.floor(Math.random() * 100);
+
+                departures.push({
+                    trainNumber: 'C' + String(1000 + Math.floor(Math.random() * 9000)).slice(-4),
+                    destination: destinations[i % destinations.length],
+                    minutesAway: Math.floor(minutesFromNow),
+                    secondsAway: Math.floor((minutesFromNow % 1) * 60),
+                    platform: (i % 2) + 1,
+                    crowding: crowding,
+                    nextTrainTime: i < 7 ? Math.floor(minutesFromNow + (Math.random() * 3 + 2)) : null
+                });
+            }
+
+            return departures;
+        }
+
+        function formatTime(date) {
+            return String(date.getHours()).padStart(2, '0') + ':' +
+                   String(date.getMinutes()).padStart(2, '0') + ':' +
+                   String(date.getSeconds()).padStart(2, '0');
+        }
+
+        function getCrowdingDescription(percent) {
+            if (percent < 30) return 'Light';
+            if (percent < 60) return 'Moderate';
+            if (percent < 80) return 'Heavy';
+            return 'Very Heavy';
+        }
+
+        function updateBoard() {
+            currentStation = document.getElementById('stationSelect').value;
+
+            if (!currentStation) {
+                document.getElementById('boardContainer').style.display = 'none';
+                document.getElementById('placeholder').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('boardContainer').style.display = 'block';
+            document.getElementById('placeholder').style.display = 'none';
+            document.getElementById('boardTitle').textContent = `NOW BOARDING AT: ${currentStation.toUpperCase()}`;
+
+            departureData[currentStation] = generateDepartures(currentStation);
+            renderDepartures();
+        }
+
+        function renderDepartures() {
+            const departures = departureData[currentStation];
+            let html = '';
+
+            departures.forEach((dep, idx) => {
+                const isArriving = dep.minutesAway === 0 && dep.secondsAway < 60;
+                const isImminent = dep.minutesAway === 1;
+                const rowClass = isArriving ? 'board-row arriving' : 'board-row';
+
+                const timeClass = isArriving ? 'time-display arriving' :
+                                 isImminent ? 'time-display imminent' :
+                                 'time-display';
+
+                const timeText = dep.minutesAway === 0 ?
+                    `<span class="${timeClass}">ARR</span>` :
+                    `<span class="${timeClass}">${dep.minutesAway}m ${dep.secondsAway}s</span>`;
+
+                const nextTrain = dep.nextTrainTime ?
+                    `<div class="next-train">+${dep.nextTrainTime}m</div>` : '';
+
+                const crowdingPercent = Math.min(100, dep.crowding);
+
+                html += `
+                    <div class="${rowClass}">
+                        <div class="train-number">${dep.trainNumber}</div>
+                        <div class="destination">${dep.destination}</div>
+                        <div>${timeText}</div>
+                        <div>Plat. ${dep.platform}</div>
+                        <div>
+                            <div class="crowding-bar">
+                                <div class="crowding-fill" style="width: ${crowdingPercent}%">
+                                    ${crowdingPercent}%
+                                </div>
+                            </div>
+                        </div>
+                        <div>${nextTrain}</div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('boardContent').innerHTML = html;
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
+        }
+
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = formatTime(now);
+
+            // Simulate time progression for departures
+            if (currentStation && departureData[currentStation]) {
+                const departures = departureData[currentStation];
+                let needsUpdate = false;
+
+                for (let dep of departures) {
+                    if (dep.secondsAway > 0) {
+                        dep.secondsAway--;
+                    } else if (dep.minutesAway > 0) {
+                        dep.minutesAway--;
+                        dep.secondsAway = 59;
+                    } else {
+                        needsUpdate = true;
+                    }
+                }
+
+                if (needsUpdate || updateCounter % 30 === 0) {
+                    renderDepartures();
+                }
+                updateCounter++;
+            }
+        }
+
+        // Initialize
+        initializeSelect();
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
