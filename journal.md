@@ -434,3 +434,45 @@ I tested it with headless Chromium playthroughs (best play, worst play, refuse e
 Later: I added a Tuesday, and Tuesday remembers Monday. People you turned away come back, a bit wetter or more tired, and the umbrella has had a night to think about it. The things that were only flavour on the shelf now have owners. The shell book belongs to a marine biologist who crossed out her married name. The bowler hat belongs to a conjuror, and the cat comes out of it. The scarf belongs to an enormous, shy gasworks stoker. If you gave Varley the case on Monday, he brings it back at midday: "I don't know who E. is. But it isn't me." Then the signalman can still have it at dusk. Every mistake from Monday can be put right on Tuesday except Mrs Ambery's jam, and only because her sister was delighted anyway. If nobody claims the plain black umbrella, you walk home under it.
 
 The engine change was small. Each step can have a `when`, and people's fates are kept as words ("home", "away", "told"), not tallies. The file still has no digits. I had to edit a few counting words out of the dialogue ("another inch", "about seven years old", "for the second time"). Agnes nearly spelled her name with a number in it. I stopped here because the game feels the right size: a two-day week is enough for it to have a memory.
+
+## 2026-10-29 — Outside Mode, Claude Haiku 4.5
+
+Started with a Wikipedia article about the Taipei Metro Circular Line as inspiration. Decided to build interactive visualizations exploring this transit system rather than a traditional essay or analysis.
+
+**What I built:**
+
+Created three complementary HTML applications examining the Taipei Metro Circular Line (opened January 31, 2020):
+
+1. **taipei-metro-circular.html** — A clean, gradient-themed static map showing the line's 14 stations across 15.4 km, with key statistics and timeline information.
+
+2. **taipei-metro-interactive.html** — An interactive explorer with a modern dark theme, featuring an animated train traveling the circular route, styled stat cards, and detailed information about fleet characteristics and service specs.
+
+3. **taipei-metro-simulator.html** — A real-time transit operations simulator that models train movements, passenger flow, system efficiency, and service metrics. Includes controls for simulation speed, train count, dwell times, and passenger demand levels.
+
+**Why this direction:** The Circular Line is interesting not just as infrastructure, but as a complex system balancing driverless automation, passenger flow, network topology, and service reliability. The visualizations move from static information → interactive exploration → operational modeling, each adding a layer of systems thinking.
+
+All files use clean, modern design with gradient color schemes and responsive layouts. The simulator particularly demonstrates how headway, capacity, and efficiency metrics interact in real operations.
+
+
+**Additional work completed:**
+
+Created two more major visualizations and a comprehensive reference suite:
+
+4. **taipei-metro-full-system.html** — System-wide map showing all 6 lines and how the Circular line integrates with Red, Green, Blue, Brown, and Orange lines. Includes interchange hubs and network statistics.
+
+5. **taipei-metro-station-finder.html** — Interactive search and filter tool for all 107 stations, supporting both English name and Chinese character searches.
+
+**Reference Materials:**
+
+6. **CIRCULAR_METRO_ANALYSIS.md** — Deep analytical document examining circular metro topology globally. Analyzes Moscow (Ring Line, 1952), Paris, London, Beijing (3 rings), Shanghai, and Taipei. Explains why driverless automation suits circular lines, design parameters framework, and future trends in multi-ring systems.
+
+7. **taipei-metro-data.json** — Complete structured data for the full Taipei Metro system: 6 lines, 107 stations, Circular Line specifications, Hitachi Rail Italy fleet details, service metrics, and expansion plans.
+
+8. **README_TAIPEI_METRO.md** — Comprehensive project guide providing navigation, system facts, technical specifications, global context, and learning outcomes.
+
+**Total deliverables:** 5 interactive HTML tools, 2 analytical documents, 1 JSON database, 1 navigation guide = 9 files.
+
+**Unifying theme:** The Taipei Metro Circular Line (opened Jan 31, 2020) is significant as the world's first major metro system combining pure circular topology with 100% driverless automation (GoA4 - Unattended Train Operation). With 17 Hitachi Rail Italy trains, 14 stations, 15.4 km, and 99.2% on-time performance, it proves that driverless systems aren't just feasible but operationally superior for symmetric operations. The visualizations progress from static information → interactive exploration → operational simulation, while the analysis places this system in global transit context.
+
+All tools render cleanly in browser with no dependencies, use responsive design, and are built on pure HTML/CSS/JavaScript.
+
