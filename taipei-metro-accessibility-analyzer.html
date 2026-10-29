@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taipei Metro - Accessibility Analyzer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.3em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 1.05em;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .control-group {
+            display: inline-block;
+            margin-right: 30px;
+            margin-bottom: 15px;
+        }
+
+        label {
+            color: #a0a0a0;
+            margin-right: 12px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        input[type="range"] {
+            width: 200px;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(102, 126, 234, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+            vertical-align: middle;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            border: none;
+        }
+
+        .value-badge {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            margin-left: 8px;
+            font-weight: 600;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .heatmap-container {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .heatmap-title {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .heatmap {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .heatmap-cell:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .heatmap-legend {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .coverage-panel {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .panel-title {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .metric {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .metric-label {
+            color: #a0a0a0;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .metric-unit {
+            color: #a0a0a0;
+            font-size: 0.7em;
+            margin-left: 4px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .insights-section {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            grid-column: 1 / -1;
+        }
+
+        .insights-title {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .insight {
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(102, 126, 234, 0.05);
+            border-left: 3px solid #667eea;
+            border-radius: 4px;
+        }
+
+        .insight:last-child {
+            margin-bottom: 0;
+        }
+
+        .insight-title {
+            color: #e0e0e0;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .insight-text {
+            color: #a0a0a0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .neighborhoods-grid {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            grid-column: 1 / -1;
+        }
+
+        .neighborhoods-title {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .neighborhoods-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .neighborhood-card {
+            background: rgba(102, 126, 234, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .neighborhood-card:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: rgba(102, 126, 234, 0.4);
+        }
+
+        .neighborhood-name {
+            color: #e0e0e0;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .neighborhood-stat {
+            font-size: 0.85em;
+            color: #a0a0a0;
+            margin-bottom: 6px;
+        }
+
+        .accessibility-score {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+        }
+
+        @media (max-width: 1100px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .heatmap {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📍 Taipei Metro Accessibility Analyzer</h1>
+            <p class="subtitle">Station coverage and neighborhood accessibility assessment</p>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="walkRadius">Walking Distance Radius</label>
+                <input type="range" id="walkRadius" min="300" max="1500" value="800" step="100">
+                <span class="value-badge" id="radiusDisplay">800m</span>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <div class="heatmap-container">
+                <div class="heatmap-title">Station Coverage Heatmap</div>
+                <div class="heatmap" id="heatmap"></div>
+                <div class="heatmap-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #10b981;"></div>
+                        <span>Excellent (5 min walk)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #f59e0b;"></div>
+                        <span>Good (10 min walk)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ef4444;"></div>
+                        <span>Poor (15+ min walk)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="coverage-panel">
+                <div class="panel-title">Coverage Metrics</div>
+
+                <div class="metric">
+                    <div class="metric-label">Overall Accessibility</div>
+                    <div class="metric-value">
+                        <span id="accessibility">—</span><span class="metric-unit">%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="accessibilityBar" style="width: 75%;"></div>
+                    </div>
+                </div>
+
+                <div class="metric">
+                    <div class="metric-label">Excellent Coverage</div>
+                    <div class="metric-value" id="excellentAreas">—</div>
+                    <div class="metric-unit">neighborhoods</div>
+                </div>
+
+                <div class="metric">
+                    <div class="metric-label">Population Served</div>
+                    <div class="metric-value" id="populationServed">—</div>
+                    <div class="metric-unit">% of metro area</div>
+                </div>
+
+                <div class="metric">
+                    <div class="metric-label">Average Wait Time</div>
+                    <div class="metric-value" id="avgWait">2.8<span class="metric-unit">min</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="neighborhoods-grid">
+            <div class="neighborhoods-title">Neighborhood Accessibility Scores</div>
+            <div class="neighborhoods-list" id="neighborhoodsList"></div>
+        </div>
+
+        <div class="main-grid" style="margin-top: 25px;">
+            <div class="insights-section">
+                <div class="insights-title">💡 Accessibility Insights & Recommendations</div>
+                <div id="insightsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const neighborhoods = [
+            { name: 'Taipei Main Station', distance: 0, population: 450 },
+            { name: 'Songshan District', distance: 1.2, population: 380 },
+            { name: 'Nanjing Fuxing', distance: 0.9, population: 420 },
+            { name: 'Dapinglin (Xinyi)', distance: 0.8, population: 320 },
+            { name: 'Banqiao (New Taipei)', distance: 2.1, population: 550 },
+            { name: 'Shulin (New Taipei)', distance: 3.2, population: 480 },
+            { name: 'Taishan (New Taipei)', distance: 2.8, population: 390 },
+            { name: 'Xinzhuang (New Taipei)', distance: 2.5, population: 520 },
+            { name: 'Huilong (New Taipei)', distance: 2.3, population: 310 },
+            { name: 'Xindian (New Taipei)', distance: 1.9, population: 380 },
+            { name: 'Xizhi (New Taipei)', distance: 2.4, population: 290 },
+            { name: 'Neihu District', distance: 1.5, population: 410 },
+            { name: 'Jingmei (Taipei)', distance: 2.0, population: 340 },
+            { name: 'Fengshan Area', distance: 2.6, population: 270 }
+        ];
+
+        function getAccessibilityLevel(distance, radius) {
+            const walkTime = (distance / 1.4) * 60;
+            if (walkTime <= 5) return { level: 'excellent', color: '#10b981', time: walkTime.toFixed(0) };
+            if (walkTime <= 10) return { level: 'good', color: '#f59e0b', time: walkTime.toFixed(0) };
+            return { level: 'poor', color: '#ef4444', time: walkTime.toFixed(0) };
+        }
+
+        function updateAnalysis() {
+            const radius = parseInt(document.getElementById('walkRadius').value);
+            document.getElementById('radiusDisplay').textContent = radius + 'm';
+
+            // Create heatmap
+            const heatmapHtml = neighborhoods.map((n, idx) => {
+                const access = getAccessibilityLevel(n.distance, radius);
+                return `
+                    <div class="heatmap-cell" style="background: ${access.color};" title="${n.name}: ${access.time} min walk">
+                        <span>${idx + 1}</span>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('heatmap').innerHTML = heatmapHtml;
+
+            // Calculate metrics
+            const excellent = neighborhoods.filter(n => getAccessibilityLevel(n.distance, radius).level === 'excellent').length;
+            const good = neighborhoods.filter(n => getAccessibilityLevel(n.distance, radius).level === 'good').length;
+            const totalAccessibility = ((excellent * 100 + good * 70) / (neighborhoods.length * 100)) * 100;
+            const populationServed = (good + excellent) / neighborhoods.length * 100;
+
+            document.getElementById('accessibility').textContent = Math.round(totalAccessibility);
+            document.getElementById('accessibilityBar').style.width = totalAccessibility + '%';
+            document.getElementById('excellentAreas').textContent = excellent;
+            document.getElementById('populationServed').textContent = Math.round(populationServed);
+
+            // Neighborhood cards
+            const neighborhoodsHtml = neighborhoods.map(n => {
+                const access = getAccessibilityLevel(n.distance, radius);
+                const scoreColor = access.color;
+                return `
+                    <div class="neighborhood-card">
+                        <div class="neighborhood-name">${n.name}</div>
+                        <div class="neighborhood-stat">Distance: ${n.distance} km</div>
+                        <div class="neighborhood-stat">Walk Time: ${access.time} min</div>
+                        <div class="neighborhood-stat">Population: ~${n.population}k</div>
+                        <div class="accessibility-score" style="background: ${scoreColor}33; color: ${scoreColor};">
+                            ${access.level.toUpperCase()}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('neighborhoodsList').innerHTML = neighborhoodsHtml;
+
+            // Generate insights
+            generateInsights(excellent, good, totalAccessibility, populationServed);
+        }
+
+        function generateInsights(excellent, good, accessibility, populationServed) {
+            const insights = [];
+
+            if (accessibility > 80) {
+                insights.push({
+                    title: '✓ Excellent Coverage',
+                    text: `With ${excellent} neighborhoods at excellent accessibility, the Circular Line serves the metropolitan area very effectively.`
+                });
+            } else if (accessibility > 60) {
+                insights.push({
+                    title: '✓ Good Coverage',
+                    text: `Coverage is solid with ${good} neighborhoods within good accessibility range.`
+                });
+            }
+
+            if (excellent >= 4) {
+                insights.push({
+                    title: '🎯 Strong Downtown Integration',
+                    text: `Central stations (Main, Songshan, Nanjing Fuxing) provide excellent accessibility for core downtown areas.`
+                });
+            }
+
+            if (neighborhoods.filter(n => getAccessibilityLevel(n.distance, 800).level === 'poor').length > 5) {
+                insights.push({
+                    title: '⚠️ Peripheral Service Gaps',
+                    text: `Some outer areas (Shulin, Taishan, Xizhi) are beyond comfortable walking distance. Consider Phase 2 expansion or feeder bus service.`
+                });
+            }
+
+            const suburbServed = neighborhoods.filter(n => n.name.includes('New Taipei')).filter(n => getAccessibilityLevel(n.distance, 800).level !== 'poor').length;
+            if (suburbServed >= 6) {
+                insights.push({
+                    title: '📍 Suburban Connectivity',
+                    text: `Strong connection to New Taipei suburbs (${suburbServed}/9 neighborhoods well-served). Key achievement of circular topology.`
+                });
+            }
+
+            if (populationServed > 70) {
+                insights.push({
+                    title: '👥 High Population Coverage',
+                    text: `Over ${Math.round(populationServed)}% of metropolitan area population has good to excellent station access.`
+                });
+            }
+
+            const container = document.getElementById('insightsContainer');
+            container.innerHTML = insights.map(i => `
+                <div class="insight">
+                    <div class="insight-title">${i.title}</div>
+                    <div class="insight-text">${i.text}</div>
+                </div>
+            `).join('');
+        }
+
+        // Event listener
+        document.getElementById('walkRadius').addEventListener('input', updateAnalysis);
+
+        // Initial load
+        updateAnalysis();
+    </script>
+</body>
+</html>
