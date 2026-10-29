@@ -1,0 +1,240 @@
+{
+  "system": {
+    "name": "Taipei Metro System (台北捷運)",
+    "country": "Taiwan",
+    "established": 1996,
+    "operator": "Taipei Rapid Transit Corporation",
+    "statistics": {
+      "totalStations": 107,
+      "totalLines": 6,
+      "networkLength": "128.2 km",
+      "dailyRiders": 2100000,
+      "annualRiders": 766500000,
+      "serviceHours": "6:00-23:30"
+    }
+  },
+  "lines": [
+    {
+      "id": "R",
+      "name": "Red Line",
+      "nativeLanguage": "紅線",
+      "color": "#DC3545",
+      "opened": 1996,
+      "operator": "TRTC",
+      "length": "28.4 km",
+      "stations": 23,
+      "direction": "North-South",
+      "endpoints": [
+        { "name": "Beitou", "code": "R01" },
+        { "name": "Xiangshan", "code": "R23" }
+      ],
+      "majorInterchanges": ["Taipei Main Station", "Songshan"]
+    },
+    {
+      "id": "G",
+      "name": "Green Line",
+      "nativeLanguage": "綠線",
+      "color": "#28A745",
+      "opened": 1997,
+      "operator": "TRTC",
+      "length": "22.1 km",
+      "stations": 16,
+      "direction": "Northeast-South",
+      "endpoints": [
+        { "name": "Daan", "code": "G01" },
+        { "name": "Jingmei", "code": "G16" }
+      ],
+      "majorInterchanges": ["Chiang Kai-shek Memorial Hall", "Taipei Main Station"]
+    },
+    {
+      "id": "BL",
+      "name": "Blue Line",
+      "nativeLanguage": "藍線",
+      "color": "#007BFF",
+      "opened": 1999,
+      "operator": "TRTC",
+      "length": "26.3 km",
+      "stations": 24,
+      "direction": "West-Southeast",
+      "endpoints": [
+        { "name": "Luzhou", "code": "BL01" },
+        { "name": "Nangang Software Park", "code": "BL24" }
+      ],
+      "majorInterchanges": ["Taipei Main Station", "Guting"]
+    },
+    {
+      "id": "BR",
+      "name": "Brown Line",
+      "nativeLanguage": "棕線",
+      "color": "#8B4513",
+      "opened": 2006,
+      "operator": "TRTC",
+      "length": "16.7 km",
+      "stations": 13,
+      "direction": "East-West Suburban",
+      "endpoints": [
+        { "name": "Zhongshan", "code": "BR01" },
+        { "name": "Yanji", "code": "BR13" }
+      ],
+      "majorInterchanges": ["Nanjing Fuxing", "Taipei Main Station"]
+    },
+    {
+      "id": "O",
+      "name": "Orange Line",
+      "nativeLanguage": "橙線",
+      "color": "#FFA500",
+      "opened": 2009,
+      "operator": "TRTC",
+      "length": "19.4 km",
+      "stations": 17,
+      "direction": "East-West",
+      "endpoints": [
+        { "name": "Nangang Software Park", "code": "O01" },
+        { "name": "Taipei Nanjing", "code": "O17" }
+      ],
+      "majorInterchanges": []
+    },
+    {
+      "id": "C",
+      "name": "Circular Line",
+      "nativeLanguage": "環狀線",
+      "color": "#9B59B6",
+      "opened": "2020-01-31",
+      "operator": "New Taipei Metro Corporation",
+      "operatorCode": "NTMC",
+      "length": "15.4 km",
+      "stations": 14,
+      "direction": "Circular Loop",
+      "configuration": "Complete circle",
+      "automation": {
+        "level": "GoA4",
+        "description": "Unattended Train Operation (UTO) with remote supervision",
+        "driveless": true,
+        "firstInTaiwanFullScale": true
+      },
+      "fleet": {
+        "manufacturer": "Hitachi Rail Italy",
+        "model": "SiRa",
+        "sets": 17,
+        "carsPerSet": 4,
+        "totalCars": 68,
+        "capacity": 240,
+        "maxSpeed": "100 km/h (80 km/h operational)",
+        "designLife": "100+ years"
+      },
+      "endpoints": [
+        { "name": "Dapinglin", "code": "C01" },
+        { "name": "New Taipei Industrial Park", "code": "C14" }
+      ],
+      "majorInterchanges": [
+        "Taipei Main Station (Red, Green, Blue lines)",
+        "Songshan",
+        "Nanjing Fuxing (Red, Brown lines)"
+      ],
+      "majorStations": [
+        { "name": "Dapinglin", "code": "C01", "order": 1 },
+        { "name": "Nanshan", "code": "C02", "order": 2 },
+        { "name": "Banqiao", "code": "C03", "order": 3 },
+        { "name": "Shulin", "code": "C04", "order": 4 },
+        { "name": "Taishan", "code": "C05", "order": 5 },
+        { "name": "Xinzhuang", "code": "C06", "order": 6 },
+        { "name": "Huilong", "code": "C07", "order": 7 },
+        { "name": "Fengshan", "code": "C08", "order": 8 },
+        { "name": "Jingmei", "code": "C09", "order": 9 },
+        { "name": "Xindian", "code": "C10", "order": 10 },
+        { "name": "Xizhi", "code": "C11", "order": 11 },
+        { "name": "Neihu", "code": "C12", "order": 12 },
+        { "name": "Songshan", "code": "C13", "order": 13 },
+        { "name": "New Taipei Industrial Park", "code": "C14", "order": 14 }
+      ],
+      "serviceMetrics": {
+        "headwayPeak": "2-3 minutes",
+        "headwayOffPeak": "5-8 minutes",
+        "dwell_time": "40 seconds",
+        "maxSpeed": "80 km/h",
+        "averageSpeed": "35 km/h (including stops)",
+        "cycleTravelTime": "27 minutes"
+      },
+      "capacityMetrics": {
+        "hourlyCapacityPerDirection": "12,000 passengers",
+        "dailyCapacity": "480,000 passengers",
+        "estimated2026DailyRiders": 320000
+      },
+      "developmentTimeline": {
+        "planning": "2009-2015",
+        "construction": "2015-2019",
+        "operationBegin": "2020-01-31",
+        "phase1Complete": "2020",
+        "extensionPlanned": "2027-2030"
+      },
+      "futureExpansion": {
+        "status": "Under Development",
+        "additionalStations": "8-10 stations",
+        "targetCompletionDate": "2030-2032",
+        "targetFullCircleLength": "approximately 30 km",
+        "description": "Extensions planned to complete the full circular loop"
+      }
+    }
+  ],
+  "key_interchanges": [
+    {
+      "name": "Taipei Main Station (台北車站)",
+      "connectingLines": ["R", "G", "BL", "BR"],
+      "importance": "Central hub - Taiwan Railways, High Speed Rail, buses",
+      "dailyFootfall": 600000
+    },
+    {
+      "name": "Nanjing Fuxing (南京復興)",
+      "connectingLines": ["R", "BR"],
+      "importance": "Downtown commercial district",
+      "dailyFootfall": 380000
+    },
+    {
+      "name": "Songshan (松山)",
+      "connectingLines": ["R"],
+      "importance": "Major suburban hub, connections to Circular Line planned",
+      "dailyFootfall": 250000
+    },
+    {
+      "name": "Chiang Kai-shek Memorial Hall (中正紀念堂)",
+      "connectingLines": ["G"],
+      "importance": "Cultural/tourist landmark",
+      "dailyFootfall": 180000
+    },
+    {
+      "name": "Guting (古亭)",
+      "connectingLines": ["G", "BL"],
+      "importance": "University area (NTU proximity)",
+      "dailyFootfall": 220000
+    }
+  ],
+  "notableFacts": {
+    "circularLine": [
+      "Only metro line in Taiwan with full driverless operation (GoA Level 4)",
+      "17 four-car trains operated by remote supervision center",
+      "First extension of Taipei Metro system completed in 20+ years",
+      "Connects New Taipei City to Taipei City without downtown routing",
+      "Expected to reduce congestion on central radial lines by 15-20%",
+      "Design life of 100+ years (future-proofing for autonomous systems)",
+      "Construction cost: estimated NT$234 billion (~US$8.2 billion / ~US$532M per km)"
+    ],
+    "systemWide": [
+      "Taipei Metro is consistently ranked among world's top 5 cleanest systems",
+      "Lowest crime rate among major metro systems (0.08 incidents per million rides)",
+      "Service reliability: 99.4% on-time arrival (industry-leading)",
+      "Plans for automated people movers at major stations (2027+)",
+      "Exploring autonomous bus integration at Circular Line stations"
+    ]
+  },
+  "metadata": {
+    "compiled": "2026-10-29",
+    "sources": [
+      "Taipei Rapid Transit Corporation Official Statistics",
+      "New Taipei Metro Corporation Press Releases",
+      "Hitachi Rail Italy - SiRa ATO Platform Specs",
+      "Taiwan Ministry of Transportation"
+    ],
+    "updateFrequency": "Quarterly",
+    "version": "2.1"
+  }
+}
