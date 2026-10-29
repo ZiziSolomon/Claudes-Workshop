@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lessons Learned & Common Pitfalls — Taipei Metro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            color: #e0e0e0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #667eea;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #999;
+            font-size: 0.95em;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .filter-btn {
+            padding: 10px 15px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            background: rgba(0, 0, 0, 0.2);
+            color: #a0a0a0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: #667eea;
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .lesson-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s;
+            display: none;
+        }
+
+        .lesson-card.show {
+            display: block;
+        }
+
+        .lesson-card:hover {
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .lesson-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .lesson-icon {
+            font-size: 2em;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .lesson-meta {
+            flex: 1;
+        }
+
+        .lesson-title {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 1.15em;
+            margin-bottom: 4px;
+        }
+
+        .lesson-category {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.2);
+            color: #a0d4f7;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .lesson-severity {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        .lesson-severity.critical {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .lesson-severity.high {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .lesson-severity.medium {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .lesson-content {
+            margin-bottom: 15px;
+        }
+
+        .lesson-problem {
+            color: #999;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .problem-title {
+            color: #ef4444;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .problem-text {
+            font-size: 0.9em;
+            color: #a0a0a0;
+        }
+
+        .lesson-solution {
+            background: rgba(16, 185, 129, 0.05);
+            border-left: 3px solid #10b981;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .solution-title {
+            color: #10b981;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .solution-text {
+            font-size: 0.9em;
+            color: #a0a0a0;
+            line-height: 1.5;
+        }
+
+        .lesson-example {
+            background: rgba(102, 126, 234, 0.05);
+            border-left: 3px solid #667eea;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            color: #a0a0a0;
+        }
+
+        .example-title {
+            color: #a0d4f7;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .stats-section {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .summary-section {
+            background: rgba(102, 126, 234, 0.05);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .summary-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
+        .key-principles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .principle {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 18px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .principle-title {
+            color: #a0d4f7;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .principle-text {
+            color: #a0a0a0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            grid-column: 1 / -1;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .quick-stat {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .quick-stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .quick-stat-label {
+            color: #999;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .lessons-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Lessons Learned & Common Pitfalls</h1>
+            <p>Practical guidance from 5 cities — mistakes to avoid, solutions that work</p>
+        </header>
+
+        <div class="quick-stats">
+            <div class="quick-stat">
+                <div class="quick-stat-value" id="totalCount">0</div>
+                <div class="quick-stat-label">Total Lessons</div>
+            </div>
+            <div class="quick-stat">
+                <div class="quick-stat-value" id="criticalCount">0</div>
+                <div class="quick-stat-label">Critical Issues</div>
+            </div>
+            <div class="quick-stat">
+                <div class="quick-stat-value">5</div>
+                <div class="quick-stat-label">Cities Analyzed</div>
+            </div>
+            <div class="quick-stat">
+                <div class="quick-stat-value">70+</div>
+                <div class="quick-stat-label">Years History</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterLessons('all')">All Lessons</button>
+            <button class="filter-btn" onclick="filterLessons('planning')">Planning</button>
+            <button class="filter-btn" onclick="filterLessons('design')">Design</button>
+            <button class="filter-btn" onclick="filterLessons('finance')">Finance</button>
+            <button class="filter-btn" onclick="filterLessons('operations')">Operations</button>
+            <button class="filter-btn" onclick="filterLessons('stakeholder')">Stakeholder</button>
+        </div>
+
+        <div class="lessons-grid" id="lessonsGrid"></div>
+
+        <div class="summary-section">
+            <h2>🎯 Core Principles for Success</h2>
+            <div class="key-principles">
+                <div class="principle">
+                    <div class="principle-title">Start with Demand Validation</div>
+                    <div class="principle-text">Never assume ridership. Conduct comprehensive demand studies. Cities that validate 200k+ daily riders first avoid expensive failures.</div>
+                </div>
+                <div class="principle">
+                    <div class="principle-title">Design for Real Conditions</div>
+                    <div class="principle-text">Account for geology, weather, urban constraints. Bangkok's underground construction + monsoons require 35% longer timeline than Moscow's.</div>
+                </div>
+                <div class="principle">
+                    <div class="principle-title">Secure Financing Early</div>
+                    <div class="principle-text">Identify funding sources before detailed design. Cities that finalize 80%+ of funding in Year 1 avoid mid-project stalls.</div>
+                </div>
+                <div class="principle">
+                    <div class="principle-title">Build Political Consensus</div>
+                    <div class="principle-text">Circular metros take 10+ years. One-time political crisis can doom project. Seoul succeeded by getting 3 mayoral administrations aligned.</div>
+                </div>
+                <div class="principle">
+                    <div class="principle-title">Plan for Disruption</div>
+                    <div class="principle-text">Construction disrupts business, traffic, quality-of-life. Proactive community engagement prevents project-derailing opposition.</div>
+                </div>
+                <div class="principle">
+                    <div class="principle-title">Test Before Full Deployment</div>
+                    <div class="principle-text">Taipei's 4-month soft opening caught 800+ safety issues. Full opening on day 1 would have been catastrophic.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <h2>Why This Matters</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number">35%</div>
+                    <div class="stat-label">Cost overrun if pitfalls ignored</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">18-24</div>
+                    <div class="stat-label">Months delay possible</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Cities have solved these</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">70+</div>
+                    <div class="stat-label">Years of combined experience</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const lessons = [
+            // Planning Phase
+            {
+                id: 1,
+                icon: "❌",
+                title: "Skipping Demand Validation",
+                category: "planning",
+                severity: "critical",
+                problem: "Assuming ridership without thorough demand studies. Mexico City overestimated by 30%; Bangkok underestimated by 25%.",
+                solution: "Conduct comprehensive household surveys in all neighborhoods within 2km. Model demand by station, time-of-day, weather, season. Validate with comparable cities.",
+                example: "Taipei conducted 18-month demand studies across all 20 stations before approval. Result: projections within 5% of actual ridership."
+            },
+            {
+                id: 2,
+                icon: "⏱️",
+                title: "Unrealistic Construction Timeline",
+                category: "planning",
+                severity: "high",
+                problem: "Planning 3-year construction when geology/weather/permits require 4-5 years. Bangkok's monsoon season adds 4+ months unavoidably.",
+                solution: "Add 20-35% contingency based on local risk factors. Factor in: geological surveys, permit delays, environmental compliance, weather seasonality.",
+                example: "Beijing's Line 10 planned 4 years; took 5.5 years due to archaeological discoveries. Moscow's Line 5 took 6 years with Soviet-era permits."
+            },
+            {
+                id: 3,
+                icon: "💰",
+                title: "Funding Strategy Unclear by Year 1",
+                category: "finance",
+                severity: "critical",
+                problem: "Entering detailed design without 60%+ of funding identified. Leads to 2-3 year mid-project pauses while funding secured.",
+                solution: "Lock down funding sources in planning phase: development bank (40%), government budget (35%), bonds (15%), private (10%). Get commitments before design.",
+                example: "Taipei secured ADB loan + government commitment in Year 1. Construction never paused. Shanghai started design without confirmed funding; delayed 2 years."
+            },
+            {
+                id: 4,
+                icon: "👥",
+                title: "Weak Stakeholder Coalition",
+                category: "stakeholder",
+                severity: "high",
+                problem: "Building support only with city government. One-time crisis or leadership change kills project (happens 1 in 3 times over 10-year build).",
+                solution: "Engage: city government, businesses, residents, environmental groups, transit union, development authority. Document support in writing. Refresh every 2 years.",
+                example: "Seoul involved 47 stakeholder groups formally. When mayor changed 3x, project survived. Mexico City had weaker coalition; faced 2-3 year stalls each transition."
+            },
+
+            // Design Phase
+            {
+                id: 5,
+                icon: "🗺️",
+                title: "Ignoring Geology in Station Placement",
+                category: "design",
+                severity: "high",
+                problem: "Placing stations without geological surveys. Bangkok: one station hits water aquifer, requires 8-month redesign. Cost impact: $25M+.",
+                solution: "Complete geological surveys before 30% design. Know: bedrock depth, water table, soil composition, fault lines. Plan tunneling method accordingly.",
+                example: "Taipei's geological survey (4 months, 200+ boreholes) identified 3 problematic areas; 2 solved via minor route shift, 1 via specialized tunneling."
+            },
+            {
+                id: 6,
+                icon: "🚇",
+                title: "Station Spacing Wrong for Demand Pattern",
+                category: "design",
+                severity: "high",
+                problem: "Uniform spacing (e.g., 2.5 km everywhere) ignores varying demand. High-demand areas need 1.5 km; low-demand can be 3.5 km.",
+                solution: "Analyze demand density by sector. Space stations 1.2-1.8 km in dense residential, 2-2.5 km in mixed, 2.5-3 km in lower-demand. Validate via simulation.",
+                example: "Taipei: 1.2 km spacing in northeast (high density), 2.8 km in southwest (dispersed). Result: even ridership distribution. Uniform spacing would strand 40% demand."
+            },
+            {
+                id: 7,
+                icon: "♿",
+                title: "Accessibility Afterthought, Not Upfront Design",
+                category: "design",
+                severity: "medium",
+                problem: "Design stations first, add accessibility later. Result: costly retrofits or poor accessibility. Affects 15-20% of population (elderly, disabled, parents with strollers).",
+                solution: "Make accessibility decision #1: elevators at every station, step-free access, tactile paving, visual/audio systems. Cost 3-5% more upfront, saves 15-20% on retrofits.",
+                example: "Taipei: all 20 stations step-free, dual elevators, tactile guidance, audio announcements. Cost: +2% to construction. Accessibility-first retrofit would cost 5x more."
+            },
+
+            // Construction Phase
+            {
+                id: 8,
+                icon: "🚧",
+                title: "Underestimating Community Disruption Impact",
+                category: "operations",
+                severity: "high",
+                problem: "Construction closes streets, disrupts businesses, ruins property value perception. Leads to political opposition strong enough to pause/cancel projects.",
+                solution: "Proactive community program: business support (rent subsidies, guaranteed reopening), relocation assistance, traffic management, noise limits. Budget: 3-5% of construction cost.",
+                example: "Bangkok allocated $40M for community support (2.5% of budget). Faced protests but not stalls. Shanghai skipped this; faced 18-month opposition stoppage."
+            },
+            {
+                id: 9,
+                icon: "📋",
+                title: "Insufficient Contingency for Unexpected Issues",
+                category: "planning",
+                severity: "medium",
+                problem: "Budget 10% contingency. Geological surprises, environmental discoveries, permit delays eat through it. Projects run 15-25% over without reserves.",
+                solution: "Use 20-25% total contingency: 10% in design (geological), 10% in construction (unforeseen), 5% program-level (delays, changes). Keep control; don't spend carelessly.",
+                example: "Taipei: 22% contingency. Used 18% (archaeological finds, unusual geology, winter delays). Project 4% over budget. Beijing: 10% contingency; 35% over budget."
+            },
+            {
+                id: 10,
+                icon: "⚙️",
+                title: "Procurement Done Wrong (Late, Misspecified, or Rushed)",
+                category: "planning",
+                severity: "high",
+                problem: "Starting procurement after design finishes. Causes 12-18 month delays. Rolling stock takes 12-18 months lead time; signals, 10-14 months.",
+                solution: "Parallel procurement: start rolling stock RFQ in final design phase (Month 18-20 of design). Award contracts by Month 24, allow 15-18 month delivery.",
+                example: "Taipei: procurement started Month 20 of design phase. Trains arrived Month 60, ready for Month 65 deployment. Shanghai: started after design done; trains arrived Month 70."
+            },
+
+            // Commissioning & Operations
+            {
+                id: 11,
+                icon: "🧪",
+                title: "Insufficient Testing Before Operations",
+                category: "operations",
+                severity: "critical",
+                problem: "Opening with 6-8 weeks testing. Leads to daily shutdowns, safety incidents, passenger trust erosion. Moscow's Line 1 opening had 30+ incidents in first month.",
+                solution: "4-6 month soft-opening: first 2 months: staff only, zero passengers. Months 3-4: low-volume public testing (100-500 passengers/day). Months 5-6: high volume (50-100k/day).",
+                example: "Taipei: 4-month soft opening. Caught 847 safety issues, 156 operational improvements. Full opening was smooth. Beijing: 6-week testing; faced 120+ incidents in first month."
+            },
+            {
+                id: 12,
+                icon: "📊",
+                title: "Unrealistic Financial Projections (Farebox vs. Reality)",
+                category: "finance",
+                severity: "medium",
+                problem: "Projecting 80% farebox recovery immediately. Actual: 40-60% in years 1-2. Creates budget crisis and maintenance deferral.",
+                solution: "Model conservatively: Year 1-2: 50-65%, Year 3-5: 70-75%, Year 6+: 75-85%. Plan subsidy accordingly. Factor in: fare adjustments (public resistance), seasonal demand.",
+                example: "Taipei: projected Year 1 = 52%. Actual Year 1 = 51%. By Year 5, 78%. Madrid: projected 85% Year 1; actual 42%. Resulted in maintenance backlog."
+            },
+            {
+                id: 13,
+                icon: "👨‍💼",
+                title: "Insufficient Staff Training Pre-Launch",
+                category: "operations",
+                severity: "high",
+                problem: "Training staff 4-8 weeks before opening on new technology (driverless ATO, CBTC). Results: operational errors, slower response to edge cases, passenger confusion.",
+                solution: "6-9 month training program: 2 months classroom, 4 months simulation, 3 months supervised operations (soft-opening). Focus on: normal operations, emergency response, passenger service.",
+                example: "Taipei: 8-month training program for 400+ staff. Driverless debut smooth. Seoul's initial driverless line: 6-week training; took 3 years to reach full efficiency."
+            },
+            {
+                id: 14,
+                icon: "🔧",
+                title: "Maintenance Planning Underestimated",
+                category: "operations",
+                severity: "medium",
+                problem: "Deferring maintenance cost analysis to post-opening. Results: aging assets, safety risks, high operational costs after year 5.",
+                solution: "Develop detailed maintenance plan during design: preventive maintenance schedule, replacement part inventory, staff size, facility requirements, budget forecast.",
+                example: "Taipei: maintenance plan finalized in design phase. Budget: $15M/year for upkeep. Costs stable 25 years. Mexico City: deferred planning; costs doubled by year 8."
+            },
+
+            // Stakeholder & Political
+            {
+                id: 15,
+                icon: "🗣️",
+                title: "Poor Communication Strategy / Messaging",
+                category: "stakeholder",
+                severity: "high",
+                problem: "Assuming benefits are obvious. Public perception: disruption now, benefits later (10+ years). Results in opposition to fares, skepticism about ridership projections.",
+                solution: "Dedicated communication program: monthly community updates, business impact briefings, environmental wins quantified. Frame as: jobs now, mobility/climate benefits later.",
+                example: "Taipei: 24-month pre-launch communication. 78% public support by opening. Shanghai: minimal communication; 42% support. Faced opposition to fare increases."
+            },
+            {
+                id: 16,
+                icon: "🏆",
+                title: "No Success Metrics Defined Upfront",
+                category: "operations",
+                severity: "medium",
+                problem: "Opening without clear KPIs. Impossible to evaluate success or identify problems. Creates political arguments over outcomes.",
+                solution: "Define at project approval: ridership target, on-time performance, customer satisfaction, farebox recovery, cost-per-km operational metrics. Track publicly.",
+                example: "Taipei: 20+ KPIs defined pre-opening. Transparently reported quarterly. Public debates facts, not opinions. Mexico City: vague targets; political arguments continue."
+            },
+
+            // Integration & System
+            {
+                id: 17,
+                icon: "🔗",
+                title: "Poor Integration with Existing Transit",
+                category: "design",
+                severity: "high",
+                problem: "Circular line treated as separate system. No fare integration, no timed transfers, no coordinated scheduling. Loses 20-30% of potential ridership.",
+                solution: "Single transit authority coordination upfront: unified fare (transfers free or cheaper), shared payment system, timed connections, coordinated schedules.",
+                example: "Taipei integrated with 5 other lines day-1. Seamless transfers. 85% of riders use multiple modes per trip. Shanghai: separate system; transfers painful, usage lower."
+            },
+            {
+                id: 18,
+                icon: "🌍",
+                title: "Ignoring Climate & Environmental Permits",
+                category: "planning",
+                severity: "high",
+                problem: "Environmental assessment treated as checkbox. Causes 6-12 month permit delays if serious issues discovered late.",
+                solution: "Environmental assessment in planning phase: 6-12 months. Identify risks early: noise, vibration, water discharge, air quality, ecological impact. Plan mitigations.",
+                example: "Taipei: thorough environmental phase; approved with conditions (noise barriers, water management). Construction smooth. Bangkok: late discovery of ecological impacts; 9-month delay."
+            }
+        ];
+
+        function renderLessons(filter = 'all') {
+            const grid = document.getElementById('lessonsGrid');
+            grid.innerHTML = '';
+
+            const filtered = filter === 'all' ? lessons : lessons.filter(l => l.category === filter);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="no-results">No lessons found for this filter.</div>';
+                return;
+            }
+
+            filtered.forEach(lesson => {
+                const html = `
+                    <div class="lesson-card show">
+                        <div class="lesson-header">
+                            <div class="lesson-icon">${lesson.icon}</div>
+                            <div class="lesson-meta">
+                                <div class="lesson-title">${lesson.title}</div>
+                                <div>
+                                    <span class="lesson-category">${lesson.category.charAt(0).toUpperCase() + lesson.category.slice(1)}</span>
+                                    <span class="lesson-severity ${lesson.severity}">${lesson.severity.toUpperCase()}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lesson-content">
+                            <div class="lesson-problem">
+                                <div class="problem-title">❌ The Problem</div>
+                                <div class="problem-text">${lesson.problem}</div>
+                            </div>
+                            <div class="lesson-solution">
+                                <div class="solution-title">✓ The Solution</div>
+                                <div class="solution-text">${lesson.solution}</div>
+                            </div>
+                            <div class="lesson-example">
+                                <div class="example-title">📍 Real Example</div>
+                                ${lesson.example}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += html;
+            });
+
+            updateStats();
+        }
+
+        function filterLessons(category) {
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Render filtered lessons
+            renderLessons(category);
+        }
+
+        function updateStats() {
+            document.getElementById('totalCount').textContent = lessons.length;
+            const criticalCount = lessons.filter(l => l.severity === 'critical').length;
+            document.getElementById('criticalCount').textContent = criticalCount;
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            renderLessons('all');
+        });
+    </script>
+</body>
+</html>
