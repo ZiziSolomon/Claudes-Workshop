@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taipei Metro Circular Line</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 12px;
+            color: white;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .map-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        svg {
+            max-width: 500px;
+            width: 100%;
+            height: auto;
+        }
+
+        .station-circle {
+            fill: white;
+            stroke: #667eea;
+            stroke-width: 3;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .station-circle:hover {
+            fill: #667eea;
+            r: 8;
+        }
+
+        .station-label {
+            font-size: 12px;
+            text-anchor: middle;
+            pointer-events: none;
+            fill: #333;
+            font-weight: 500;
+        }
+
+        .station-name {
+            font-size: 10px;
+            text-anchor: middle;
+            pointer-events: none;
+            fill: #666;
+        }
+
+        .line-path {
+            fill: none;
+            stroke: #667eea;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .info-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .stations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .station-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            font-size: 0.9em;
+        }
+
+        .station-item strong {
+            color: #333;
+        }
+
+        .station-item em {
+            color: #666;
+            font-size: 0.85em;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #999;
+            font-size: 0.85em;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .highlight-section {
+            background: #fffacd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffd700;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>台北捷運環狀線</h1>
+        <p class="subtitle">Taipei Metro Circular Line</p>
+
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-value">14</div>
+                <div class="stat-label">Stations (Current)</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">15.4 km</div>
+                <div class="stat-label">Length</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">Jan 2020</div>
+                <div class="stat-label">Opening Date</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">Driverless</div>
+                <div class="stat-label">Automated Operation</div>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                <!-- Circular line path -->
+                <circle cx="250" cy="250" r="150" class="line-path"/>
+
+                <!-- Stations arranged in a circle -->
+                <!-- Station 1: Dapinglin -->
+                <circle cx="250" cy="100" r="7" class="station-circle"/>
+                <text x="250" y="85" class="station-label">1</text>
+                <text x="250" y="60" class="station-name">Dapinglin</text>
+
+                <!-- Station 2 -->
+                <circle cx="356" cy="125" r="7" class="station-circle"/>
+                <text x="370" y="125" class="station-label">2</text>
+                <text x="390" y="125" class="station-name">Nanshan</text>
+
+                <!-- Station 3 -->
+                <circle cx="420" cy="195" r="7" class="station-circle"/>
+                <text x="440" y="195" class="station-label">3</text>
+                <text x="455" y="195" class="station-name">Banqiao</text>
+
+                <!-- Station 4 -->
+                <circle cx="430" cy="280" r="7" class="station-circle"/>
+                <text x="450" y="280" class="station-label">4</text>
+                <text x="465" y="280" class="station-name">Shulin</text>
+
+                <!-- Station 5 -->
+                <circle cx="400" cy="355" r="7" class="station-circle"/>
+                <text x="420" y="360" class="station-label">5</text>
+                <text x="435" y="375" class="station-name">Taishan</text>
+
+                <!-- Station 6 -->
+                <circle cx="330" cy="410" r="7" class="station-circle"/>
+                <text x="330" y="430" class="station-label">6</text>
+                <text x="330" y="450" class="station-name">Xinzhuang</text>
+
+                <!-- Station 7 -->
+                <circle cx="250" cy="400" r="7" class="station-circle"/>
+                <text x="250" y="420" class="station-label">7</text>
+                <text x="250" y="440" class="station-name">Huilong</text>
+
+                <!-- Station 8 -->
+                <circle cx="170" cy="410" r="7" class="station-circle"/>
+                <text x="155" y="430" class="station-label">8</text>
+                <text x="140" y="450" class="station-name">Fengshan</text>
+
+                <!-- Station 9 -->
+                <circle cx="100" cy="355" r="7" class="station-circle"/>
+                <text x="80" y="360" class="station-label">9</text>
+                <text x="65" y="375" class="station-name">Jingmei</text>
+
+                <!-- Station 10 -->
+                <circle cx="70" cy="280" r="7" class="station-circle"/>
+                <text x="50" y="280" class="station-label">10</text>
+                <text x="35" y="280" class="station-name">Xindian</text>
+
+                <!-- Station 11 -->
+                <circle cx="80" cy="195" r="7" class="station-circle"/>
+                <text x="60" y="195" class="station-label">11</text>
+                <text x="45" y="195" class="station-name">Xizhi</text>
+
+                <!-- Station 12 -->
+                <circle cx="144" cy="125" r="7" class="station-circle"/>
+                <text x="130" y="125" class="station-label">12</text>
+                <text x="110" y="125" class="station-name">Neihu</text>
+
+                <!-- Station 13 -->
+                <circle cx="208" cy="110" r="7" class="station-circle"/>
+                <text x="208" y="85" class="station-label">13</text>
+
+                <!-- Station 14: New Taipei Industrial Park -->
+                <circle cx="250" cy="100" r="7" class="station-circle" style="opacity: 0.5;"/>
+                <text x="250" y="60" class="station-name" style="opacity: 0.5;">N.T.I. Park</text>
+            </svg>
+        </div>
+
+        <div class="highlight-section">
+            <strong>🚆 Line Status:</strong> The Circular Line (C) is currently operational with the western section from Dapinglin to New Taipei Industrial Park. Extensions are underway to eventually complete a full loop around the Taipei metropolitan area.
+        </div>
+
+        <div class="info-section">
+            <div class="info-title">Key Features</div>
+            <div class="stations-grid">
+                <div class="station-item">
+                    <strong>Operator</strong>
+                    <em>New Taipei Metro Corporation</em>
+                </div>
+                <div class="station-item">
+                    <strong>Capacity</strong>
+                    <em>Medium-capacity rapid transit</em>
+                </div>
+                <div class="station-item">
+                    <strong>Train Supplier</strong>
+                    <em>Hitachi Rail Italy</em>
+                </div>
+                <div class="station-item">
+                    <strong>Fleet</strong>
+                    <em>17 sets of 4-car driverless trains</em>
+                </div>
+                <div class="station-item">
+                    <strong>Service Type</strong>
+                    <em>Fully automated driverless operation</em>
+                </div>
+                <div class="station-item">
+                    <strong>Planned Expansion</strong>
+                    <em>Complete loop around Taipei</em>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="info-title">Timeline</div>
+            <div class="stations-grid">
+                <div class="station-item">
+                    <strong>January 31, 2020</strong>
+                    <em>Initial western section opens (Dapinglin to New Taipei Industrial Park)</em>
+                </div>
+                <div class="station-item">
+                    <strong>2020 - Present</strong>
+                    <em>Phase 1 operations with 14 stations and 15.4 km of track</em>
+                </div>
+                <div class="station-item">
+                    <strong>Future</strong>
+                    <em>Extensions planned to complete full circular loop</em>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Built with passion for transit systems • Taipei Metro Circular Line Information
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taipei Circular Line - Transit Simulator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Monaco', 'Menlo', monospace;
+            background: #0a0e27;
+            color: #e0e6ed;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #4f46e5;
+            margin-bottom: 8px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 0.95em;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .control-group {
+            background: rgba(79, 70, 229, 0.1);
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .control-group label {
+            display: block;
+            color: #4f46e5;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        .control-group input,
+        .control-group select {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            color: #e0e6ed;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.9em;
+        }
+
+        .control-group input:focus,
+        .control-group select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            background: rgba(79, 70, 229, 0.15);
+        }
+
+        button {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .visualization {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(79, 70, 229, 0.05);
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            color: #4f46e5;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        .stat-unit {
+            color: #64748b;
+            font-size: 0.85em;
+            margin-left: 4px;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-box {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .metric-title {
+            color: #4f46e5;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(79, 70, 229, 0.1);
+            font-size: 0.9em;
+        }
+
+        .metric-item:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            color: #cbd5e1;
+        }
+
+        .metric-value {
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        .status {
+            padding: 15px;
+            background: rgba(79, 70, 229, 0.1);
+            border-left: 3px solid #10b981;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+
+        .status.warning {
+            border-left-color: #f59e0b;
+        }
+
+        .status.error {
+            border-left-color: #ef4444;
+        }
+
+        .time-display {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px 0;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .train-active {
+            animation: pulse 1s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚆 Taipei Circular Line Simulator</h1>
+            <p class="subtitle">Real-time Transit Operations Model</p>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>Simulation Speed</label>
+                <select id="simSpeed">
+                    <option value="1">1x (Real-time)</option>
+                    <option value="5">5x Speed</option>
+                    <option value="10">10x Speed</option>
+                    <option value="30" selected>30x Speed</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Active Trains</label>
+                <input type="number" id="trainCount" min="5" max="17" value="12">
+            </div>
+            <div class="control-group">
+                <label>Station Dwell Time (sec)</label>
+                <input type="number" id="dwellTime" min="20" max="60" value="40">
+            </div>
+            <div class="control-group">
+                <label>Passenger Load</label>
+                <select id="passengerDemand">
+                    <option value="low">Low</option>
+                    <option value="normal" selected>Normal</option>
+                    <option value="high">High</option>
+                    <option value="peak">Peak Hours</option>
+                </select>
+            </div>
+        </div>
+
+        <button onclick="startSimulation()">▶ Start Simulation</button>
+        <button onclick="stopSimulation()">⏹ Stop</button>
+        <button onclick="resetSimulation()">↻ Reset</button>
+
+        <div class="time-display" id="timeDisplay">Simulation Time: 00:00</div>
+
+        <div class="visualization">
+            <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" id="circularMap">
+                <defs>
+                    <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+
+                <!-- Circular line -->
+                <circle cx="250" cy="250" r="150" fill="none" stroke="url(#lineGradient)" stroke-width="8"/>
+
+                <!-- Station markers (14 stations) -->
+                <g id="stations"></g>
+
+                <!-- Trains -->
+                <g id="trains"></g>
+            </svg>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Average Headway</div>
+                <div class="stat-value"><span id="avgHeadway">2.5</span><span class="stat-unit">min</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Passengers</div>
+                <div class="stat-value"><span id="totalPassengers">0</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">System Efficiency</div>
+                <div class="stat-value"><span id="efficiency">95</span><span class="stat-unit">%</span></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Avg Speed</div>
+                <div class="stat-value"><span id="avgSpeed">40</span><span class="stat-unit">km/h</span></div>
+            </div>
+        </div>
+
+        <div class="metrics">
+            <div class="metric-box">
+                <div class="metric-title">📊 Line Metrics</div>
+                <div class="metric-item">
+                    <span class="metric-label">Total Track Length:</span>
+                    <span class="metric-value">15.4 km</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Station Count:</span>
+                    <span class="metric-value" id="stationCount">14</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Current Trains Active:</span>
+                    <span class="metric-value" id="activeTrains">12</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">System Capacity:</span>
+                    <span class="metric-value">~2,400 pax/hour</span>
+                </div>
+            </div>
+
+            <div class="metric-box">
+                <div class="metric-title">🚂 Fleet Information</div>
+                <div class="metric-item">
+                    <span class="metric-label">Manufacturer:</span>
+                    <span class="metric-value">Hitachi Rail Italy</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Fleet Size:</span>
+                    <span class="metric-value">17 sets</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Cars per Train:</span>
+                    <span class="metric-value">4</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Operation Type:</span>
+                    <span class="metric-value">100% Driverless</span>
+                </div>
+            </div>
+
+            <div class="metric-box">
+                <div class="metric-title">🕐 Service Characteristics</div>
+                <div class="metric-item">
+                    <span class="metric-label">Opening Date:</span>
+                    <span class="metric-value">Jan 31, 2020</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Operating Hours:</span>
+                    <span class="metric-value">6:00 - 23:30</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Peak Headway:</span>
+                    <span class="metric-value">2-3 minutes</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Off-peak Headway:</span>
+                    <span class="metric-value">5-8 minutes</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="status" id="status">
+            ✓ Simulator ready. Click Start Simulation to begin.
+        </div>
+    </div>
+
+    <script>
+        // Station data
+        const stations = [
+            { name: 'Dapinglin', angle: 0 },
+            { name: 'Nanshan', angle: 26 },
+            { name: 'Banqiao', angle: 52 },
+            { name: 'Shulin', angle: 78 },
+            { name: 'Taishan', angle: 104 },
+            { name: 'Xinzhuang', angle: 130 },
+            { name: 'Huilong', angle: 156 },
+            { name: 'Fengshan', angle: 182 },
+            { name: 'Jingmei', angle: 208 },
+            { name: 'Xindian', angle: 234 },
+            { name: 'Xizhi', angle: 260 },
+            { name: 'Neihu', angle: 286 },
+            { name: 'Songshan', angle: 312 },
+            { name: 'N.T.I. Park', angle: 338 }
+        ];
+
+        const RADIUS = 150;
+        const CENTER_X = 250;
+        const CENTER_Y = 250;
+        const TRACK_LENGTH = 15.4; // km
+
+        let isRunning = false;
+        let simulationTime = 0;
+        let trains = [];
+        let passengers = 0;
+        let animationId = null;
+
+        // Initialize SVG
+        function drawStations() {
+            const stationsGroup = document.getElementById('stations');
+            stationsGroup.innerHTML = '';
+
+            stations.forEach((station, idx) => {
+                const rad = (station.angle * Math.PI) / 180;
+                const x = CENTER_X + RADIUS * Math.cos(rad);
+                const y = CENTER_Y + RADIUS * Math.sin(rad);
+
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', x);
+                circle.setAttribute('cy', y);
+                circle.setAttribute('r', 5);
+                circle.setAttribute('fill', '#4f46e5');
+                circle.setAttribute('stroke', '#0a0e27');
+                circle.setAttribute('stroke-width', 2);
+
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', x);
+                text.setAttribute('y', y - 15);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('fill', '#cbd5e1');
+                text.setAttribute('font-size', '10');
+                text.textContent = station.name.substring(0, 6);
+
+                stationsGroup.appendChild(circle);
+                stationsGroup.appendChild(text);
+            });
+        }
+
+        function createTrains() {
+            const count = parseInt(document.getElementById('trainCount').value);
+            trains = [];
+
+            for (let i = 0; i < count; i++) {
+                trains.push({
+                    id: i,
+                    position: (i / count) * 360, // degrees around circle
+                    speed: 1 + Math.random() * 0.2, // km/min
+                    passengers: Math.floor(Math.random() * 200),
+                    capacity: 240
+                });
+            }
+        }
+
+        function drawTrains() {
+            const trainsGroup = document.getElementById('trains');
+            trainsGroup.innerHTML = '';
+
+            trains.forEach(train => {
+                const rad = (train.position * Math.PI) / 180;
+                const x = CENTER_X + RADIUS * Math.cos(rad);
+                const y = CENTER_Y + RADIUS * Math.sin(rad);
+
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', x);
+                circle.setAttribute('cy', y);
+                circle.setAttribute('r', 6);
+                circle.setAttribute('fill', '#10b981');
+                circle.setAttribute('filter', 'drop-shadow(0 0 4px rgba(16, 185, 129, 0.8))');
+
+                trainsGroup.appendChild(circle);
+            });
+        }
+
+        function updateSimulation() {
+            const speed = parseInt(document.getElementById('simSpeed').value);
+            const dwellTime = parseInt(document.getElementById('dwellTime').value);
+
+            simulationTime += speed; // seconds
+
+            // Move trains
+            trains.forEach(train => {
+                const distancePerSecond = (train.speed * 1000) / 60; // meters per second
+                const anglePerSecond = (distancePerSecond / (TRACK_LENGTH * 1000)) * 360;
+                train.position = (train.position + anglePerSecond * speed / 10) % 360;
+
+                // Simulate passenger changes
+                if (Math.random() < 0.1) {
+                    const change = Math.floor((Math.random() - 0.5) * 50);
+                    train.passengers = Math.max(0, Math.min(train.capacity, train.passengers + change));
+                    passengers += change;
+                }
+            });
+
+            // Update display
+            const minutes = Math.floor(simulationTime / 60);
+            const seconds = simulationTime % 60;
+            document.getElementById('timeDisplay').textContent =
+                `Simulation Time: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            const avgPassengers = trains.reduce((sum, t) => sum + t.passengers, 0);
+            document.getElementById('totalPassengers').textContent = Math.floor(avgPassengers);
+            document.getElementById('activeTrains').textContent = trains.length;
+
+            // Calculate efficiency
+            const avgLoad = avgPassengers / (trains.length * 240);
+            const efficiency = Math.min(100, Math.floor(70 + avgLoad * 30));
+            document.getElementById('efficiency').textContent = efficiency;
+
+            const avgHeadway = (TRACK_LENGTH / trains.length) / 40; // assuming 40 km/h avg
+            document.getElementById('avgHeadway').textContent = avgHeadway.toFixed(1);
+
+            drawTrains();
+        }
+
+        function startSimulation() {
+            if (isRunning) return;
+            isRunning = true;
+            createTrains();
+            drawStations();
+            drawTrains();
+
+            function animate() {
+                updateSimulation();
+                animationId = requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function stopSimulation() {
+            isRunning = false;
+            if (animationId) cancelAnimationFrame(animationId);
+        }
+
+        function resetSimulation() {
+            stopSimulation();
+            simulationTime = 0;
+            passengers = 0;
+            trains = [];
+            document.getElementById('timeDisplay').textContent = 'Simulation Time: 00:00';
+            drawStations();
+            drawTrains();
+        }
+
+        // Initialize
+        drawStations();
+        drawTrains();
+    </script>
+</body>
+</html>
