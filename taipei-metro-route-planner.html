@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taipei Metro - Route Planner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 25px;
+        }
+
+        .planner-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        button {
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        button.secondary:hover {
+            background: #e0e0e0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .routes-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            grid-column: 1 / -1;
+        }
+
+        .routes-container h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .route-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: #f9f9f9;
+        }
+
+        .route-card:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .route-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .route-title {
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .route-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .route-path {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .station-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            font-size: 0.95em;
+            color: #333;
+        }
+
+        .station-step:not(:last-child) {
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .station-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7em;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .station-info {
+            flex: 1;
+        }
+
+        .station-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .station-line {
+            font-size: 0.85em;
+            color: #999;
+        }
+
+        .line-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: white;
+            margin-left: 4px;
+        }
+
+        .transfer-note {
+            padding: 6px 10px;
+            background: #fff3cd;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #856404;
+            margin-left: 40px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state p {
+            margin: 10px 0;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 900px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚇 Taipei Metro Route Planner</h1>
+            <p class="subtitle">Find the best route between any two stations</p>
+        </div>
+
+        <div class="content">
+            <div class="panel planner-section">
+                <h2>Route Planner</h2>
+
+                <div class="form-group">
+                    <label for="originStation">Starting Station</label>
+                    <select id="originStation">
+                        <option value="">Select origin station...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="destinationStation">Destination Station</label>
+                    <select id="destinationStation">
+                        <option value="">Select destination station...</option>
+                    </select>
+                </div>
+
+                <div class="button-group">
+                    <button onclick="planRoute()">🔍 Find Routes</button>
+                    <button class="secondary" onclick="resetPlanner()">↻ Clear</button>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>Journey Info</h2>
+                <div class="stats" id="statsContainer">
+                    <div class="stat-box">
+                        <div class="stat-value">—</div>
+                        <div class="stat-label">Estimated Time</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">—</div>
+                        <div class="stat-label">Stations</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">—</div>
+                        <div class="stat-label">Transfers</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">—</div>
+                        <div class="stat-label">Distance (km)</div>
+                    </div>
+                </div>
+                <p style="font-size: 0.9em; color: #999; text-align: center;">Select a route to see details</p>
+            </div>
+        </div>
+
+        <div class="routes-container">
+            <h2>Available Routes</h2>
+            <div id="routesResults">
+                <div class="empty-state">
+                    <p>👆 Select origin and destination to see available routes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Complete Taipei Metro station database
+        const stations = [
+            // Circular Line (C)
+            { id: 'C01', name: 'Dapinglin', native: '大坪林', line: 'C', lat: 25.050, lng: 121.559 },
+            { id: 'C02', name: 'Nanshan', native: '南山', line: 'C', lat: 25.058, lng: 121.575 },
+            { id: 'C03', name: 'Banqiao', native: '板橋', line: 'C', lat: 25.032, lng: 121.464 },
+            { id: 'C04', name: 'Shulin', native: '樹林', line: 'C', lat: 25.070, lng: 121.417 },
+            { id: 'C05', name: 'Taishan', native: '泰山', line: 'C', lat: 25.089, lng: 121.388 },
+            { id: 'C06', name: 'Xinzhuang', native: '新莊', line: 'C', lat: 25.115, lng: 121.432 },
+            { id: 'C07', name: 'Huilong', native: '迴龍', line: 'C', lat: 25.138, lng: 121.477 },
+            { id: 'C08', name: 'Fengshan', native: '豐山', line: 'C', lat: 25.155, lng: 121.511 },
+            { id: 'C09', name: 'Jingmei', native: '景美', line: 'C', lat: 25.180, lng: 121.547 },
+            { id: 'C10', name: 'Xindian', native: '新店', line: 'C', lat: 25.210, lng: 121.543 },
+            { id: 'C11', name: 'Xizhi', native: '西芝', line: 'C', lat: 25.230, lng: 121.488 },
+            { id: 'C12', name: 'Neihu', native: '內湖', line: 'C', lat: 25.210, lng: 121.423 },
+            { id: 'C13', name: 'Songshan', native: '松山', line: 'C,R', lat: 25.055, lng: 121.544 },
+            { id: 'C14', name: 'N.T.I. Park', native: '新北產業園區', line: 'C', lat: 25.010, lng: 121.520 },
+
+            // Red Line (R) - sample stations
+            { id: 'R01', name: 'Beitou', native: '北投', line: 'R', lat: 25.138, lng: 121.503 },
+            { id: 'R02', name: 'Taipei Main', native: '台北車站', line: 'R,G,BL,BR', lat: 25.047, lng: 121.508 },
+            { id: 'R03', name: 'Zhongshan', native: '中山', line: 'R', lat: 25.070, lng: 121.524 },
+            { id: 'R04', name: 'Nanjing Fuxing', native: '南京復興', line: 'R,BR', lat: 25.055, lng: 121.544 },
+
+            // Green Line (G) - sample stations
+            { id: 'G01', name: 'Daan', native: '大安', line: 'G', lat: 25.027, lng: 121.545 },
+            { id: 'G02', name: 'Guting', native: '古亭', line: 'G,BL', lat: 25.025, lng: 121.525 },
+            { id: 'G03', name: 'Chiang Kai-shek', native: '中正紀念堂', line: 'G', lat: 25.032, lng: 121.506 },
+
+            // Blue Line (BL) - sample stations
+            { id: 'BL01', name: 'Luzhou', native: '蘆洲', line: 'BL', lat: 25.087, lng: 121.460 },
+            { id: 'BL02', name: 'Nangang', native: '南港', line: 'BL,O', lat: 25.058, lng: 121.610 },
+
+            // Brown Line (BR)
+            { id: 'BR01', name: 'Zhongshan', native: '中山', line: 'BR', lat: 25.070, lng: 121.524 },
+
+            // Orange Line (O)
+            { id: 'O01', name: 'Taipei Nanjing', native: '台北南京', line: 'O', lat: 25.058, lng: 121.530 },
+        ];
+
+        // Network connectivity (which stations connect on same line)
+        const lineConnections = {
+            'C': ['C01', 'C02', 'C03', 'C04', 'C05', 'C06', 'C07', 'C08', 'C09', 'C10', 'C11', 'C12', 'C13', 'C14'],
+            'R': ['R01', 'R02', 'R03', 'R04'],
+            'G': ['G01', 'G02', 'G03', 'R02'],
+            'BL': ['BL01', 'R02', 'G02', 'BL02'],
+            'BR': ['BR01', 'R04', 'R02'],
+            'O': ['O01', 'BL02']
+        };
+
+        // Initialize station dropdowns
+        function initializeDropdowns() {
+            const originSelect = document.getElementById('originStation');
+            const destSelect = document.getElementById('destinationStation');
+            const sortedStations = [...stations].sort((a, b) => a.name.localeCompare(b.name));
+
+            sortedStations.forEach(station => {
+                originSelect.innerHTML += `<option value="${station.id}">${station.name} (${station.line})</option>`;
+                destSelect.innerHTML += `<option value="${station.id}">${station.name} (${station.line})</option>`;
+            });
+        }
+
+        function getStation(id) {
+            return stations.find(s => s.id === id);
+        }
+
+        function calculateDistance(lat1, lng1, lat2, lng2) {
+            const R = 6371; // Earth radius in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLng/2) * Math.sin(dLng/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        function findAllRoutes(originId, destId) {
+            const origin = getStation(originId);
+            const dest = getStation(destId);
+            if (!origin || !dest) return [];
+
+            // Simple route finding: direct if on same line, otherwise via transfer
+            const routes = [];
+
+            // Check direct routes (same line)
+            const originLines = origin.line.split(',');
+            const destLines = dest.line.split(',');
+
+            for (let line of originLines) {
+                if (destLines.includes(line)) {
+                    // Direct route on this line
+                    routes.push({
+                        type: 'direct',
+                        line: line,
+                        distance: calculateDistance(origin.lat, origin.lng, dest.lat, dest.lng),
+                        transfers: 0,
+                        segments: [{
+                            from: origin,
+                            to: dest,
+                            line: line
+                        }]
+                    });
+                }
+            }
+
+            // Find one-transfer routes (via intermediate station)
+            for (let intermediateId of stations.map(s => s.id)) {
+                const intermediate = getStation(intermediateId);
+                if (intermediateId === originId || intermediateId === destId) continue;
+
+                const originToInterLines = getStation(originId).line.split(',');
+                const interToDestLines = intermediate.line.split(',');
+                const destLines2 = getStation(destId).line.split(',');
+                const interToDest = intermediate.line.split(',');
+
+                for (let line1 of originToInterLines) {
+                    for (let line2 of interToDest) {
+                        if (interToDestLines.includes(line2) && destLines2.includes(line2)) {
+                            const dist = calculateDistance(origin.lat, origin.lng, intermediate.lat, intermediate.lng) +
+                                        calculateDistance(intermediate.lat, intermediate.lng, dest.lat, dest.lng);
+                            routes.push({
+                                type: 'transfer',
+                                transfers: 1,
+                                distance: dist,
+                                segments: [
+                                    { from: origin, to: intermediate, line: line1 },
+                                    { from: intermediate, to: dest, line: line2 }
+                                ]
+                            });
+                        }
+                    }
+                }
+            }
+
+            // Sort by transfers, then distance
+            routes.sort((a, b) => {
+                if (a.transfers !== b.transfers) return a.transfers - b.transfers;
+                return a.distance - b.distance;
+            });
+
+            // Return top 5 routes
+            return routes.slice(0, 5);
+        }
+
+        function planRoute() {
+            const originId = document.getElementById('originStation').value;
+            const destId = document.getElementById('destinationStation').value;
+
+            if (!originId || !destId || originId === destId) {
+                alert('Please select different origin and destination stations');
+                return;
+            }
+
+            const routes = findAllRoutes(originId, destId);
+            displayRoutes(routes);
+        }
+
+        function displayRoutes(routes) {
+            const container = document.getElementById('routesResults');
+
+            if (routes.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No routes found. Please try different stations.</p></div>';
+                return;
+            }
+
+            let html = '';
+            routes.forEach((route, idx) => {
+                const estimatedTime = Math.round(route.distance * 3 + (route.transfers * 2));
+                const stationCount = route.segments.reduce((sum, seg) => sum + 1, 0) + 1;
+
+                html += `
+                    <div class="route-card" onclick="selectRoute(this, ${idx}, ${estimatedTime}, ${stationCount}, ${route.transfers}, ${route.distance.toFixed(1)})">
+                        <div class="route-header">
+                            <span class="route-title">Route ${idx + 1}${route.type === 'direct' ? ' - Direct' : ' - 1 Transfer'}</span>
+                            <div class="route-meta">
+                                <div class="meta-item">
+                                    <span class="meta-label">⏱️ ${estimatedTime} min</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">📍 ${route.distance.toFixed(1)} km</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="route-path">
+                `;
+
+                route.segments.forEach((segment, segIdx) => {
+                    const lineColor = {
+                        'R': '#DC3545', 'G': '#28A745', 'BL': '#007BFF',
+                        'BR': '#8B4513', 'O': '#FFA500', 'C': '#9B59B6'
+                    }[segment.line] || '#999';
+
+                    if (segIdx === 0) {
+                        html += `
+                            <div class="station-step">
+                                <div class="station-circle" style="background: ${lineColor};">●</div>
+                                <div class="station-info">
+                                    <div class="station-name">${segment.from.name}</div>
+                                    <div class="station-line">Start<span class="line-badge" style="background: ${lineColor};">${segment.line}</span></div>
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    html += `
+                        <div class="station-step">
+                            <div class="station-circle" style="background: ${lineColor};">→</div>
+                            <div class="station-info">
+                                <div class="station-name">${segment.to.name}</div>
+                                <div class="station-line">${segment.to === route.segments[route.segments.length - 1].to ? 'Arrival' : 'Transfer'}<span class="line-badge" style="background: ${lineColor};">${segment.line}</span></div>
+                            </div>
+                        </div>
+                    `;
+
+                    if (segIdx < route.segments.length - 1) {
+                        html += `<div class="transfer-note">⚠️ Transfer to next line</div>`;
+                    }
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function selectRoute(element, idx, time, stations, transfers, distance) {
+            document.querySelectorAll('.route-card').forEach(card => {
+                card.style.borderColor = '#e0e0e0';
+                card.style.background = '#f9f9f9';
+            });
+            element.style.borderColor = '#667eea';
+            element.style.background = '#f0f4ff';
+
+            document.querySelector('[data-stat="0"] .stat-value').textContent = `${time}`;
+            document.querySelector('[data-stat="1"] .stat-value').textContent = `${stations}`;
+            document.querySelector('[data-stat="2"] .stat-value').textContent = `${transfers}`;
+            document.querySelector('[data-stat="3"] .stat-value').textContent = `${distance}`;
+        }
+
+        function resetPlanner() {
+            document.getElementById('originStation').value = '';
+            document.getElementById('destinationStation').value = '';
+            document.getElementById('routesResults').innerHTML = '<div class="empty-state"><p>👆 Select origin and destination to see available routes</p></div>';
+            document.querySelectorAll('.stat-value').forEach(el => el.textContent = '—');
+        }
+
+        // Fix stat boxes
+        document.addEventListener('DOMContentLoaded', () => {
+            const statBoxes = document.querySelectorAll('.stat-box');
+            statBoxes.forEach((box, idx) => {
+                box.setAttribute('data-stat', idx);
+            });
+            initializeDropdowns();
+        });
+    </script>
+</body>
+</html>
