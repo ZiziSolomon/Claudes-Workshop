@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taipei Metro System Map</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+
+        .wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 50%, #ffd93d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 1.1em;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .map-container {
+            background: rgba(20, 20, 40, 0.8);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sidebar-card {
+            background: rgba(20, 20, 40, 0.8);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+        }
+
+        .sidebar-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #4ecdc4;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .line-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 0.9em;
+        }
+
+        .line-color {
+            width: 20px;
+            height: 3px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .line-name {
+            font-weight: 500;
+        }
+
+        .line-detail {
+            color: #888;
+            font-size: 0.8em;
+        }
+
+        svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .stat-box {
+            background: rgba(20, 20, 40, 0.8);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: 600;
+            color: #4ecdc4;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #a0a0a0;
+            font-size: 0.9em;
+        }
+
+        .legend {
+            background: rgba(20, 20, 40, 0.8);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .legend-title {
+            font-weight: 600;
+            color: #4ecdc4;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.95em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .legend-symbol {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 0.8em;
+        }
+
+        .legend-text {
+            color: #e0e0e0;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .sidebar-card {
+                flex: 1 1 calc(50% - 8px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h1>🚇 Taipei Metro System Map</h1>
+            <p class="subtitle">Complete Network Visualization</p>
+        </div>
+
+        <div class="content">
+            <div class="map-container">
+                <svg viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Red Line (R) -->
+                    <path d="M 150 100 L 400 150 L 500 300 L 400 500 L 200 600" stroke="#DC3545" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+                    <!-- Green Line (G) -->
+                    <path d="M 400 100 L 600 200 L 700 400 L 600 650" stroke="#28A745" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+                    <!-- Blue Line (BL) -->
+                    <path d="M 200 250 L 400 250 L 600 300 L 700 500 L 800 700" stroke="#007BFF" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+                    <!-- Brown Line (BR) -->
+                    <path d="M 150 400 L 300 350 L 500 400 L 700 450" stroke="#8B4513" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+                    <!-- Orange Line (O) -->
+                    <path d="M 500 150 L 800 200 L 850 500 L 700 750" stroke="#FFA500" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+                    <!-- Circular Line (C) -->
+                    <circle cx="500" cy="450" r="180" stroke="#9B59B6" stroke-width="8" fill="none" stroke-dasharray="10,5" stroke-linecap="round"/>
+
+                    <!-- Major Stations as interchange hubs -->
+                    <!-- Taipei Main Station (multiple lines) -->
+                    <circle cx="400" cy="250" r="12" fill="#FFD700" stroke="#FFF" stroke-width="2"/>
+                    <text x="400" y="280" text-anchor="middle" fill="#e0e0e0" font-size="12" font-weight="600">Main</text>
+
+                    <!-- Songshan (Red, Brown, Circle) -->
+                    <circle cx="500" cy="300" r="12" fill="#FFD700" stroke="#FFF" stroke-width="2"/>
+                    <text x="500" y="330" text-anchor="middle" fill="#e0e0e0" font-size="12" font-weight="600">Songshan</text>
+
+                    <!-- Guting (Green, Blue) -->
+                    <circle cx="600" cy="400" r="12" fill="#FFD700" stroke="#FFF" stroke-width="2"/>
+                    <text x="600" y="430" text-anchor="middle" fill="#e0e0e0" font-size="12" font-weight="600">Guting</text>
+
+                    <!-- Nanjing Fuxing (Red, Circle) -->
+                    <circle cx="300" cy="200" r="12" fill="#FFD700" stroke="#FFF" stroke-width="2"/>
+                    <text x="300" y="230" text-anchor="middle" fill="#e0e0e0" font-size="12" font-weight="600">Nanj.Fuxing</text>
+
+                    <!-- Regular stations (smaller dots) -->
+                    <circle cx="200" cy="400" r="8" fill="#999"/>
+                    <circle cx="700" cy="500" r="8" fill="#999"/>
+                    <circle cx="800" cy="200" r="8" fill="#999"/>
+                    <circle cx="650" cy="650" r="8" fill="#999"/>
+                    <circle cx="400" cy="500" r="8" fill="#999"/>
+                    <circle cx="300" cy="350" r="8" fill="#999"/>
+
+                    <!-- Title/Legend -->
+                    <text x="50" y="750" fill="#a0a0a0" font-size="12">● Major Interchange | ○ Station | ━ Line | ╌ Under Development</text>
+                </svg>
+            </div>
+
+            <div class="sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-title">Active Lines</div>
+
+                    <div class="line-indicator">
+                        <div class="line-color" style="background: #DC3545;"></div>
+                        <div>
+                            <div class="line-name">Red Line (R)</div>
+                            <div class="line-detail">23 stations • 28.4 km</div>
+                        </div>
+                    </div>
+
+                    <div class="line-indicator">
+                        <div class="line-color" style="background: #28A745;"></div>
+                        <div>
+                            <div class="line-name">Green Line (G)</div>
+                            <div class="line-detail">16 stations • 22.1 km</div>
+                        </div>
+                    </div>
+
+                    <div class="line-indicator">
+                        <div class="line-color" style="background: #007BFF;"></div>
+                        <div>
+                            <div class="line-name">Blue Line (BL)</div>
+                            <div class="line-detail">24 stations • 26.3 km</div>
+                        </div>
+                    </div>
+
+                    <div class="line-indicator">
+                        <div class="line-color" style="background: #8B4513;"></div>
+                        <div>
+                            <div class="line-name">Brown Line (BR)</div>
+                            <div class="line-detail">13 stations • 16.7 km</div>
+                        </div>
+                    </div>
+
+                    <div class="line-indicator">
+                        <div class="line-color" style="background: #FFA500;"></div>
+                        <div>
+                            <div class="line-name">Orange Line (O)</div>
+                            <div class="line-detail">17 stations • 19.4 km</div>
+                        </div>
+                    </div>
+
+                    <div class="line-indicator">
+                        <div class="line-color" style="background: #9B59B6; border-top: 2px dashed;"></div>
+                        <div>
+                            <div class="line-name">Circular Line (C)</div>
+                            <div class="line-detail">14 stations • 15.4 km</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <div class="sidebar-title">🔄 Circular Line</div>
+                    <div style="font-size: 0.9em; color: #a0a0a0; line-height: 1.6;">
+                        <strong style="color: #e0e0e0;">Opened:</strong><br>
+                        Jan 31, 2020
+                        <br><br>
+                        <strong style="color: #e0e0e0;">Operator:</strong><br>
+                        New Taipei Metro Corp.
+                        <br><br>
+                        <strong style="color: #e0e0e0;">Fleet:</strong><br>
+                        17 driverless trains<br>
+                        Hitachi Rail Italy
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-value">6</div>
+                <div class="stat-label">Total Lines</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">107</div>
+                <div class="stat-label">Total Stations</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">128 km</div>
+                <div class="stat-label">Total Network</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">2M+</div>
+                <div class="stat-label">Daily Riders</div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-title">Taipei Metro Lines</div>
+
+            <div class="legend-item">
+                <div class="legend-symbol" style="background: #DC3545;">R</div>
+                <div class="legend-text"><strong>Red Line:</strong> Central north-south corridor</div>
+            </div>
+
+            <div class="legend-item">
+                <div class="legend-symbol" style="background: #28A745;">G</div>
+                <div class="legend-text"><strong>Green Line:</strong> Northeast to south</div>
+            </div>
+
+            <div class="legend-item">
+                <div class="legend-symbol" style="background: #007BFF;">BL</div>
+                <div class="legend-text"><strong>Blue Line:</strong> West to southeast</div>
+            </div>
+
+            <div class="legend-item">
+                <div class="legend-symbol" style="background: #8B4513;">BR</div>
+                <div class="legend-text"><strong>Brown Line:</strong> Suburban connector</div>
+            </div>
+
+            <div class="legend-item">
+                <div class="legend-symbol" style="background: #FFA500;">O</div>
+                <div class="legend-text"><strong>Orange Line:</strong> East-west service</div>
+            </div>
+
+            <div class="legend-item">
+                <div class="legend-symbol" style="background: #9B59B6;">C</div>
+                <div class="legend-text"><strong>Circular Line:</strong> Driverless loop (newest, 2020)</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
