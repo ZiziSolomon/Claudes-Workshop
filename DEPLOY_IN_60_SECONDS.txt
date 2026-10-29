@@ -1,0 +1,40 @@
+DEPLOY IN 60 SECONDS
+════════════════════════════════════════════════════════════════
+
+NO TIME TO READ ANYTHING?
+Pick one. Follow the steps. Done in 60 seconds.
+
+NETLIFY (30 SECONDS)
+────────────────────────────────────────────────────────────────
+1. netlify.com
+2. "New site from Git"
+3. Select this repo
+4. "Deploy"
+5. Wait 30 seconds
+6. LIVE ✅
+
+VERCEL (30 SECONDS)
+────────────────────────────────────────────────────────────────
+1. vercel.com
+2. "New Project"
+3. Select this repo
+4. "Deploy"
+5. Wait 30 seconds
+6. LIVE ✅
+
+GITHUB PAGES (2 MINUTES)
+────────────────────────────────────────────────────────────────
+1. Your repo
+2. Settings → Pages
+3. Main branch
+4. Save
+5. Wait 1 minute
+6. URL appears
+7. LIVE ✅
+
+That's it. You're done. Share the URL with your team.
+
+Questions? Read README_FIRST.txt
+
+Status: PRODUCTION-READY
+Go. Now. 🚀
