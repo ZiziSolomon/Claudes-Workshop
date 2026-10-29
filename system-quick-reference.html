@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Quick Reference Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            color: #e0e0e0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #667eea;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            color: #999;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .system-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 50px;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 0.85em;
+        }
+
+        .role-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .role-btn {
+            padding: 15px 20px;
+            background: rgba(30, 41, 59, 0.8);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 8px;
+            color: #a0a0a0;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .role-btn:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .role-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+            color: white;
+        }
+
+        .resources-section {
+            margin-bottom: 50px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .section-icon {
+            font-size: 2.5em;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .section-description {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .resource-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 10px;
+            padding: 18px;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: #e0e0e0;
+            cursor: pointer;
+        }
+
+        .resource-card:hover {
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .resource-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .resource-name {
+            font-weight: 600;
+            color: #a0d4f7;
+            margin-bottom: 6px;
+            font-size: 0.95em;
+        }
+
+        .resource-description {
+            color: #999;
+            font-size: 0.85em;
+            flex: 1;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .resource-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .resource-tag {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.15);
+            color: #a0d4f7;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        .time-estimate {
+            color: #f59e0b;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        .role-specific {
+            display: none;
+        }
+
+        .role-specific.active {
+            display: block;
+        }
+
+        .quick-nav {
+            background: rgba(102, 126, 234, 0.05);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 50px;
+        }
+
+        .quick-nav h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .quick-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .quick-nav-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 3px solid #667eea;
+            text-decoration: none;
+            color: #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .quick-nav-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-left-color: #764ba2;
+        }
+
+        .quick-nav-title {
+            color: #a0d4f7;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .quick-nav-desc {
+            color: #999;
+            font-size: 0.8em;
+        }
+
+        .status-banner {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            color: #10b981;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .system-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .role-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚇 Taipei Metro System</h1>
+            <p>Complete Knowledge System Quick Reference</p>
+            <p style="font-size: 0.9em; color: #a0a0a0; margin-top: 10px;">23 interactive tools + 22 guides + 5 case studies</p>
+        </header>
+
+        <div class="status-banner">
+            ✅ Production-ready | 40+ deliverables | Zero dependencies | Works offline
+        </div>
+
+        <div class="system-stats">
+            <div class="stat">
+                <div class="stat-value">23</div>
+                <div class="stat-label">Tools</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">22</div>
+                <div class="stat-label">Guides</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">40+</div>
+                <div class="stat-label">Deliverables</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">9</div>
+                <div class="stat-label">Disciplines</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">70+</div>
+                <div class="stat-label">Years History</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">5</div>
+                <div class="stat-label">Case Studies</div>
+            </div>
+        </div>
+
+        <h2 style="color: #667eea; margin-bottom: 20px; text-align: center; font-size: 1.3em;">👤 Choose Your Role</h2>
+        <div class="role-selector">
+            <button class="role-btn active" onclick="filterByRole('all')">All Resources</button>
+            <button class="role-btn" onclick="filterByRole('planner')">🏛️ Planner</button>
+            <button class="role-btn" onclick="filterByRole('engineer')">⚙️ Engineer</button>
+            <button class="role-btn" onclick="filterByRole('finance')">💰 Finance</button>
+            <button class="role-btn" onclick="filterByRole('policy')">📊 Policy</button>
+            <button class="role-btn" onclick="filterByRole('student')">🎓 Student</button>
+        </div>
+
+        <!-- Visualization Tools -->
+        <div class="role-specific active" id="all" style="display: block;">
+            <div class="resources-section">
+                <div class="section-header">
+                    <div class="section-icon">🗺️</div>
+                    <div>
+                        <div class="section-title">Visualization & Exploration</div>
+                        <div class="section-description">Maps, timelines, comparisons</div>
+                    </div>
+                </div>
+                <div class="resource-grid" id="visualization-grid"></div>
+            </div>
+
+            <!-- Operations -->
+            <div class="resources-section">
+                <div class="section-header">
+                    <div class="section-icon">⚙️</div>
+                    <div>
+                        <div class="section-title">Operations & Simulation</div>
+                        <div class="section-description">Run, test, and optimize systems</div>
+                    </div>
+                </div>
+                <div class="resource-grid" id="operations-grid"></div>
+            </div>
+
+            <!-- Planning -->
+            <div class="resources-section">
+                <div class="section-header">
+                    <div class="section-icon">🎯</div>
+                    <div>
+                        <div class="section-title">Planning & Design</div>
+                        <div class="section-description">Design, analyze, and plan</div>
+                    </div>
+                </div>
+                <div class="resource-grid" id="planning-grid"></div>
+            </div>
+
+            <!-- Analysis -->
+            <div class="resources-section">
+                <div class="section-header">
+                    <div class="section-icon">📊</div>
+                    <div>
+                        <div class="section-title">Analysis & Impact</div>
+                        <div class="section-description">Financial, environmental, resilience</div>
+                    </div>
+                </div>
+                <div class="resource-grid" id="analysis-grid"></div>
+            </div>
+
+            <!-- Project Management -->
+            <div class="resources-section">
+                <div class="section-header">
+                    <div class="section-icon">📦</div>
+                    <div>
+                        <div class="section-title">Project Management</div>
+                        <div class="section-description">Planning, tracking, verification</div>
+                    </div>
+                </div>
+                <div class="resource-grid" id="project-grid"></div>
+            </div>
+
+            <!-- Reference & Guides -->
+            <div class="resources-section">
+                <div class="section-header">
+                    <div class="section-icon">📖</div>
+                    <div>
+                        <div class="section-title">Reference & Guides</div>
+                        <div class="section-description">Documentation, learning paths, frameworks</div>
+                    </div>
+                </div>
+                <div class="resource-grid" id="guides-grid"></div>
+            </div>
+        </div>
+
+        <!-- Quick Navigation -->
+        <div class="quick-nav">
+            <h2>⚡ Quick Navigation</h2>
+            <div class="quick-nav-grid">
+                <a href="START_HERE_ONE_HOUR.md" class="quick-nav-item">
+                    <div class="quick-nav-title">Start Here</div>
+                    <div class="quick-nav-desc">1-hour orientation</div>
+                </a>
+                <a href="QUICK_REFERENCE_ONE_PAGER.md" class="quick-nav-item">
+                    <div class="quick-nav-title">One-Pager</div>
+                    <div class="quick-nav-desc">System summary</div>
+                </a>
+                <a href="SYSTEM_CONTENTS_GUIDE.md" class="quick-nav-item">
+                    <div class="quick-nav-title">Full Index</div>
+                    <div class="quick-nav-desc">Complete map</div>
+                </a>
+                <a href="IMPLEMENTATION_CHECKLIST.md" class="quick-nav-item">
+                    <div class="quick-nav-title">Planning Guide</div>
+                    <div class="quick-nav-desc">7-phase workbook</div>
+                </a>
+                <a href="DEPLOYMENT_GUIDE.md" class="quick-nav-item">
+                    <div class="quick-nav-title">Deploy</div>
+                    <div class="quick-nav-desc">7 hosting options</div>
+                </a>
+                <a href="project-kickoff-checklist.html" class="quick-nav-item">
+                    <div class="quick-nav-title">Month 1 Plan</div>
+                    <div class="quick-nav-desc">First steps</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tools = {
+            visualization: [
+                { icon: '📍', name: 'Circular Line Map', desc: 'Static map with key statistics', time: '5 min', file: 'taipei-metro-circular.html' },
+                { icon: '🎬', name: 'Interactive Explorer', desc: 'Real-time animated view with trains', time: '10 min', file: 'taipei-metro-interactive.html' },
+                { icon: '🌐', name: 'Full Network Map', desc: 'All 6 lines integrated view', time: '10 min', file: 'taipei-metro-full-system.html' },
+                { icon: '📅', name: 'Timeline', desc: '70-year evolution history', time: '15 min', file: 'circular-metro-timeline.html' },
+                { icon: '🌍', name: 'Global Comparison', desc: '5 cities side-by-side', time: '15 min', file: 'circular-metro-comparison.html' },
+                { icon: '🔍', name: 'Station Finder', desc: '107 stations searchable', time: '5 min', file: 'taipei-metro-station-finder.html' }
+            ],
+            operations: [
+                { icon: '🎮', name: 'Operations Simulator', desc: 'Real-time train and passenger flow', time: '20 min', file: 'taipei-metro-simulator.html' },
+                { icon: '📺', name: 'Departure Board', desc: 'Live arrivals and crowding', time: '5 min', file: 'taipei-metro-departure-board.html' },
+                { icon: '📈', name: 'Capacity Analyzer', desc: 'Stress-test under demand', time: '15 min', file: 'taipei-metro-capacity-analyzer.html' }
+            ],
+            planning: [
+                { icon: '🛣️', name: 'Route Planner', desc: 'Pathfinding and distances', time: '5 min', file: 'taipei-metro-route-planner.html' },
+                { icon: '🏗️', name: 'Design Optimizer', desc: 'Customize line parameters', time: '20 min', file: 'circular-line-design-tool.html' },
+                { icon: '📍', name: 'Accessibility Analyzer', desc: 'Coverage and equity analysis', time: '15 min', file: 'taipei-metro-accessibility-analyzer.html' },
+                { icon: '🏗️', name: 'Construction Planner', desc: 'Project timeline & phasing', time: '15 min', file: 'taipei-metro-construction-planner.html' },
+                { icon: '✅', name: 'Kick-Off Checklist', desc: 'Month 1 action plan', time: '30 min', file: 'project-kickoff-checklist.html' }
+            ],
+            analysis: [
+                { icon: '💰', name: 'Economic Model', desc: 'Financial viability analysis', time: '20 min', file: 'taipei-metro-economic-model.html' },
+                { icon: '🌱', name: 'Environmental Impact', desc: 'CO₂ and sustainability metrics', time: '10 min', file: 'taipei-metro-environmental-impact.html' },
+                { icon: '🛡️', name: 'Resilience Analyzer', desc: 'Disruption scenario testing', time: '15 min', file: 'taipei-metro-resilience-analyzer.html' },
+                { icon: '📚', name: 'Lessons Learned', desc: '18 pitfalls to avoid', time: '15 min', file: 'taipei-metro-lessons-learned.html' }
+            ],
+            project: [
+                { icon: '🔍', name: 'System Verification', desc: 'Automated QA validation', time: '5 min', file: 'SYSTEM_VERIFICATION.html' },
+                { icon: '🎓', name: 'Quiz Game', desc: '15-question learning test', time: '20 min', file: 'circular-metro-quiz.html' },
+                { icon: '📊', name: 'Data Reference', desc: 'Complete system specifications', time: '5 min', file: 'taipei-metro-data.json' }
+            ],
+            guides: [
+                { icon: '📖', name: 'Analysis', desc: '70-year global study', time: '45 min', file: 'CIRCULAR_METRO_ANALYSIS.md' },
+                { icon: '⚙️', name: 'Design Standards', desc: '14-part design framework', time: '60 min', file: 'DESIGN_PRINCIPLES.md' },
+                { icon: '🎯', name: 'Case Studies', desc: 'Bangkok, Seoul, Mexico City, Singapore, Manila', time: '60 min', file: 'CASE_STUDIES_APPLIED.md' },
+                { icon: '💰', name: 'Financing Guide', desc: '10 funding mechanisms', time: '90 min', file: 'FINANCING_STRATEGY_GUIDE.md' },
+                { icon: '🛡️', name: 'Risk Framework', desc: '8 risk categories, 50+ mitigations', time: '90 min', file: 'RISK_ASSESSMENT_FRAMEWORK.md' },
+                { icon: '📊', name: 'Success Metrics', desc: '20+ KPIs across 5 phases', time: '60 min', file: 'SUCCESS_METRICS_FRAMEWORK.md' },
+                { icon: '🗣️', name: 'Stakeholder Toolkit', desc: '6 communication frameworks', time: '60 min', file: 'STAKEHOLDER_COMMUNICATION_TOOLKIT.md' },
+                { icon: '📋', name: 'Implementation', desc: 'Detailed 7-phase workbook', time: '90 min', file: 'IMPLEMENTATION_CHECKLIST.md' },
+                { icon: '🗓️', name: 'Roadmap Template', desc: '10+ year timeline with 40+ milestones', time: '60 min', file: 'IMPLEMENTATION_ROADMAP_TEMPLATE.md' },
+                { icon: '📚', name: 'Glossary', desc: '100+ definitions and terms', time: 'Reference', file: 'GLOSSARY_TERMINOLOGY.md' },
+                { icon: '🔗', name: 'Architecture', desc: 'How everything integrates', time: '30 min', file: 'SYSTEM_ARCHITECTURE.md' },
+                { icon: '💼', name: 'Executive Summary', desc: 'One-page project overview', time: '15 min', file: 'PROJECT_SUMMARY.md' },
+                { icon: '📖', name: 'Contents Guide', desc: 'Complete resource map', time: '20 min', file: 'SYSTEM_CONTENTS_GUIDE.md' },
+                { icon: '🚀', name: 'Deployment Guide', desc: 'Hosting and deployment options', time: '30 min', file: 'DEPLOYMENT_GUIDE.md' }
+            ]
+        };
+
+        function createResourceCard(tool) {
+            const href = tool.file.endsWith('.md') || tool.file.endsWith('.json') ? tool.file : tool.file;
+            return `
+                <a href="${href}" class="resource-card" target="_blank">
+                    <div class="resource-icon">${tool.icon}</div>
+                    <div class="resource-name">${tool.name}</div>
+                    <div class="resource-description">${tool.desc}</div>
+                    <div class="resource-meta">
+                        <span class="resource-tag">${tool.time}</span>
+                    </div>
+                </a>
+            `;
+        }
+
+        function renderTools() {
+            document.getElementById('visualization-grid').innerHTML = tools.visualization.map(createResourceCard).join('');
+            document.getElementById('operations-grid').innerHTML = tools.operations.map(createResourceCard).join('');
+            document.getElementById('planning-grid').innerHTML = tools.planning.map(createResourceCard).join('');
+            document.getElementById('analysis-grid').innerHTML = tools.analysis.map(createResourceCard).join('');
+            document.getElementById('project-grid').innerHTML = tools.project.map(createResourceCard).join('');
+            document.getElementById('guides-grid').innerHTML = tools.guides.map(createResourceCard).join('');
+        }
+
+        function filterByRole(role) {
+            // Update button state
+            document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // For now, just show all - could add role-specific filtering later
+            renderTools();
+        }
+
+        window.addEventListener('load', renderTools);
+    </script>
+</body>
+</html>
