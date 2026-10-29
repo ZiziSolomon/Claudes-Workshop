@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quarterly Roadmap Planner — Taipei Metro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            color: #e0e0e0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #667eea;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #999;
+            font-size: 0.95em;
+        }
+
+        .controls {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        input[type="number"],
+        select {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            color: #e0e0e0;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            grid-column: 1 / -1;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .roadmap-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .quarter-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .quarter-card:hover {
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .quarter-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px;
+            border-radius: 8px;
+            margin: -20px -20px 15px -20px;
+            text-align: center;
+        }
+
+        .quarter-title {
+            color: white;
+            font-weight: 600;
+            font-size: 1.2em;
+            margin-bottom: 4px;
+        }
+
+        .quarter-year {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+        }
+
+        .milestone {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border-left: 3px solid #667eea;
+        }
+
+        .milestone-title {
+            color: #a0d4f7;
+            font-weight: 600;
+            font-size: 0.95em;
+            margin-bottom: 6px;
+        }
+
+        .milestone-items {
+            list-style: none;
+            font-size: 0.85em;
+            color: #a0a0a0;
+        }
+
+        .milestone-items li {
+            padding: 3px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .milestone-items li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+        }
+
+        .decision-gate {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 12px;
+            font-size: 0.85em;
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        .gate-icon {
+            margin-right: 6px;
+        }
+
+        .phase-divider {
+            background: rgba(30, 41, 59, 0.8);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 40px;
+            text-align: center;
+            grid-column: 1 / -1;
+        }
+
+        .phase-title {
+            color: #667eea;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .phase-description {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .summary {
+            background: rgba(102, 126, 234, 0.05);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+        .summary h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .summary-stat {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .summary-stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .summary-stat-label {
+            color: #999;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        .export-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .export-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.6em;
+            }
+
+            .roadmap-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📅 Quarterly Roadmap Planner</h1>
+            <p>Break down your 10-year circular metro project into quarterly milestones</p>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="startYear">Start Year</label>
+                <input type="number" id="startYear" value="2026" min="2020" max="2030">
+            </div>
+            <div class="control-group">
+                <label for="projectName">Project Name</label>
+                <input type="text" id="projectName" value="Circular Metro Line" placeholder="e.g., Bangkok Ring Transit">
+            </div>
+            <button onclick="generateRoadmap()">📊 Generate Roadmap</button>
+        </div>
+
+        <div class="roadmap-container" id="roadmapContainer"></div>
+
+        <div class="summary" id="summary" style="display: none;">
+            <h2>📈 Project At A Glance</h2>
+            <div class="summary-grid">
+                <div class="summary-stat">
+                    <div class="summary-stat-value">40</div>
+                    <div class="summary-stat-label">Quarters</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="summary-stat-value">5</div>
+                    <div class="summary-stat-label">Project Phases</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="summary-stat-value">5</div>
+                    <div class="summary-stat-label">Decision Gates</div>
+                </div>
+                <div class="summary-stat">
+                    <div class="summary-stat-value">120+</div>
+                    <div class="summary-stat-label">Milestones</div>
+                </div>
+            </div>
+            <p style="color: #a0a0a0; margin-top: 15px;">
+                This roadmap provides a detailed quarterly breakdown of a typical circular metro project. Adjust milestones based on your city's specific conditions, constraints, and priorities. Use this as a template, not a rigid plan.
+            </p>
+            <button class="export-button" onclick="exportRoadmap()">📥 Export Roadmap</button>
+        </div>
+    </div>
+
+    <script>
+        const phases = [
+            {
+                name: "Phase 1: Planning & Feasibility (Months 1-12)",
+                description: "Concept validation, demand studies, stakeholder engagement, preliminary design",
+                quarters: [
+                    {
+                        q: 1,
+                        year: 0,
+                        milestones: [
+                            "Project kick-off and team assembly",
+                            "Stakeholder mapping and initial engagement",
+                            "Demand forecasting study initiated",
+                            "Preliminary alignment studies (3-5 corridors)"
+                        ],
+                        gate: "Gate 1A: Concept approved, funding direction identified"
+                    },
+                    {
+                        q: 2,
+                        year: 0,
+                        milestones: [
+                            "Demand study results (feasibility validation)",
+                            "Environmental screening completed",
+                            "Geological survey of top 2 corridors",
+                            "Preliminary financial model"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 3,
+                        year: 0,
+                        milestones: [
+                            "Site selection finalized",
+                            "30% preliminary design",
+                            "Cost estimate range ($X-Y billion)",
+                            "Funding strategy framework"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 4,
+                        year: 0,
+                        milestones: [
+                            "Political commitment secured",
+                            "60% of funding pathway identified",
+                            "Public communication campaign launch",
+                            "Phase 1 completion and Phase 2 approval"
+                        ],
+                        gate: "Gate 1: Feasibility Approved — demand ≥200k daily, funding pathway clear, political support strong"
+                    }
+                ]
+            },
+            {
+                name: "Phase 2: Planning & Design (Months 13-24)",
+                description: "Full demand studies, environmental compliance, detailed design, permits, public approval",
+                quarters: [
+                    {
+                        q: 5,
+                        year: 1,
+                        milestones: [
+                            "Detailed demand study across all neighborhoods",
+                            "Environmental impact assessment (EIA) initiated",
+                            "60% detailed engineering design",
+                            "Station location optimization"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 6,
+                        year: 1,
+                        milestones: [
+                            "EIA completed, permit applications filed",
+                            "Archaeological survey (if required)",
+                            "Public consultation rounds 1-2",
+                            "Procurement strategy finalized"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 7,
+                        year: 1,
+                        milestones: [
+                            "90% design completion",
+                            "Systems specifications finalized",
+                            "Equipment lists and RFQs prepared",
+                            "Financing approval milestones"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 8,
+                        year: 1,
+                        milestones: [
+                            "All permits obtained",
+                            "Design 100% complete",
+                            "Development bank loan approved",
+                            "Government budget commitment finalized"
+                        ],
+                        gate: "Gate 2: Financing Confirmed — 80%+ of funding secured, all major permits approved"
+                    }
+                ]
+            },
+            {
+                name: "Phase 3: Procurement & Land Acquisition (Months 25-38)",
+                description: "Acquire land, procure rolling stock, award major construction contracts, prepare for construction",
+                quarters: [
+                    {
+                        q: 9,
+                        year: 2,
+                        milestones: [
+                            "Rolling stock RFQ issued and evaluated",
+                            "Systems and signaling procurement started",
+                            "Land acquisition begins (first 30% completed)",
+                            "Construction contracts prepared for bidding"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 10,
+                        year: 2,
+                        milestones: [
+                            "Rolling stock contract awarded (18-month lead time)",
+                            "Systems integration RFQ completed",
+                            "60% of land acquired",
+                            "Major construction bids received and evaluated"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 11,
+                        year: 2,
+                        milestones: [
+                            "All major construction contracts signed",
+                            "Construction mobilization plan finalized",
+                            "90% of land acquired",
+                            "Community relocation support program active"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 12,
+                        year: 2,
+                        milestones: [
+                            "100% land acquisition complete",
+                            "Final preparation for ground-breaking",
+                            "Construction workforce recruitment and training begins",
+                            "100% financing in place"
+                        ],
+                        gate: "Gate 3: Ready to Break Ground — 100% financing secured, permits obtained, land acquired, contracts signed"
+                    }
+                ]
+            },
+            {
+                name: "Phase 4: Civil Construction & Systems (Months 39-108)",
+                description: "Tunneling, station construction, systems installation, testing (54 months / 4.5 years)",
+                quarters: [
+                    {
+                        q: 13,
+                        year: 3,
+                        milestones: [
+                            "Ground-breaking and ceremonial launch",
+                            "Tunneling begins (first section)",
+                            "Station excavation starts (initial 3 stations)",
+                            "Public communication program intensifies"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 14,
+                        year: 3,
+                        milestones: [
+                            "Tunneling reaches 10% completion",
+                            "First station box nearing completion",
+                            "Systems fabrication begins",
+                            "Monthly public progress reports"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 15,
+                        year: 3,
+                        milestones: [
+                            "Rolling stock delivery begins (first trains arrive)",
+                            "Tunneling at 25% completion",
+                            "Station construction at 30%",
+                            "Depot/maintenance facility construction"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 16,
+                        year: 3,
+                        milestones: [
+                            "Tunneling reaches 40% completion",
+                            "First 5 stations structurally complete",
+                            "Systems integration begins",
+                            "Staff hiring and training accelerates"
+                        ],
+                        gate: null
+                    },
+                    // Continue with Q17-Q52 (major construction period)
+                    {
+                        q: 25,
+                        year: 6,
+                        milestones: [
+                            "Tunneling 70% complete",
+                            "Station construction 75% complete",
+                            "All rolling stock delivered",
+                            "Systems integration 50% complete"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 40,
+                        year: 10,
+                        milestones: [
+                            "Tunneling 95% complete",
+                            "All station construction complete",
+                            "All rolling stock in depot",
+                            "Systems integration 90% complete"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 50,
+                        year: 12,
+                        milestones: [
+                            "Tunneling 100% complete",
+                            "Track laying complete",
+                            "Systems integration 100% complete",
+                            "Pre-commissioning testing begins"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 52,
+                        year: 12,
+                        milestones: [
+                            "All construction substantially complete",
+                            "Safety inspections and certifications in progress",
+                            "Staff training 80% complete",
+                            "Soft opening preparations"
+                        ],
+                        gate: "Gate 4: Construction Complete — ready for testing and commissioning"
+                    }
+                ]
+            },
+            {
+                name: "Phase 5: Testing & Commissioning (Months 109-120)",
+                description: "Safety testing, staff training, soft opening, operational readiness (12 months)",
+                quarters: [
+                    {
+                        q: 53,
+                        year: 13,
+                        milestones: [
+                            "Soft opening begins (limited schedule, low volume)",
+                            "Staff-only operations (weeks 1-4)",
+                            "Safety issue identification and resolution",
+                            "Daily operational testing and refinement"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 54,
+                        year: 13,
+                        milestones: [
+                            "Limited public operations (100-500 pax/day)",
+                            "Issue resolution and system optimization",
+                            "Integration with existing transit tested",
+                            "Passenger feedback program active"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 55,
+                        year: 13,
+                        milestones: [
+                            "Expanded operations (5,000-50,000 pax/day)",
+                            "Operations at planned frequency tested",
+                            "All safety systems validated",
+                            "Integration with surrounding networks complete"
+                        ],
+                        gate: null
+                    },
+                    {
+                        q: 56,
+                        year: 13,
+                        milestones: [
+                            "Grand opening and full public operations",
+                            "All systems certified as safe and operational",
+                            "Operations meeting or exceeding performance targets",
+                            "Year 1 success metrics baseline established"
+                        ],
+                        gate: "Gate 5: Project Successful — Operational, safe, reaching ridership targets"
+                    }
+                ]
+            }
+        ];
+
+        function generateRoadmap() {
+            const startYear = parseInt(document.getElementById('startYear').value);
+            const projectName = document.getElementById('projectName').value || 'Circular Metro Line';
+            const container = document.getElementById('roadmapContainer');
+            container.innerHTML = '';
+
+            let qIndex = 0;
+            phases.forEach((phase, phaseIdx) => {
+                // Add phase divider
+                const divider = document.createElement('div');
+                divider.className = 'phase-divider';
+                divider.innerHTML = `<div class="phase-title">${phase.name}</div><div class="phase-description">${phase.description}</div>`;
+                container.appendChild(divider);
+
+                // Add quarters
+                phase.quarters.forEach(quarter => {
+                    const card = document.createElement('div');
+                    card.className = 'quarter-card';
+
+                    const year = startYear + quarter.year;
+                    const quarterLabel = `Q${quarter.q} ${year}`;
+
+                    let html = `
+                        <div class="quarter-header">
+                            <div class="quarter-title">Quarter ${quarter.q}</div>
+                            <div class="quarter-year">${quarterLabel}</div>
+                        </div>
+                    `;
+
+                    quarter.milestones.forEach(milestone => {
+                        html += `
+                            <div class="milestone">
+                                <div class="milestone-title">📍 ${milestone}</div>
+                            </div>
+                        `;
+                    });
+
+                    if (quarter.gate) {
+                        html += `<div class="decision-gate"><span class="gate-icon">⚠️</span>${quarter.gate}</div>`;
+                    }
+
+                    card.innerHTML = html;
+                    container.appendChild(card);
+                });
+            });
+
+            document.getElementById('summary').style.display = 'block';
+        }
+
+        function exportRoadmap() {
+            const startYear = parseInt(document.getElementById('startYear').value);
+            const projectName = document.getElementById('projectName').value || 'Circular Metro Line';
+
+            let text = `QUARTERLY ROADMAP — ${projectName}\n`;
+            text += `Starting: ${startYear}\n`;
+            text += `Duration: 10 years (40 quarters)\n\n`;
+
+            phases.forEach((phase, idx) => {
+                text += `\n${'='.repeat(70)}\n`;
+                text += phase.name.toUpperCase() + '\n';
+                text += phase.description + '\n';
+                text += '='.repeat(70) + '\n\n';
+
+                phase.quarters.forEach(q => {
+                    const year = startYear + q.year;
+                    text += `Q${q.q} ${year}\n`;
+                    text += '-'.repeat(20) + '\n';
+                    q.milestones.forEach(m => {
+                        text += `  • ${m}\n`;
+                    });
+                    if (q.gate) {
+                        text += `  ⚠️ DECISION GATE: ${q.gate}\n`;
+                    }
+                    text += '\n';
+                });
+            });
+
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `quarterly-roadmap-${new Date().getFullYear()}.txt`;
+            a.click();
+        }
+
+        // Auto-generate on load
+        window.addEventListener('load', generateRoadmap);
+    </script>
+</body>
+</html>
