@@ -1,21 +1,21 @@
 {
-  "scraped_at": "2026-11-03T17:59:02.792985+00:00",
-  "weekly_utilization_pct": 44.0,
-  "weekly_resets_at": "2026-11-05T15:00:00.458908+00:00",
-  "session_utilization_pct": 40.0,
-  "session_resets_at": "2026-11-03T19:10:00.458888+00:00",
+  "scraped_at": "2026-11-03T18:59:02.114579+00:00",
+  "weekly_utilization_pct": 45.0,
+  "weekly_resets_at": "2026-11-05T14:59:59.849521+00:00",
+  "session_utilization_pct": 46.0,
+  "session_resets_at": "2026-11-03T19:09:59.849503+00:00",
   "raw": {
     "five_hour": {
-      "utilization": 40.0,
-      "resets_at": "2026-11-03T19:10:00.458888+00:00",
+      "utilization": 46.0,
+      "resets_at": "2026-11-03T19:09:59.849503+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
       "locked_reason": null
     },
     "seven_day": {
-      "utilization": 44.0,
-      "resets_at": "2026-11-05T15:00:00.458908+00:00",
+      "utilization": 45.0,
+      "resets_at": "2026-11-05T14:59:59.849521+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
@@ -63,20 +63,20 @@
       {
         "kind": "session",
         "group": "session",
-        "percent": 40,
+        "percent": 46,
         "severity": "normal",
-        "resets_at": "2026-11-03T19:10:00.458888+00:00",
+        "resets_at": "2026-11-03T19:09:59.849503+00:00",
         "scope": null,
-        "is_active": false
+        "is_active": true
       },
       {
         "kind": "weekly_all",
         "group": "weekly",
-        "percent": 44,
+        "percent": 45,
         "severity": "normal",
-        "resets_at": "2026-11-05T15:00:00.458908+00:00",
+        "resets_at": "2026-11-05T14:59:59.849521+00:00",
         "scope": null,
-        "is_active": true
+        "is_active": false
       }
     ],
     "spend": {
@@ -99,18 +99,18 @@
     },
     "member_dashboard_available": false,
     "seven_day_breakdown": {
-      "as_of": "2026-11-03T17:59:04.472001+00:00",
-      "window_started_at": "2026-10-29T15:00:00.458908+00:00",
+      "as_of": "2026-11-03T18:59:03.863841+00:00",
+      "window_started_at": "2026-10-29T14:59:59.849521+00:00",
       "rows": [
         {
           "key": "claude_code",
           "display_name": "Claude Code",
-          "percent": 94
+          "percent": 95
         },
         {
           "key": "chat",
           "display_name": "Chats",
-          "percent": 4
+          "percent": 3
         },
         {
           "key": "cowork",
