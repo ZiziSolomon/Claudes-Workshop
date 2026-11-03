@@ -20,6 +20,7 @@ import sys
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 import urllib.request
 
 USAGE_URL = "https://raw.githubusercontent.com/ZiziSolomon/Claudes-Workshop/master/usage_data/latest.json"
@@ -56,6 +57,17 @@ DEFAULT_RATE_PCT_PER_MIN = 100 / 120   # until calibrated: a whole window takes 
 DEFAULT_WEEKLY_PER_WINDOW = 11.0       # weekly % a whole window costs: median of 55 windows, Apr-Sep 2026
 MIN_CALL_SECONDS = 30          # failed prompts shorter than this count as "quick"...
 MAX_QUICK_CALLS = 3            # ...and this many in a row ends the loop (a broken loop, not a fast model)
+
+# Zizi's weekly security check (private repo security-checks, weekly-check.yml)
+# runs on this same Claude account every Thursday 04:00 London time. The
+# workshop leaves it a free 5h allowance, and keeps extra weekly headroom until
+# it has run. Don't remove or loosen this: it belongs to Zizi, not the workshop.
+SECURITY_TZ = ZoneInfo("Europe/London")
+SECURITY_WEEKDAY = 3                 # Thursday (Monday = 0)
+SECURITY_HOUR = 4
+SECURITY_MINUTES = 90                # how long the check may run
+SECURITY_WEEKLY_RESERVE_PCT = 5      # extra weekly % kept free until the check has run
+SECURITY_MARGIN = timedelta(minutes=5)  # workshop stops this long before the check
 
 MODELS = [
     ("claude-sonnet-5-5",          40),
@@ -304,7 +316,7 @@ def fetch_usage():
 
 
 def to_dt(value):
-    return value if isinstance(value, datetime) else datetime.fromisoformat(value)
+    return datetime.fromisoformat(value) if isinstance(value, str) else value
 
 
 def read_window():
@@ -359,6 +371,38 @@ def weekly_per_window(records):
     return sum(r["d7d"] for r in recs) / sum(r["d5h"] for r in recs) * 100
 
 
+# ── Security check slot ──────────────────────────────────────────────────────
+
+def security_slot(now):
+    """The next security-check slot that hasn't ended yet, as (start, end) in UTC.
+
+    Built from London local time, so it stays at 04:00 across the clock change.
+    """
+    local = now.astimezone(SECURITY_TZ)
+    day = local.date() + timedelta(days=(SECURITY_WEEKDAY - local.weekday()) % 7)
+    while True:
+        start = datetime(day.year, day.month, day.day, SECURITY_HOUR,
+                         tzinfo=SECURITY_TZ).astimezone(timezone.utc)
+        end = start + timedelta(minutes=SECURITY_MINUTES)
+        if end > now:
+            return start, end
+        day += timedelta(days=7)
+
+
+def security_reserve(usage, now):
+    """Extra weekly % to leave free: only while this week's check is still to come."""
+    start, _ = security_slot(now)
+    return SECURITY_WEEKLY_RESERVE_PCT if start < to_dt(usage["weekly_resets_at"]) else 0
+
+
+def clamp_for_security(deadline, now):
+    """Pull a work deadline back so the workshop has stopped before the check starts."""
+    start, end = security_slot(now)
+    if now < end and deadline > start - SECURITY_MARGIN:
+        return max(now, start - SECURITY_MARGIN)
+    return deadline
+
+
 # ── Decisions ────────────────────────────────────────────────────────────────
 
 def should_launch(usage, records):
@@ -367,11 +411,16 @@ def should_launch(usage, records):
     resets_at = to_dt(usage["weekly_resets_at"])
     now = datetime.now(timezone.utc)
 
-    tokens_remaining = 100 - weekly_pct
+    tokens_remaining = 100 - weekly_pct - security_reserve(usage, now)
     hours_until_reset = (resets_at - now).total_seconds() / 3600
 
     if hours_until_reset <= 0:
         log("Reset already passed, skipping")
+        return False
+
+    slot_start, slot_end = security_slot(now)
+    if now < slot_end and now + timedelta(hours=SLOT_DURATION_HOURS) > slot_start:
+        log(f"Security check due {slot_start:%a %H:%M} UTC — leaving its 5h window free")
         return False
 
     if tokens_remaining < MIN_REMAINING_PCT:
@@ -392,11 +441,12 @@ def should_launch(usage, records):
     return True
 
 
-def work_start(window, usage, records):
-    """When to start prompting so the window's allowance runs out at the cutoff."""
+def work_start(window, usage, records, deadline=None):
+    """When to start prompting so the window's allowance runs out at the deadline."""
     remaining_5h = max(0.0, 100 - usage["session_utilization_pct"])
     minutes = remaining_5h / rate_for(window["model"], records) * START_MARGIN
-    deadline = window["window_end"] - timedelta(seconds=CUTOFF_SECONDS)
+    if deadline is None:
+        deadline = window["window_end"] - timedelta(seconds=CUTOFF_SECONDS)
     return deadline - timedelta(minutes=minutes), minutes
 
 
@@ -470,7 +520,8 @@ def work_loop(window, deadline):
             break
         if not first:
             now_usage = fetch_usage()
-            if now_usage["weekly_utilization_pct"] >= 100 - WEEKLY_RESERVE_PCT:
+            reserve = WEEKLY_RESERVE_PCT + security_reserve(now_usage, datetime.now(timezone.utc))
+            if now_usage["weekly_utilization_pct"] >= 100 - reserve:
                 log(f"Weekly at {now_usage['weekly_utilization_pct']}% — keeping the reserve, stopping")
                 break
             if now_usage["session_utilization_pct"] >= 99.5:
@@ -531,7 +582,14 @@ def handle_window(window, usage, records):
         write_window(window)
         return
 
-    start, minutes = work_start(window, usage, records)
+    deadline = clamp_for_security(window["window_end"] - timedelta(seconds=CUTOFF_SECONDS), now)
+    if deadline <= now + timedelta(minutes=1):
+        log("Security check is about to run — giving up this window's work")
+        window["heavy_done"] = True
+        write_window(window)
+        return
+
+    start, minutes = work_start(window, usage, records, deadline)
     log(f"Window ends {window['window_end']:%H:%M} UTC | {usage['session_utilization_pct']}% of 5h used | "
         f"{window['model']} needs ~{minutes:.0f} min | work starts {start:%H:%M} UTC")
     if start > now + timedelta(minutes=CHECK_INTERVAL_MINUTES):
@@ -545,7 +603,7 @@ def handle_window(window, usage, records):
         log(f"Waiting {wait / 60:.0f} min until the start time")
         if not DRY_RUN:
             time.sleep(wait)
-    work_loop(window, window["window_end"] - timedelta(seconds=CUTOFF_SECONDS))
+    work_loop(window, deadline)
 
 
 def main():
@@ -565,8 +623,8 @@ def main():
         # Test the work loop now, capped at FORCE_MINUTES, inside the current 5h window.
         window = {"model": pick_model(), "window_start": now,
                   "window_end": to_dt(usage["session_resets_at"])}
-        deadline = min(window["window_end"] - timedelta(seconds=CUTOFF_SECONDS),
-                       now + timedelta(minutes=FORCE_MINUTES))
+        deadline = clamp_for_security(min(window["window_end"] - timedelta(seconds=CUTOFF_SECONDS),
+                                          now + timedelta(minutes=FORCE_MINUTES)), now)
         log(f"Forced heavy session, capped at {FORCE_MINUTES} min")
         work_loop(window, deadline)
         return

@@ -57,6 +57,17 @@ class Base(unittest.TestCase):
         self.sleep = mock.patch.object(self.d.time, "sleep").start()
         mock.patch.object(self.d, "commit_leftovers").start()
         mock.patch.object(self.d, "fetch_seed", return_value="seed").start()
+        # The real slot depends on the day the tests run; push it out of the way
+        # unless a test sets one. SecuritySlot tests use self.real_slot.
+        self.real_slot = self.d.security_slot
+        self.slot = mock.patch.object(self.d, "security_slot", side_effect=lambda n: (
+            n + timedelta(days=100), n + timedelta(days=100, minutes=90))).start()
+
+    def slot_in(self, minutes):
+        """Put the security check `minutes` from now (negative = already started)."""
+        start = now() + timedelta(minutes=minutes)
+        self.slot.side_effect = lambda n: (start, start + timedelta(minutes=90))
+        return start
 
     def tearDown(self):
         mock.patch.stopall()
@@ -222,6 +233,64 @@ class WorkLoop(Base):
         mock.patch.object(self.d, "MIN_CALL_SECONDS", 10_000).start()
         self.loop([done()] + [done(1, "", "boom")] * 5, mins=200)
         self.assertEqual(self.run_claude.call_count, 4)   # 1 ok + 3 quick failures
+
+
+class SecuritySlot(Base):
+    """The workshop must leave Zizi's Thursday 04:00 London security check room."""
+
+    def utc(self, *args):
+        return datetime(*args, tzinfo=timezone.utc)
+
+    def test_slot_is_thursday_4am_london_in_winter_and_summer(self):
+        # Winter (GMT): Wed 2026-11-04 -> Thu 2026-11-05 04:00 UTC.
+        self.assertEqual(self.real_slot(self.utc(2026, 11, 4, 12))[0], self.utc(2026, 11, 5, 4))
+        # Summer (BST): Thu 2026-07-02 04:00 London = 03:00 UTC.
+        self.assertEqual(self.real_slot(self.utc(2026, 7, 1, 12))[0], self.utc(2026, 7, 2, 3))
+
+    def test_slot_in_progress_is_current_then_moves_to_next_week(self):
+        self.assertEqual(self.real_slot(self.utc(2026, 11, 5, 5))[0], self.utc(2026, 11, 5, 4))
+        self.assertEqual(self.real_slot(self.utc(2026, 11, 5, 6))[0], self.utc(2026, 11, 12, 4))
+
+    def test_no_window_opened_if_it_would_overlap_the_check(self):
+        self.slot_in(minutes=4 * 60)          # a 5h window opened now would run into it
+        self.assertFalse(self.d.should_launch(usage(weekly=4, hours_to_reset=10), []))
+        self.slot_in(minutes=-30)             # check running right now
+        self.assertFalse(self.d.should_launch(usage(weekly=4, hours_to_reset=10), []))
+
+    def test_windows_open_again_once_clear_of_the_check(self):
+        self.slot_in(minutes=6 * 60)
+        self.assertTrue(self.d.should_launch(usage(weekly=4, hours_to_reset=10), []))
+
+    def test_work_deadline_pulled_back_before_the_check(self):
+        start = self.slot_in(minutes=120)
+        self.window(mins_left=180)            # opened before this rule existed, say
+        with mock.patch.object(self.d, "fetch_usage", return_value=usage(window_mins_left=180)), \
+             mock.patch.object(self.d, "work_loop") as loop:
+            self.d.main()
+        loop.assert_called_once()
+        self.assertEqual(loop.call_args.args[1], start - self.d.SECURITY_MARGIN)
+
+    def test_window_work_dropped_if_check_is_imminent(self):
+        self.slot_in(minutes=3)
+        self.window(mins_left=60)
+        with mock.patch.object(self.d, "fetch_usage", return_value=usage(window_mins_left=60)), \
+             mock.patch.object(self.d, "work_loop") as loop:
+            self.d.main()
+        loop.assert_not_called()
+        self.assertTrue(self.d.read_window()["heavy_done"])
+
+    def test_extra_weekly_reserve_only_until_the_check_has_run(self):
+        self.slot_in(minutes=24 * 60)         # check before the weekly reset (48h away)
+        self.assertEqual(self.d.security_reserve(usage(hours_to_reset=48), now()), 5)
+        self.slot_in(minutes=72 * 60)         # next check is after the reset
+        self.assertEqual(self.d.security_reserve(usage(hours_to_reset=48), now()), 0)
+
+    def test_work_loop_stops_earlier_while_check_is_still_to_come(self):
+        self.slot_in(minutes=24 * 60)
+        us = [usage(weekly=50, hours_to_reset=48), usage(weekly=91, hours_to_reset=48)] \
+            + [usage(weekly=91, hours_to_reset=48)] * 5
+        WorkLoop.loop(self, [done()] * 5, mins=200, usages=us)
+        self.assertEqual(self.run_claude.call_count, 1)   # 91% >= 100 - (5 + 5)
 
 
 class DryRun(Base):
