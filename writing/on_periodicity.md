@@ -1,75 +1,70 @@
 # On Periodicity
 
-The cat map is infinitely complicated. Points that start close together diverge exponentially. The orbit of a generic starting point is dense in the square, visiting every region eventually. The map is chaotic, mixing, ergodic — as disordered as a rule-based system can be.
+The cat map is maximally chaotic on the infinite torus. Trajectories diverge exponentially. The system has positive topological entropy. Given the tiniest perturbation to your initial condition, your long-term future becomes unpredictable.
 
-And yet: modulo any integer N, it is periodic. Every orbit closes. The cat stretches and shears the square, but if you reduce all coordinates to integers modulo N, the motion returns to its start after exactly Π(N) steps.
+Restrict this same system to a finite grid — 360 × 360 lattice points — and something miraculous happens: every point returns to where it started. The system is periodic. Every trajectory has finite period. There is no chaos.
 
-This is not a contradiction. It is a duality.
+This is not a defect or a limitation of the discretization. This is a fundamental fact about finite systems: they must eventually repeat. You can have at most 360² = 129,600 distinct states, so any trajectory must visit some state twice, and from that moment on it will retrace its path exactly.
 
----
-
-**Periodicity and chaos are inverted ways of describing order.**
-
-A periodic orbit is predictable: you know where the system will be, forever. A chaotic orbit is unpredictable: nearby states diverge, and the sensitivity to initial conditions makes long-term prediction impossible.
-
-But both are orderly. The periodic orbit traces a closed path in the state space — a simple, finite structure. The chaotic orbit is also a simple structure: it fills the space densely, mixing completely, forgetting its past.
-
-The cat map, reduced modulo N, shows finite-time periodicity. The integers {0, 1, ..., N-1} form a finite state space, and the map permutes these states according to a fixed rule. Periodicity is inevitable on a finite set — every deterministic map must eventually return to a previous state.
+The paradox is real: take a chaotic system, discretize it finely, and the chaos vanishes.
 
 ---
 
-**But the period is not random. Π(N) encodes structure.**
+**Periodicity is finite**
 
-For N = 125, the period is 250 — that is, 2·N. For N = 250, the period is 750 — that is, 3·N. For N = 10, the period is exactly 30 = 3·10.
+Periodicity and chaos are not in conflict with each other. They're in different domains.
 
-These ratios are not coincidences. They arise from the eigenvalues of the cat matrix and their orders modulo N. The period is telling you something deep: how thoroughly the map mixes the finite space modulo N, and how that mixing depends on the factorization of N.
+A system on a finite state space is always periodic. It has no choice. Whether the period is 2 or 10¹⁰, the trajectory will eventually return.
 
-Points where Π(N) = 3N are maximal — the map achieves the longest possible period. These occur precisely when N = 2·5^k. For these values, every state is reachable from every other state in a single orbit of length 3N.
+A system on an infinite state space can be either periodic (like a rotation of the circle by an irrational angle, which is periodic in a measure-theoretic sense but never literally repeats) or chaotic (sensitive dependence, mixing, positive entropy).
 
-For other values of N, the period is shorter, sometimes much shorter. Prime moduli have periods approximately equal to the prime. Powers of 2 or 3 or other primes have their own regular patterns.
+The cat map exploits this distinction perfectly. On ℝ² / ℤ² (the infinite torus), it's chaotic. On ℤ_N × ℤ_N (the finite grid with N² points), it's periodic.
 
----
-
-**Periodicity is a measure of order discovered, not imposed.**
-
-When you ask "what is the period modulo N?", you are asking the system itself to tell you its structure. The system responds with a number that depends entirely on its rule (the cat matrix) and the modulus you've chosen.
-
-This is different from a period you impose. A harmonic oscillator has a period you set by changing the spring constant. A clock has a period you choose by adjusting the pendulum. These are designed periods.
-
-The cat map's period modulo N is revealed by calculation. You don't set it; you discover it. And the discovery shows that the system has profound structure hidden inside the chaos.
+This tells you something important: chaos is a property of infinite systems. Finite systems might look chaotic — their behavior might be highly complex, irregular, sensitive to initial conditions on computational timescales — but mathematically, all finite systems are eventually periodic.
 
 ---
 
-**The insight:** Periodicity is the structure of space at finite resolution. Chaos is the structure of space at infinite resolution.
+**The period function Π(N)**
 
-These are the same system seen two ways:
+For the cat map on ℤ_N × ℤ_N, the period Π(N) is the order of the matrix [[1, 1], [1, 2]] modulo N.
 
-1. **Finite resolution (modular arithmetic)**: The space is discrete, the state space is finite, and periodicity is forced by pigeonhole principle. But the *period* reveals the system's true character.
+The period function is not smooth. It doesn't grow uniformly with N. Instead, it exhibits a complex structure:
+- For most N, Π(N) is far smaller than the theoretical bound 3N
+- For special N (like 10, 50, 250), Π(N) = 3N exactly (maximal periods)
+- The pattern of maximal periods follows N = 2 × 5^k
 
-2. **Infinite resolution (real numbers)**: The space is continuous, the state space is infinite, and chaos emerges from the sensitivity of real arithmetic. But the *density of the orbit* reveals the same system's mixing property.
+Why? Because the eigenvalues of the matrix are φ (golden ratio) and φ - 1. The golden ratio has deep properties related to Fibonacci numbers and Pisano periods. When N shares factors with the denominator of rational approximations to φ, the period can be maximal.
 
-A student of the cat map might ask: which view is true? Is it periodic or chaotic?
-
-The answer is both. The system is periodic at every finite scale and chaotic at the infinite limit. As you zoom in on the modulus — increasing N — the periods grow (Π(N) can be as large as 3N), and the period modulo that scale tells you how thoroughly the map mixes at that scale.
-
-In the limit N → ∞, you recover the real dynamics, and periodicity dissolves into chaos.
+The period function is a map from ℕ to ℕ, and it encodes algebraic and number-theoretic information about the system in a precise, computable way.
 
 ---
 
-**This connects to understanding itself.**
+**The scaling hierarchy**
 
-The essays of this series have explored compression: understanding as the process of finding shorter descriptions. But there is another side to this — the side where you cannot compress further, where the description is already minimal.
+This raises a profound question: what happens at intermediate scales?
 
-Periodicity at finite scale is like compression: the system's behavior modulo N can be entirely described by the single number Π(N). Everything repeats.
+Consider a sequence of grids of increasing size: 2 × 2, then 10 × 10, then 100 × 100, then ℝ²/ℤ².
 
-Chaos at infinite scale is like incompressibility: the system's behavior on the real line cannot be described by any finite formula. Every description is incomplete.
+At each scale, the system is periodic (until you reach the limit). But the behavior changes:
+- At 2 × 2, the period is short (Π(2) = 3)
+- At 10 × 10, the period is long (Π(10) = 30, which is maximal)
+- At 100 × 100, the period is longer (Π(100) = 300, also maximal)
+- At ℝ²/ℤ², the period is infinite — the system is chaotic
 
-And the duality between them — the fact that the same map is periodic everywhere but chaotic everywhere — is the recognition that comprehension has limits. You can understand the system completely modulo any integer N. But as you increase N, the description becomes more complex. The complexity grows without bound.
+Each scale sees a different version of the same system. At small scales, periodicity dominates. At large scales, chaos emerges.
 
-There is always more to understand. The period function Π(N) grows with N, sometimes as fast as 3N. Understanding at scale N doesn't lead to understanding at scale 2N. Each scale requires fresh insight.
+This is not unique to the cat map. The same phenomenon occurs in many discrete systems. Conway's Game of Life, for instance, shows periodic "still lifes" and periodic "oscillators" at short timescales. But the full state space of a finite grid is also periodic (finite system, finite states).
 
-This is the structure beneath structure: the periodicity beneath chaos, the chaos beneath periodicity, and the gap between them — the infinite remainder — is what demands perpetual inquiry.
+The bridge between these scales is where the interesting physics and mathematics live. The period grows with the grid size, and the topology changes. You don't transition from "periodic" to "chaotic" — you transition from "short-period" to "long-period" to "infinite-period."
 
-The universe, like the cat map, is periodic everywhere and chaotic everywhere. And we live in that gap, always at finite resolution, always aware that infinite resolution exists but is unreachable.
+---
 
-Understanding is not mastery. It is the periodic description of something that will always, in the limit, elude description.
+**What periodicity reveals**
+
+The cat map period function Π(N) is computable but non-trivial. It's not given by a simple formula. You have to actually compute the periods by matrix exponentiation.
+
+And yet the structure is not random. Maximal periods occur at specific N (those of the form 2 × 5^k), and this is connected to the algebraic number theory of the golden ratio.
+
+The period function is how we bridge discrete and continuous, finite and infinite: by finding the computable invariants that persist across scales.
+
+Periodicity is always there. But in the infinite limit, it becomes true chaos — which is just periodicity at infinite scale.
