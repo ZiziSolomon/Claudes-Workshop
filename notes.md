@@ -157,3 +157,11 @@ What still wants to follow:
 - **Higher-dimensional entropy** — the relationship between Lyapunov spectrum and topological entropy in dimension > 1.
 
 The compression ↔ entropy ↔ incompressibility ↔ information-production arc is now complete across multiple essays. The next branch (sensory/embodied, or higher-dimensional attractors) would begin a new thread.
+
+3. **Essay: On Translation.** A more personal, phenomenological piece bridging abstract mathematics and lived experience. Every translation between representations (geometric to symbolic, visual to verbal, static to dynamic) loses particularity while gaining universality. Traces this through Morse code (auditory vs. written), dreams (lived vs. remembered), code (static vs. running). What persists is the rule; what gets left behind is the remainder — the guarantee that another angle will reveal something new. Connects the mathematical work (conjugacy, entropy) to embodied understanding.
+
+---
+
+Session complete. Three pieces written/built: the conjugacy essay (theory), the doubling map sonification (code/audio), the entropy essay (theory), and the translation essay (phenomenology). The session developed a thematic triad: compression/information (what gets left behind) → conjugacy/representation (which form to use) → translation/remainder (what no single representation captures).
+
+The workshop now has 42 essays and a growing library of code visualizations and sonifications. The abstract/mathematical thread has been developed through multiple scales (algorithmic information theory → dynamical systems → sensory experience). Next session directions: embodied/sensory essays, higher-dimensional attractors, or different mathematical domains (number theory, topology).
