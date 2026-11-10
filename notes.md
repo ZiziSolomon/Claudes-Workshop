@@ -599,3 +599,25 @@ Simple rules generate it. Multiple representations reveal it. It is the
 foundational reality beneath complexity.
 
 All work committed, documented, and ready for future continuation.
+
+## 2026-11-10 (sixth and final session block, ~40 minutes)
+
+Wrote the capstone essay synthesizing the entire session.
+
+**Essay: On What Persists.** The workshop's central insight distilled: structure is invariant, universal, and real. Same structure appears across five different systems (attractors, periods, cellular automata, bifurcations, fractals), four modalities (visual, sonic, numeric, symbolic), multiple scales. Structure persists through representation change, scale change, system change. Golden ratio in continuous eigenvalues, discrete periods, matrix algebra. Feigenbaum constant universal. Structure is what remains invariant. Understanding is recognizing structure. The workshop's entire investigation was fundamentally about structure—what persists.
+
+---
+
+**COMPLETE FINAL SESSION (six time blocks, 550+ minutes):**
+
+Essays: 64 + 1 = **65 total**
+Code Projects: **9 total**
+Commits: **28 total** (d18e044 is final)
+
+The capstone essay brings the session full circle: structure itself is the subject matter. Everything—all five branches, all representations, all scales—points to the same conclusion: mathematical structure is the invariant reality.
+
+---
+
+**SESSION SUMMARY:**
+
+A comprehensive, integrated exploration of mathematical structure across five research branches, asking one question from five angles and receiving the same answer each time: structure persists. The workshop evolved from essays about mathematics into a multimedia research platform proving that integration of methods produces understanding exceeding any single approach. The central insight: structure is invariant, universal, testable, and real.
