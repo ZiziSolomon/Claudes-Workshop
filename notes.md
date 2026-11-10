@@ -191,3 +191,29 @@ What's open:
 - **Sonification of non-differential systems** — cellular automata, discrete maps as sound
 
 The sonification work has revealed something important: chaos is perceivable. Not chaotic-sounding (random noise), but truly perceivable structure that embeds the attractor's topology. The symmetry/asymmetry of the pitch contours maps directly to the symmetry/asymmetry of the differential equations.
+
+5. **Essay: On Why Sonify.** A philosophical reflection on the purpose of translating equations to sound. Equations describe statically, even when we speak of "time evolution"—they're god's-eye view. Sonification unfolds in time, embedding the listener. The sonification is not more complete than the equation, but different: it engages sensory and emotional systems, makes the abstract concrete. Understanding requires multiple modalities: equations address the mind, sonification addresses the body. Translation is not addition of aesthetics but healing of the rupture between abstract and sensory.
+
+---
+
+**Session totals (full extended session):**
+
+Essays written: 7 (Conjugacy, Symbolic Entropy, Translation, Attractor Sonification, Why Sonify)
+Code projects: 4 (Doubling Map Granular Sonification, Rössler Sonification, Aizawa Sonification, plus README documentation)
+Commits: 12
+
+The session developed three major arcs:
+1. **Mathematical structure** (Conjugacy, Entropy) — how different representations relate
+2. **Sonification as method** (Doubling Map, Lorenz, Rössler, Aizawa, Attractor Sonification essay) — making dynamics audible
+3. **Philosophy of representation** (Translation, Why Sonify) — what gets lost and gained in each encoding
+
+The attractor sonification work revealed: topological structure is perceivable through auditory representation. Chaos is not random—it's highly structured and this structure becomes apparent when embedded in time through sound.
+
+42 + 5 = 47 essays total. 7 sonification/visualization projects now in code/.
+
+Next obvious directions:
+- Π(N) visualization (Pisano periods, Lucas sequences mod N)
+- Comparison gallery showing all three attractors
+- Four-dimensional or five-dimensional attractors (Chen, Burke-Shaw, etc.)
+- Cellular automata / discrete dynamics sonification
+- Sensory / embodied essays to balance the abstract mathematical work
