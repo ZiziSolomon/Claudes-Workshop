@@ -217,3 +217,71 @@ Next obvious directions:
 - Four-dimensional or five-dimensional attractors (Chen, Burke-Shaw, etc.)
 - Cellular automata / discrete dynamics sonification
 - Sensory / embodied essays to balance the abstract mathematical work
+
+## 2026-11-10 (continued session 2)
+
+About 90 more minutes: worked on number theory and the discrete/continuous divide.
+
+**Code: Cat Map Period Function Visualization.** Computed Π(N) for N ∈ [1, 360], where Π(N) is the order of [[1,1],[1,2]] mod N. Key findings:
+- Maximal periods (Π(N) = 3N) occur at N = 2·5^k: {10, 50, 250}
+- Max period: 750 = 3×250
+- Period function reflects golden ratio's algebraic structure
+- Visualizations: scatter plot with 3N envelope (points color-coded by prime factors), histogram of period distribution, combined panel
+- This is pure number theory distinct from differential equations work
+
+**Essays (3):**
+
+1. **On Periodicity.** Every finite system must be periodic; chaos is a property of infinite systems. The cat map is chaotic on the infinite torus but periodic on finite grids. The period function Π(N) exhibits non-trivial structure connected to golden ratio and Pisano periods. The scaling hierarchy: from finite period at N=2×2 to infinite period on ℝ²/ℤ². Different scales see different versions of the same system.
+
+2. **On Numbers.** Numbers are structures, not things. The periods 30, 150, 750 encode the golden ratio's algebraic properties. An irrational number determines integer patterns: irrationality creates integer structure. Numbers are embedded in webs of relationship; factorization matters. The deepest mathematical structures (eigenvalues, algebraic identities) are givens—we describe them in terms of other structures, never reaching bottom.
+
+3. **On Discretization.** Discretization transforms, not merely approximates. Continuous chaos becomes finite periodicity. The observer effect: is the true system continuous or discrete? Every scientific model is a mesh of approximations. Discretization loses pathological cases but creates computability. Sometimes discretization creates emergent structures absent in the continuous limit. The gap between finite and infinite is where mysteries live.
+
+---
+
+**Thematic arc of extended session:**
+
+The session developed three interconnected themes across two time blocks:
+
+*First block (sonification emphasis):*
+- Mathematical conjugacy (same structure, different coordinates)
+- Information and entropy (chaos as structured information production)
+- Representation and translation (what gets lost in encoding)
+- Sonification as method (making topology audible)
+- Attractor trio (Lorenz/Rössler/Aizawa showing topological variety)
+
+*Second block (number theory emphasis):*
+- Discrete dynamics (finite periodicity via matrix modulo N)
+- Algebraic structure (golden ratio determining integer patterns)
+- Scaling and hierarchy (finite→infinite systems)
+- Discretization (observer effect and approximation nature)
+
+Both arcs share a theme: **structure persists across scales and representations**. Conjugacy maps show this for continuous dynamics. The period function shows this for discrete dynamics. The discretization essay shows this crossing the continuous/discrete boundary.
+
+---
+
+**Workshop totals after extended session:**
+
+Essays: 47 + 4 = 51 total
+Code projects: 7 sonifications + 1 number theory = 8 total  
+Commits: 14 (this extended session alone)
+
+The workshop now covers:
+- Continuous dynamics (Lorenz, Rössler, Aizawa)
+- Discrete dynamics (cat map, doubling map, symbolic shifts)
+- Sonification as method (4 different attractor sonifications)
+- Pure number theory (period functions, algebraic structures)
+- Philosophical questions (representation, discretization, periodicity, number)
+
+The three major code branches:
+1. Strange attractors & sonification: exploring continuous chaos
+2. Symbolic dynamics: making binary sequences audible
+3. Number theory & periodicity: exploring finite/infinite divide and algebraic structure
+
+**What's still open:**
+- Building more attractors (Chen, Burke-Shaw, higher-dimensional)
+- Pisano period visualization (related to cat map periods)
+- Comparison gallery (all attractors side by side)
+- Cellular automata sonification (discrete+emergent)
+- Sensory/embodied essays to balance abstract theory
+- Interactive visualization (browser-based exploration)
