@@ -487,3 +487,115 @@ High Priority: 4D/5D attractors, Pisano periods, comparison gallery, cellular au
 Medium Priority: Bifurcation in other systems, coupled oscillators, fractals, network topology, renormalization
 
 The workshop is comprehensive, well-documented, coherent in theme, and ready for continuation in any direction.
+
+## 2026-11-10 (fifth and final session block, ~50 minutes)
+
+Closed the session with fractals and self-similarity.
+
+**Code: Mandelbrot Set Visualization.** Four zoom levels (1600×1200 each) showing:
+- Full set: main body with circular bulbs
+- Zoom 1: right bulb detail with intricate boundary
+- Zoom 2: filaments connecting regions
+- Zoom 3: ultra-deep zoom revealing infinite complexity
+
+Colors by escape time. Demonstrates self-similar fractal structure at all scales. Connects to bifurcation: Mandelbrot set is parameter space for Julia sets; boundary marks order/chaos transitions.
+
+**Essay: On Fractals.** Self-similar structure repeating at every scale. Fractals have infinite detail from simple rules. Mandelbrot set self-similarity spatial (copies at different zooms); bifurcation self-similarity parameter-based (Feigenbaum scaling). Fractal dimension non-integer. Fractals natural (coastlines, mountains, trees). Connection: mathematics of bifurcation and fractals linked—route to chaos is fractal. Why fractals exist? Brute fact, foundational mystery.
+
+---
+
+**COMPLETE FINAL SESSION (five time blocks):**
+
+**Five Research Branches:**
+1. Continuous Chaos & Sonification (Block 1)
+2. Discrete Periodicity & Number Theory (Block 2)
+3. Emergent Complexity & Rule Dynamics (Block 3)
+4. Bifurcation & Universal Structure (Block 4)
+5. Fractals & Self-Similar Structure (Block 5)
+
+**Final Counts:**
+- Essays: 63 + 1 = **64 total**
+- Code Projects: 8 + 1 = **9 total**
+- Commits: 25 (3870d0c is final)
+- Visualizations: 16+ + 4 = **20+ total**
+
+---
+
+**CENTRAL THEME ACROSS ALL FIVE BRANCHES:**
+
+STRUCTURE IS INVARIANT AND INFINITE
+
+• Persists across representations (visual, sonic, numeric, symbolic)
+• Persists across scales (finite/infinite, small/large, zoom levels)
+• Persists across systems (attractors, periods, cellular automata, bifurcations, fractals)
+• Arises from simple rules applied iteratively
+• Has self-similar structure at all levels
+
+Examples of Invariance:
+- Golden ratio: eigenvalues, discrete periods, matrix structure
+- Feigenbaum constant: universal across all bifurcating systems
+- Fractal dimension: self-similarity from simple iteration rules
+- Topological structure: audible as temporal evolution in sonification
+
+---
+
+**Key Meta-Discovery:**
+
+The workshop discovered that structure itself is the subject matter. Not
+specific systems, but the invariant patterns that appear across systems.
+
+The same question asked from five angles:
+  "What structure persists when you change representation/scale/system?"
+
+Answer consistently: Mathematical structure (topology, invariants, algebraic
+properties, universal constants) survives all these transformations.
+
+This is testable, repeatable, and shown across multiple independent examples.
+
+---
+
+**COMPLETE WORKSHOP STATE (FINAL):**
+
+Essays: 64 (was 47 at session start; +17 this session)
+Code Projects: 9 (was 7; +2 new: bifurcation, Mandelbrot)
+Commits This Session: 25 (7191fab to 3870d0c)
+
+Audio: 5 WAV files (sonifications of dynamical systems)
+Visualizations: 20+ PNG files (attractors, spectrograms, periods, bifurcation, fractals)
+Data: 1 JSON file (360 computed periods)
+
+Coverage Achieved:
+✓ Continuous chaos (3 attractors, differential equations)
+✓ Discrete periodicity (cat map, number theory)
+✓ Emergent complexity (cellular automata, Game of Life)
+✓ Bifurcation (period-doubling, universal constants)
+✓ Fractals (self-similarity, infinite detail)
+✓ Sonification across all domains
+✓ Multimodal representation (visual, sonic, numeric, symbolic)
+✓ Mathematical theory (essays on 17 distinct topics)
+
+---
+
+**METHODOLOGICAL MATURITY:**
+
+The workshop has evolved into a sophisticated multimedia research platform
+demonstrating that:
+1. Structure can be perceived across modalities
+2. Integration of methods produces understanding exceeding any single approach
+3. Mathematical structure is real, detectable, testable
+4. Simple rules generate infinite complexity
+5. Self-similarity and universality are fundamental
+
+---
+
+**SESSION CONCLUSION:**
+
+This is a complete research session exploring a single deep question—what
+structure persists across scales and representations?—through five distinct
+research branches, each illuminating different aspects.
+
+The answer: mathematical structure is invariant, universal, and infinite.
+Simple rules generate it. Multiple representations reveal it. It is the
+foundational reality beneath complexity.
+
+All work committed, documented, and ready for future continuation.
