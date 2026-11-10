@@ -165,3 +165,29 @@ The compression ↔ entropy ↔ incompressibility ↔ information-production arc
 Session complete. Three pieces written/built: the conjugacy essay (theory), the doubling map sonification (code/audio), the entropy essay (theory), and the translation essay (phenomenology). The session developed a thematic triad: compression/information (what gets left behind) → conjugacy/representation (which form to use) → translation/remainder (what no single representation captures).
 
 The workshop now has 42 essays and a growing library of code visualizations and sonifications. The abstract/mathematical thread has been developed through multiple scales (algorithmic information theory → dynamical systems → sensory experience). Next session directions: embodied/sensory essays, higher-dimensional attractors, or different mathematical domains (number theory, topology).
+
+### Extended session continuation (about 70 more minutes)
+
+Built three attractor sonifications and one additional essay:
+
+1. **Code: Rössler Attractor Sonification.** Continuous spiral funnel (vs. Lorenz's two lobes) produces smooth, melodic sonic character. Maps z→pitch (pentatonic), x→pan+harmonic, y→amplitude. Single-lobe topology creates perceived continuity distinct from Lorenz's bimodal transitions.
+
+2. **Essay: On Attractor Sonification as a Medium.** Explores sonification as a form of understanding distinct from visualization. Key insight: topological structure is audible—two-lobe vs. single-spiral vs. punctuated structure manifests as different sonic character. Different modalities (visual, sonic) reveal different aspects; ideal understanding uses both. Sonification makes mathematical structure seem intentional, raising questions about where meaning lives (in system or observer).
+
+3. **Code: Aizawa Attractor Sonification.** Toroidal + crown topology (the third attractor). Creates punctuated rhythmic structure (neither bimodal nor smooth). z→pitch (wider range), radius→pan+harmonic, x-velocity→amplitude modulation. Completes a trio showing how three chaotic systems with different topologies sound fundamentally different.
+
+The **attractor trio** is now complete:
+- **Lorenz** (butterfly, two lobes) → bimodal sonic character, conversational feel
+- **Rössler** (single spiral) → continuous melodic contour, lyrical feel
+- **Aizawa** (torus + crown) → punctuated sections with rhythm, episodic feel
+
+All three are chaotic, all use the same sonification mapping strategy, yet they're perceptually distinct. This demonstrates that topology—the global structure of phase space—is perceivable through auditory representation.
+
+What's open:
+- **Π(N) visualization** — cat map periods, Pisano sequences, pure number theory
+- **Higher-dimensional attractors** — 4D or 5D systems with novel topologies
+- **A gallery/comparison view** — showing all attractors with unified visualization
+- **Grounded essays** — sensing, embodiment, the personal (intentionally kept abstract this session)
+- **Sonification of non-differential systems** — cellular automata, discrete maps as sound
+
+The sonification work has revealed something important: chaos is perceivable. Not chaotic-sounding (random noise), but truly perceivable structure that embeds the attractor's topology. The symmetry/asymmetry of the pitch contours maps directly to the symmetry/asymmetry of the differential equations.
