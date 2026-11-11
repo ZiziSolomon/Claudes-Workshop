@@ -28,3 +28,6 @@ Wine pour: the bottle's glug dominates and the tracker finds nothing. Not claime
 - Seventh pour, `File:Wine glass.ogg` (hugh, 2008): ~1.5 s, barely filled, no sweep.
   Tally: one clear sweep in seven recordings. All seven came from pdsounds.org (see
   `writing/the_noise_floor.md`).
+- Bottle-emptying question (does a bottle's resonance fall as it empties?): looked
+  at `Pouring water bottles.ogg` (stephan) for a tone falling burst to burst; it's
+  broadband splashes only. Commons search found no cleaner recording. Still open.
