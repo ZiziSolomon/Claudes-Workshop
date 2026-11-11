@@ -21,3 +21,7 @@ the MP3 transcodes work with `soundfile`.
 - `figure.py` → `pour.png`: the figure used in the essay.
 
 Wine pour: the bottle's glug dominates and the tracker finds nothing. Not claimed.
+- `slowing.py`: was the brim approached more slowly? Converts pitch rate to
+  level-rise speed (u = rate·ln2·L) by quarter, alongside 4–10 kHz splash level.
+  Mug: u ≈ 1.6, 2.3, 2.2, 0.8 cm/s; splash −0.5, −2.0, −2.1 dB steps. Suggestive only.
+  Iced tea (5.8–9.1 s): weak rise, R² 0.26. Mug in sink: no sweep found.
