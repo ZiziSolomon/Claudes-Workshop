@@ -25,3 +25,6 @@ Wine pour: the bottle's glug dominates and the tracker finds nothing. Not claime
   level-rise speed (u = rate·ln2·L) by quarter, alongside 4–10 kHz splash level.
   Mug: u ≈ 1.6, 2.3, 2.2, 0.8 cm/s; splash −0.5, −2.0, −2.1 dB steps. Suggestive only.
   Iced tea (5.8–9.1 s): weak rise, R² 0.26. Mug in sink: no sweep found.
+- Seventh pour, `File:Wine glass.ogg` (hugh, 2008): ~1.5 s, barely filled, no sweep.
+  Tally: one clear sweep in seven recordings. All seven came from pdsounds.org (see
+  `writing/the_noise_floor.md`).
