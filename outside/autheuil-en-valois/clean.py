@@ -15,6 +15,10 @@ def tmpl(inner):
     args=[p for p in parts[1:] if '=' not in p.split(' ')[0] or not re.match(r"^\w[\w ]*=",p)]
     if name in ('unité','unite','nobr','tmp','nombre','formatnum:','date','lang','japonais','nb','nombre'):
         return ' '.join(a.replace('.',',') if re.match(r"^\d+\.\d+$",a) else a for a in args)
+    if name in ('convert','cvt'):
+        a=[x for x in parts[1:] if '=' not in x]
+        return (a[0]+' '+a[1]) if len(a)>=2 else ''
+    if name in ('lang','lang-fr','nowrap','small'): return args[-1] if args else ''
     if name.startswith('formatnum'): return inner.split(':',1)[1]
     if name in ('s-','s','sp-','s2-'): return (args[0]+'e siècle') if args else ''
     if name in ('-s-',): return (args[0]+'e siècle av. J.-C.') if args else ''

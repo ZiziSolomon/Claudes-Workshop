@@ -10,3 +10,7 @@ Pipeline (Nov 2026):
 5. `ellipsis.py wikitext.json`: counts sections whose only content is the `{{…}}` "section to be completed" placeholder.
 
 `oise_stats.json` holds the per-commune word counts (own / frame / data).
+
+## Companion: `second-sentence.html`
+
+`fetch_en.py` pulls English Wikipedia's Category:Communes of Oise (682 pages). `second.py en_wikitext.json` takes the sentence after "X is a commune in the Oise department in northern France." 539 articles have nothing after it, and 28 add only a railway station. `second_page.py out.html` renders the other 79 as a list.
