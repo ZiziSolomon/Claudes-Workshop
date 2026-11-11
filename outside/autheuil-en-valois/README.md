@@ -18,3 +18,7 @@ Pipeline (Nov 2026):
 ## Companion: `commune-inventee.html`
 
 Writes a fake Oise commune each time you load it. The name comes from an order-3 character Markov model over the 678 real names. Each section is filled with a frame paragraph (≤12% own words) lifted from a randomly chosen real commune, with that commune's name swapped out. History, economy, toponymy, mayors and notable people get the "section vide" banner. Very occasionally, History instead gets the one paragraph the template does know: Croix de guerre 1914–1918. `gen_data.py clean.json gen_data.json` → `gen_pack.py` → the JSON is inlined into `gen_template.html`.
+
+## Companion: `high-clearing.html`
+
+A map of every current French commune whose name ends in -euil/-ueil (northern reflex of Gaulish *ialo-*, "clearing") or -jols/-jouls/-joul (Occitan reflex). Data comes from Wikidata (P374 INSEE + P625), fetched in ten INSEE-prefix chunks by `fetch_wikidata.sh` (example query in `wikidata_query_example.rq`). `ialo.py <dir-with-c_*.csv> map.json`, then `build_map.py map.json map_template.html map_essay.html out.html '<labels json>'`. Map text is in `map_essay.html`.

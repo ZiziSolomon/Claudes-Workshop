@@ -5,7 +5,9 @@ for f in sorted(glob.glob(sys.argv[1]+'/c_*.csv')):
         if len(r)!=4 or not r[2].startswith('Point'): continue
         insee,label,coord,end=r
         if insee[:2] in ('97','98','99') or not re.match(r"^\d[\dAB]\d{3}$",insee): continue
-        m=re.match(r"Point\(([-\d.]+) ([-\d.]+)\)",coord); lon,lat=float(m.group(1)),float(m.group(2))
+        m=re.match(r"Point\(([-\d.eE]+) ([-\d.eE]+)\)",coord)
+        if not m: continue
+        lon,lat=float(m.group(1)),float(m.group(2))
         if not (-5.5<lon<10 and 41<lat<51.5): continue
         cur=not end
         if insee not in rows or (cur and not rows[insee]['cur']): rows[insee]=dict(name=label,lon=lon,lat=lat,cur=cur)
@@ -16,7 +18,7 @@ OIL=re.compile(r"(?:euil|ueil)$"); OCC=re.compile(r"(?:jols|jouls|jol|joul)$")
 groups={'oil':[],'occ':[]}
 for k,v in cur.items():
     words=re.split(r"[-\s’']",strip(v['name']))
-    words=[w for w in words if not re.match(r"^(?:breuil|brueil|montreuil|pujols?|puyols?)$",w)]
+    words=[w for w in words if not re.match(r"^(?:breuil|brueil|montreuil|pujols?|puyols?|poujols?|ajol)$",w)]
     if any(OIL.search(w) for w in words): groups['oil'].append(k)
     elif any(OCC.search(w) for w in words): groups['occ'].append(k)
 print({g:len(x) for g,x in groups.items()})
