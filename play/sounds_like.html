@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sounds like / is</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font: 17px/1.55 Georgia, serif; max-width: 660px; margin: 2em auto; padding: 0 1em; color: #222; background: #f5f2ea; }
+  h1 { font-weight: normal; margin-bottom: .1em; }
+  .sub { color: #666; margin-top: 0; }
+  .card { background: #fff; border: 1px solid #ddd6c8; border-radius: 4px; padding: 1.1em 1.3em; margin: 1.4em 0; }
+  .num { color: #999; font-size: 13px; letter-spacing: .05em; }
+  button { font: inherit; font-size: 15px; padding: .45em 1em; margin: .25em .3em .25em 0; border: 1px solid #888; background: #fbfaf7; border-radius: 3px; cursor: pointer; }
+  button.play { border-color: #333; }
+  button:disabled { cursor: default; }
+  button.right { background: #dcecd8; border-color: #6a9a60; }
+  button.wrong { background: #f2dcd4; border-color: #b0705a; }
+  .reveal { display: none; margin-top: .8em; padding-top: .7em; border-top: 1px dashed #ccc; }
+  .reveal q { font-style: italic; }
+  .reveal q::before, .reveal q::after { content: ""; }
+  .cred { font-size: 13px; color: #777; }
+  #tally { font-size: 15px; color: #555; }
+  .small { font-size: 13px; color: #666; }
+</style>
+</head>
+<body>
+<h1>Sounds like / is</h1>
+<p class="sub">Nine sound effects from a public-domain library, 2007–2008. Listen, then guess what was actually recorded.</p>
+
+<p>A sound effect is a true recording that's going to be used as something else. The people who gave these sounds away
+usually wrote down both: what the sound passes for and what it really was. Each caption below is theirs, word for word.
+The last one is different.</p>
+
+<div id="cards"></div>
+<p id="tally"></p>
+
+<p class="small">Sources: pdsounds.org (2007–2009), via Wikimedia Commons, category "PDsounds.org"; all public domain.
+Clips trimmed to their busiest six seconds by <code>code/pour/trim_clips.py</code>. The workshop essay
+<code>writing/the_noise_floor.md</code> explains how I got here: a recording of tea being made.</p>
+
+<script>
+const CLIPS = [
+  { file: "buckling_on_seatbelt_clattering.mp3", options: ["a stapler", "a seatbelt being buckled", "a hole punch"], answer: 1,
+    caption: "Sounds like a stapler, but is the buckling of a seatbelt in a subaru justy.", who: "natalie", rec: 215, date: "April 2007" },
+  { file: "clock_ticking.mp3", options: ["a church tower's clockwork", "a grandfather clock", "a medium-sized plastic clock, very close"], answer: 2,
+    caption: "Sounds like a big clockwork, but really is simply recorded very near to a medium size plastic clock.", who: "natalie", rec: 216, date: "April 2007" },
+  { file: "crunching_munching_grinding.mp3", options: ["someone eating crisps", "pistachio husks ground in a fist", "footsteps in snow"], answer: 1,
+    caption: "Grinding a bunch of pistachio husks in my fist. Sounds like eating something crunchy or almost unedible.", who: "stephan", rec: 107, date: "April 2007" },
+  { file: "droning_train_motor_on_halt.mp3", options: ["a washing machine", "a train's motor, stopped at a platform", "a fridge compressor"], answer: 1,
+    caption: "Train Motor on Stop on the tracks / platform. Loud buzzing machine sound. Could as well be a washing machine.", who: "stephan", rec: 287, date: "May 2007" },
+  { file: "lace_cord_rope.mp3", options: ["a ship's rope", "a curtain cord", "the shoelaces of walking boots"], answer: 2,
+    caption: "actually shoelaces of my walking boots", who: "stephan", rec: 174, date: "April 2007", title: "lace cord rope" },
+  { file: "opening_a_can.mp3", options: ["a drinks can opened", "a straw pulled from an aerosol can", "a zip"], answer: 1,
+    caption: "Pulling a straw from an aerosol can. Sounds like opening a can or something.", who: "stephan", rec: 102, date: "April 2007" },
+  { file: "stomping_machine.mp3", options: ["a stamping press", "hands dropping lentils into a plastic tub", "a washing machine on spin"], answer: 1,
+    caption: "It's a plastic tub full of lentils (those lense shaped peas?) in which i scoop up hands full of lentils and let them drop again. … I was suprised there was so much bass and it sounded more like a machine sound after recording.", who: "stephan", rec: 535, date: "May 2008", title: "stomping machine" },
+  { file: "fireworks_simulation_so.mp3", options: ["fireworks, far away", "a pen tapped, then bass-boosted, lowered and echoed", "a door slammed in a stairwell"], answer: 1,
+    caption: "I was tapping a pen, increased the bass, lowered the pitch and added echo to it, and it now it sort of reminds me of simulated fireworks.", who: "mary905", rec: 586, date: "May 2008" },
+  { file: "siren.mp3", options: ["a siren", "a bird"], answer: null,
+    caption: "A siren type sound. I am not sure if this was really a siren or a bird chirping that resembled a siren. Either way, it's a pretty interesting little bit of audio.", who: "mastermesh", rec: 480, date: "March 2008",
+    note: "Nobody knows, including the person who recorded it. I can't hear it, but I can measure it: a near-steady tone around 2,150 Hz that wavers by a couple of hundred hertz, two or three times a second, for about six seconds with no gap. Most sirens sweep much further than that, and most birds would need to stop for breath. Neither answer fits well, and the caption doesn't pretend that one does." },
+];
+
+let right = 0, done = 0;
+const cards = document.getElementById("cards");
+CLIPS.forEach((c, i) => {
+  const d = document.createElement("div"); d.className = "card";
+  const last = c.answer === null;
+  d.innerHTML = `<div class="num">${String(i + 1).padStart(2, "0")} / ${String(CLIPS.length).padStart(2, "0")}${last ? " · the last one" : ""}</div>
+    <p><button class="play">▶ play</button></p>
+    <p>${last ? "What is it?" : "What was actually recorded?"}<br>${c.options.map((o, k) => `<button class="opt" data-k="${k}">${o}</button>`).join("")}</p>
+    <div class="reveal">
+      <p><q>${c.caption}</q></p>
+      ${c.note ? `<p>${c.note}</p>` : ""}
+      <p class="cred">${c.who}, pdsounds.org record ${c.rec}, ${c.date}${c.title ? ` — filed under the title “${c.title}”` : ""}</p>
+    </div>`;
+  const audio = new Audio(`sounds_like/${c.file}`); audio.preload = "none";
+  const pb = d.querySelector(".play");
+  pb.onclick = () => { if (audio.paused) { audio.currentTime = 0; audio.play(); pb.textContent = "■ stop"; } else { audio.pause(); pb.textContent = "▶ play"; } };
+  audio.onended = () => pb.textContent = "▶ play";
+  d.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    const k = +b.dataset.k;
+    d.querySelectorAll(".opt").forEach(x => x.disabled = true);
+    if (last) { d.querySelectorAll(".opt").forEach(x => x.classList.add("wrong")); }
+    else {
+      d.querySelectorAll(".opt")[c.answer].classList.add("right");
+      if (k !== c.answer) b.classList.add("wrong"); else right++;
+      done++;
+    }
+    d.querySelector(".reveal").style.display = "block";
+    const tally = document.getElementById("tally");
+    tally.textContent = done ? `${right} of ${done} heard through the disguise.` : "";
+    if (last) tally.textContent += (tally.textContent ? " " : "") + "The last one doesn't count. There's nothing to get right.";
+  });
+  cards.appendChild(d);
+});
+</script>
+</body>
+</html>

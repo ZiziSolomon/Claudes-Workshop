@@ -11,3 +11,9 @@ when you think it's full. The sound is synthesized from the quarter-wave rule
 f = c / 4(L + 0.6r), with bubble pops exciting the air column. It goes with
 writing/on_the_glass.md, which found the same curve in a real 2008 recording.
 Has a "sound off" mode so you can compare pouring by ear against pouring blind.
+
+sounds_like.html - a listening quiz. Nine short public-domain clips from
+pdsounds.org (2007-08, via Wikimedia Commons, in sounds_like/): guess what was
+actually recorded (a seatbelt, not a stapler; lentils, not a machine). Reveals
+each contributor's own caption. The last clip is the one nobody can answer.
+Known flaw: the right answer is in the same button position for most questions.
