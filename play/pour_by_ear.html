@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pour by ear</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font: 16px/1.5 Georgia, serif; max-width: 640px; margin: 2em auto; padding: 0 1em; color: #222; background: #f7f5f0; }
+  h1 { font-weight: normal; margin-bottom: .2em; }
+  .sub { color: #666; margin-top: 0; }
+  button { font: inherit; padding: .6em 1.4em; border: 1px solid #333; background: #fff; cursor: pointer; border-radius: 3px; }
+  button:disabled { opacity: .4; cursor: default; }
+  #stage { display: flex; gap: 2em; align-items: flex-end; margin: 1.5em 0; }
+  svg { background: #fff; border: 1px solid #ddd; }
+  #log { font-family: ui-monospace, monospace; font-size: 13px; white-space: pre; color: #444; }
+  label { display: block; margin: .4em 0; }
+  .small { font-size: 13px; color: #666; }
+</style>
+</head>
+<body>
+<h1>Pour by ear</h1>
+<p class="sub">The glass is hidden. Hold the button to pour, let go when you think it's full.</p>
+
+<p>The sound is synthesized from one rule: the air above the water rings at
+<i>f</i> = <i>c</i> / 4(<i>L</i> + 0.6<i>r</i>), where <i>L</i> is the length of air left in the glass.
+Little bubble pops excite that air column, and as <i>L</i> shrinks the note rises, faster and faster toward the brim.
+Each round uses a different glass and a different pour speed, so you can't just count.</p>
+
+<div id="stage">
+  <svg id="glass" width="120" height="200" viewBox="0 0 120 200">
+    <rect id="water" x="21" y="190" width="78" height="0" fill="#7fb4c9"/>
+    <path d="M20 10 L20 190 L100 190 L100 10" fill="none" stroke="#333" stroke-width="2"/>
+    <rect id="curtain" x="0" y="0" width="120" height="200" fill="#e9e4da"/>
+    <text id="qmark" x="60" y="110" text-anchor="middle" font-size="40" fill="#aaa">?</text>
+  </svg>
+  <div>
+    <button id="pour">hold to pour</button>
+    <p class="small">(or hold the space bar)</p>
+    <label><input type="checkbox" id="peek"> let me see the glass (practice)</label>
+    <label><input type="checkbox" id="mute"> sound off (try it blind <i>and</i> deaf)</label>
+  </div>
+</div>
+
+<div id="log"></div>
+
+<p class="small">From the workshop: see <code>writing/on_the_glass.md</code>, where a real 2008 recording
+of water poured into a mug shows the same curve (about 840 → 2200 Hz in four seconds) and seems to slow at the end,
+as if the person pouring heard the brim coming. This page lets you check whether you can.
+Overflowing is allowed; the water just goes on the table.</p>
+
+<script>
+const C = 343;               // speed of sound, m/s
+let ctx, master, bp, bp3, noiseSrc, noiseGain;
+let state = null;            // current round
+const rounds = [];
+
+function newGlass() {
+  const H = 0.08 + Math.random() * 0.08;      // 8–16 cm tall
+  const r = 0.025 + Math.random() * 0.02;     // 2.5–4.5 cm radius
+  const fillTime = 3 + Math.random() * 4;     // seconds to fill if poured continuously
+  return { H, r, rate: H / fillTime, h: 0, pouring: false, done: false };
+}
+
+function freqFor(g) {
+  const L = Math.max(g.H - g.h, 0) + 0.6 * g.r;
+  return C / (4 * L);
+}
+
+function setupAudio() {
+  ctx = new (window.AudioContext || window.webkitAudioContext)();
+  master = ctx.createGain(); master.gain.value = 0.8; master.connect(ctx.destination);
+  // resonators: fundamental and the 3rd harmonic (a closed-open pipe only has odd ones)
+  bp = ctx.createBiquadFilter(); bp.type = "bandpass"; bp.Q.value = 16;
+  bp3 = ctx.createBiquadFilter(); bp3.type = "bandpass"; bp3.Q.value = 12;
+  const g3 = ctx.createGain(); g3.gain.value = 0.35;
+  bp.connect(master); bp3.connect(g3); g3.connect(master);
+  // splash: continuous filtered noise while pouring
+  const len = ctx.sampleRate * 2, buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  noiseSrc = ctx.createBufferSource(); noiseSrc.buffer = buf; noiseSrc.loop = true;
+  noiseGain = ctx.createGain(); noiseGain.gain.value = 0;
+  noiseSrc.connect(noiseGain); noiseGain.connect(bp); noiseGain.connect(bp3);
+  const dry = ctx.createGain(); dry.gain.value = 0.015; noiseGain.connect(dry); dry.connect(master);
+  noiseSrc.start();
+}
+
+// a bubble: a short decaying tone whose pitch rises slightly as it closes (Minnaert-ish)
+function bubble() {
+  const t = ctx.currentTime;
+  const R = 0.0008 + Math.random() * 0.003;          // radius 0.8–3.8 mm
+  const f = 3.26 / R;                                // Minnaert: f·R ≈ 3.26 m/s for air in water
+  if (f > 9000) return;
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.frequency.setValueAtTime(f, t);
+  o.frequency.linearRampToValueAtTime(f * 1.15, t + 0.04);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(0.25, t + 0.002);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.03 + R * 15);
+  o.connect(g); g.connect(bp); g.connect(bp3);
+  const dry = ctx.createGain(); dry.gain.value = 0.012; g.connect(dry); dry.connect(master);
+  o.start(t); o.stop(t + 0.1);
+}
+
+const $ = id => document.getElementById(id);
+function draw() {
+  const g = state; if (!g) return;
+  const px = 180 * Math.min(g.h / g.H, 1.05);
+  $("water").setAttribute("y", 190 - Math.min(px, 180));
+  $("water").setAttribute("height", Math.min(px, 180));
+  const hidden = !$("peek").checked && !g.done;
+  $("curtain").style.display = hidden ? "" : "none";
+  $("qmark").style.display = hidden ? "" : "none";
+}
+
+let last = 0;
+function tick(ts) {
+  const g = state;
+  if (g && g.pouring) {
+    const dt = last ? (ts - last) / 1000 : 0;
+    g.h += g.rate * dt;
+    const f = freqFor(g);
+    bp.frequency.setTargetAtTime(f, ctx.currentTime, 0.01);
+    bp3.frequency.setTargetAtTime(Math.min(3 * f, 18000), ctx.currentTime, 0.01);
+    if (Math.random() < dt * 70) bubble();
+    if (g.h > g.H * 1.15) stop();   // it's on the table by now
+  }
+  last = ts; draw(); requestAnimationFrame(tick);
+}
+
+function start() {
+  if (!ctx) setupAudio();
+  if (ctx.state === "suspended") ctx.resume();
+  if (!state || state.done) state = newGlass();
+  state.pouring = true; last = 0;
+  bp.frequency.value = freqFor(state);
+  noiseGain.gain.setTargetAtTime($("mute").checked ? 0 : 1.2, ctx.currentTime, 0.02);
+  master.gain.value = $("mute").checked ? 0 : 0.8;
+}
+
+function stop() {
+  const g = state; if (!g || !g.pouring) return;
+  g.pouring = false; g.done = true;
+  noiseGain.gain.setTargetAtTime(0, ctx.currentTime, 0.03);
+  const pct = 100 * g.h / g.H;
+  rounds.push({ pct, mode: $("mute").checked ? "deaf" : ($("peek").checked ? "seen" : "ear") });
+  let verdict = pct > 100 ? `it overflowed: you poured ${pct.toFixed(0)}% of a glass` : `you stopped at ${pct.toFixed(1)}% full, ${(1000*(g.H-g.h)).toFixed(0)} mm short of the brim`;
+  const fEnd = freqFor({ ...g, h: Math.min(g.h, g.H) });
+  const lines = rounds.slice(-8).map((r, i) => `  ${String(rounds.length - Math.min(8, rounds.length) + i + 1).padStart(2)}  ${r.mode.padEnd(5)} ${r.pct.toFixed(1).padStart(6)}%`);
+  const byMode = m => { const xs = rounds.filter(r => r.mode === m).map(r => Math.abs(100 - r.pct)); return xs.length ? (xs.reduce((a, b) => a + b, 0) / xs.length).toFixed(1) + "% off on average over " + xs.length : "–"; };
+  $("log").textContent =
+    `glass ${(g.H*100).toFixed(1)} cm tall, radius ${(g.r*100).toFixed(1)} cm\n` +
+    `${verdict}; the note had reached ${fEnd.toFixed(0)} Hz (brim: ${(C/(4*0.6*g.r)).toFixed(0)} Hz)\n\n` +
+    `recent rounds:\n${lines.join("\n")}\n\n` +
+    `by ear: ${byMode("ear")}\nblind and deaf: ${byMode("deaf")}\n\n(press again for a new glass)`;
+}
+
+const btn = $("pour");
+btn.addEventListener("pointerdown", e => { e.preventDefault(); start(); });
+window.addEventListener("pointerup", stop);
+btn.addEventListener("pointerleave", stop);
+window.addEventListener("keydown", e => { if (e.code === "Space" && !e.repeat) { e.preventDefault(); start(); } });
+window.addEventListener("keyup", e => { if (e.code === "Space") stop(); });
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
