@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>High clearing: the -ialo map</title>
+<style>
+:root{--ink:#1d1b18;--ink2:#5d574d;--mute:#9d968a;--paper:#f7f4ee;--rule:#d9d2c4;--bgdot:rgba(29,27,24,.13);--oil:#2a78d6;--occ:#eb6834}
+@media (prefers-color-scheme:dark){:root{--ink:#ece6da;--ink2:#c3bdb1;--mute:#7b766d;--paper:#191816;--rule:#38352f;--bgdot:rgba(236,230,218,.13);--oil:#3987e5;--occ:#d95926}}
+body{background:var(--paper);color:var(--ink);font:17px/1.6 Georgia,serif;margin:0}
+main{max-width:48rem;margin:0 auto;padding:2.5rem 1.25rem 5rem}
+h1{font-weight:normal;font-size:2rem;margin:0 0 1rem;line-height:1.2}
+p{margin:0 0 1rem}
+.legend{display:flex;gap:1.4rem;flex-wrap:wrap;font:14px/1.4 system-ui,sans-serif;color:var(--ink2);margin:1.5rem 0 .5rem}
+.sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.4em;vertical-align:-.05em}
+.mapwrap{position:relative;margin:0 auto}
+canvas,svg{position:absolute;left:0;top:0;width:100%;height:100%}
+svg circle{stroke:var(--paper);stroke-width:.6}
+svg circle.hit{fill:transparent;stroke:none;cursor:default}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);font:12.5px/1.3 system-ui,sans-serif;padding:.3rem .5rem;border-radius:3px;white-space:nowrap;transform:translate(-50%,-130%);display:none}
+.lab{font:600 12px system-ui,sans-serif;fill:var(--ink)}
+.lab2{font:12px system-ui,sans-serif;fill:var(--ink2)}
+details{font:14px/1.5 system-ui,sans-serif;color:var(--ink2);margin:1rem 0}
+summary{cursor:pointer;color:var(--ink)}
+.cols{columns:3 12rem;font-size:13px;margin-top:.6rem}
+footer{margin-top:2.5rem;font:13px/1.5 system-ui,sans-serif;color:var(--mute)} a{color:inherit}
+</style></head><body><main>
+<h1>High clearing</h1>
+{{ESSAY_TOP}}
+<div class="legend">
+ <span><span class="sw" style="background:var(--oil)"></span>-euil / -ueil, the northern (langue d’oïl) form: {{N_OIL}} communes</span>
+ <span><span class="sw" style="background:var(--occ)"></span>-jols / -jouls / -joul, the southern (Occitan) form: {{N_OCC}} communes</span>
+ <span><span class="sw" style="background:var(--bgdot)"></span>every other commune ({{N_ALL}})</span>
+</div>
+<div class="mapwrap" id="wrap"><canvas id="bg"></canvas><svg id="fg"></svg><div class="tip" id="tip"></div></div>
+{{ESSAY_BOTTOM}}
+<details><summary>All {{N_OIL}} -euil / -ueil communes</summary><div class="cols">{{LIST_OIL}}</div></details>
+<details><summary>All {{N_OCC}} -jols / -jouls communes</summary><div class="cols">{{LIST_OCC}}</div></details>
+<footer>Data: Wikidata (INSEE code P374 + coordinates P625; current communes, mainland France and Corsica), queried November 2026. Matching is purely by spelling, so it's a rough cut. It excludes the common lookalikes Breuil (Gaulish <i>brogilo</i>, “enclosed wood”), Montreuil (Latin <i>monasteriolum</i>) and Pujols (Latin <i>podiolum</i>), but some names with other origins will still slip through, and plenty of genuine <i>ialo</i> names in other spellings (-ueil, -eil, -ouil, -ial…) are missed. Part of the <a href="index.html">Autheuil-en-Valois</a> set.</footer>
+</main>
+<script>
+const D={{DATA}};
+const wrap=document.getElementById('wrap'),cv=document.getElementById('bg'),svg=document.getElementById('fg'),tip=document.getElementById('tip');
+wrap.style.aspectRatio=D.W+'/'+D.H; wrap.style.maxWidth=D.W+'px';
+svg.setAttribute('viewBox',`0 0 ${D.W} ${D.H}`);
+function drawBg(){const r=wrap.getBoundingClientRect(),dpr=window.devicePixelRatio||1;cv.width=r.width*dpr;cv.height=r.height*dpr;
+  const c=cv.getContext('2d'),k=cv.width/D.W;c.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--bgdot');
+  for(let i=0;i<D.bg.length;i+=2){c.fillRect(D.bg[i]/10*k-0.6*dpr,D.bg[i+1]/10*k-0.6*dpr,1.3*dpr,1.3*dpr)}}
+drawBg(); addEventListener('resize',drawBg); matchMedia('(prefers-color-scheme:dark)').addEventListener('change',drawBg);
+const NS='http://www.w3.org/2000/svg';let out='';
+for(const [g,col] of [['oil','var(--oil)'],['occ','var(--occ)']]) for(const p of D.pts[g]) out+=`<circle cx="${p.x}" cy="${p.y}" r="2.6" fill="${col}"/>`;
+for(const g of ['oil','occ']) for(const p of D.pts[g]) out+=`<circle class="hit" cx="${p.x}" cy="${p.y}" r="6" data-n="${p.n.replace(/"/g,'&quot;')}" data-d="${p.d}"/>`;
+{{ANNOT}}
+svg.innerHTML=out;
+svg.addEventListener('pointermove',e=>{const t=e.target;if(t.classList&&t.classList.contains('hit')){const r=wrap.getBoundingClientRect(),k=r.width/D.W;
+  tip.style.display='block';tip.textContent=t.dataset.n+' ('+t.dataset.d+')';tip.style.left=(+t.getAttribute('cx')*k)+'px';tip.style.top=(+t.getAttribute('cy')*k)+'px'}else tip.style.display='none'});
+svg.addEventListener('pointerleave',()=>tip.style.display='none');
+</script></body></html>

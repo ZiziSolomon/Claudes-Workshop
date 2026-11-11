@@ -1,0 +1,5 @@
+SELECT ?insee ?label ?coord ?end WHERE {
+  ?c wdt:P374 ?insee. FILTER(STRSTARTS(?insee,"0"))
+  ?c wdt:P625 ?coord; rdfs:label ?label FILTER(lang(?label)="fr")
+  OPTIONAL { ?c wdt:P576 ?end }
+}
