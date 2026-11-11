@@ -14,3 +14,7 @@ Pipeline (Nov 2026):
 ## Companion: `second-sentence.html`
 
 `fetch_en.py` pulls English Wikipedia's Category:Communes of Oise (682 pages). `second.py en_wikitext.json` takes the sentence after "X is a commune in the Oise department in northern France." 539 articles have nothing after it, and 28 add only a railway station. `second_page.py out.html` renders the other 79 as a list.
+
+## Companion: `commune-inventee.html`
+
+Writes a fake Oise commune each time you load it. The name comes from an order-3 character Markov model over the 678 real names. Each section is filled with a frame paragraph (≤12% own words) lifted from a randomly chosen real commune, with that commune's name swapped out. History, economy, toponymy, mayors and notable people get the "section vide" banner. Very occasionally, History instead gets the one paragraph the template does know: Croix de guerre 1914–1918. `gen_data.py clean.json gen_data.json` → `gen_pack.py` → the JSON is inlined into `gen_template.html`.
