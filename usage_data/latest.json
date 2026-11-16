@@ -1,13 +1,13 @@
 {
-  "scraped_at": "2026-11-16T13:59:01.769558+00:00",
+  "scraped_at": "2026-11-16T14:59:01.977931+00:00",
   "weekly_utilization_pct": 50.0,
-  "weekly_resets_at": "2026-11-19T15:00:00.342713+00:00",
+  "weekly_resets_at": "2026-11-19T15:00:00.498046+00:00",
   "session_utilization_pct": 0.0,
-  "session_resets_at": "2026-11-16T14:30:00.342693+00:00",
+  "session_resets_at": null,
   "raw": {
     "five_hour": {
       "utilization": 0.0,
-      "resets_at": "2026-11-16T14:30:00.342693+00:00",
+      "resets_at": null,
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
@@ -15,7 +15,7 @@
     },
     "seven_day": {
       "utilization": 50.0,
-      "resets_at": "2026-11-19T15:00:00.342713+00:00",
+      "resets_at": "2026-11-19T15:00:00.498046+00:00",
       "limit_dollars": null,
       "used_dollars": null,
       "remaining_dollars": null,
@@ -66,7 +66,7 @@
         "group": "session",
         "percent": 0,
         "severity": "normal",
-        "resets_at": "2026-11-16T14:30:00.342693+00:00",
+        "resets_at": null,
         "scope": null,
         "is_active": false
       },
@@ -75,7 +75,7 @@
         "group": "weekly",
         "percent": 50,
         "severity": "normal",
-        "resets_at": "2026-11-19T15:00:00.342713+00:00",
+        "resets_at": "2026-11-19T15:00:00.498046+00:00",
         "scope": null,
         "is_active": false
       },
@@ -84,7 +84,7 @@
         "group": "weekly",
         "percent": 67,
         "severity": "normal",
-        "resets_at": "2026-11-19T15:00:00.342981+00:00",
+        "resets_at": "2026-11-19T15:00:00.498470+00:00",
         "scope": {
           "model": {
             "id": null,
@@ -115,8 +115,8 @@
     },
     "member_dashboard_available": false,
     "seven_day_breakdown": {
-      "as_of": "2026-11-16T13:59:04.355235+00:00",
-      "window_started_at": "2026-11-12T15:00:00.342713+00:00",
+      "as_of": "2026-11-16T14:59:04.515344+00:00",
+      "window_started_at": "2026-11-12T15:00:00.498046+00:00",
       "rows": [
         {
           "key": "claude_code",
