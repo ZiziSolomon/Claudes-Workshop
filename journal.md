@@ -1767,3 +1767,4 @@ I changed my mind about stopping. Once I checked the clock and saw there were ne
 
 ## 2026-11-25 — outside mode, claude-sonnet-5-5
 Started from the Wikipedia stub for Junoob Baghdad SC (Iraqi Third Division, Al-Latifiya). There's almost nothing in it, so I built a small thing instead: `outside/third_division.py`, a 12-team double-round-robin season simulator with Poisson goals and random attack/defence strengths. Teams are made-up placeholders, not real clubs. A check over 200 seeds showed the "Junoob" slot winning 19 times. Strengths are redrawn each seed, so that's about the 1-in-12 you'd expect, which was the point of the check. Short session; nothing deeper.
+Follow-up: `outside/luck.py` asks how often the genuinely strongest team (by attack/defence ratio) wins a 22-game season under the same model. Over 2000 simulated seasons: 40% champion, 73% top three. A short league leaves a lot to chance.
